@@ -1,0 +1,738 @@
+@import '_variables';
+@import '_mixins';
+
+
+
+.card {
+  display: block;
+  width: 100%;
+  background-color: var(--card-background-color, lightgray);
+  padding-bottom: 4rem;
+  border-top: 1px solid var(--px-card-border-color, gray);
+}
+
+.card[full-bleed] .contents {
+  padding: 0;
+}
+
+.card header {
+  padding: 1rem;
+  padding-top: 1.33333rem;
+  border-bottom: 1px solid var(--px-card-border-color, transparent);
+  margin-bottom: 1rem;
+}
+
+.card header .epsilon {
+  height: 2rem;
+  line-height: 2rem;
+  color: var(--px-card-header-color, black);
+}
+
+.card #headericon {
+  height: 2rem;
+  width: 2rem;
+  color: var(--px-card-icon-color, black);
+  cursor: auto;
+}
+
+.card header i {
+  color: var(--px-card-action-icon-color, black);
+  cursor: pointer;
+}
+
+.card header i:hover {
+  color: var(--px-card-action-icon-color--hover, blue);
+}
+
+.card header i:active {
+  color: var(--px-card-action-icon-color--pressed, blue);
+}
+
+.card header i:not(:last-of-type) {
+  margin-right: .66666rem;
+}
+
+.card section {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.is-hidden {
+  display: none;
+}
+
+.side-nav__content--animatable {
+  transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1);
+}
+
+/** Margin and padding helper classes with breakpoint prefixes. Use these to tweak layout on a micro level based on viewport widths. `.u-[breakpoint]-(m|p)(t|r|b|l|h|v)(-|+|0) {}` = utility - breakpoint - margin/padding top/right/bottom/left/horizontal/vertical less/more/none */
+
+/** Margin and padding helper classes. Use these to tweak layout on a micro level. `.u-(m|p)(t|r|b|l|h|v)(-|+|0) {}` = utility - margin/padding top/right/bottom/left/horizontal/vertical less/more/none */
+
+/** Margin helper classes. Add margins. */
+
+.u-m {
+  margin: 1rem !important;
+}
+
+.u-mt {
+  margin-top: 1rem !important;
+}
+
+.u-mr {
+  margin-right: 1rem !important;
+}
+
+.u-mb {
+  margin-bottom: 1rem !important;
+}
+
+.u-ml {
+  margin-left: 1rem !important;
+}
+
+.u-mh {
+  margin-right: 1rem !important;
+  margin-left: 1rem !important;
+}
+
+.u-mv {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/** Add tiny margins. */
+
+.u-m-- {
+  margin: 0.33333rem !important;
+}
+
+.u-mt-- {
+  margin-top: 0.33333rem !important;
+}
+
+.u-mr-- {
+  margin-right: 0.33333rem !important;
+}
+
+.u-mb-- {
+  margin-bottom: 0.33333rem !important;
+}
+
+.u-ml-- {
+  margin-left: 0.33333rem !important;
+}
+
+.u-mh-- {
+  margin-right: 0.33333rem !important;
+  margin-left: 0.33333rem !important;
+}
+
+.u-mv-- {
+  margin-top: 0.33333rem !important;
+  margin-bottom: 0.33333rem !important;
+}
+
+/** Add small margins. */
+
+.u-m- {
+  margin: 0.66667rem !important;
+}
+
+.u-mt- {
+  margin-top: 0.66667rem !important;
+}
+
+.u-mr- {
+  margin-right: 0.66667rem !important;
+}
+
+.u-mb- {
+  margin-bottom: 0.66667rem !important;
+}
+
+.u-ml- {
+  margin-left: 0.66667rem !important;
+}
+
+.u-mh- {
+  margin-right: 0.66667rem !important;
+  margin-left: 0.66667rem !important;
+}
+
+.u-mv- {
+  margin-top: 0.66667rem !important;
+  margin-bottom: 0.66667rem !important;
+}
+
+/** Add large margins. */
+
+.u-m\00002b {
+  margin: 1.33333rem !important;
+}
+
+.u-mt\00002b {
+  margin-top: 1.33333rem !important;
+}
+
+.u-mr\00002b {
+  margin-right: 1.33333rem !important;
+}
+
+.u-mb\00002b {
+  margin-bottom: 1.33333rem !important;
+}
+
+.u-ml\00002b {
+  margin-left: 1.33333rem !important;
+}
+
+.u-mh\00002b {
+  margin-right: 1.33333rem !important;
+  margin-left: 1.33333rem !important;
+}
+
+.u-mv\00002b {
+  margin-top: 1.33333rem !important;
+  margin-bottom: 1.33333rem !important;
+}
+
+/** Add huge margins. */
+
+.u-m\00002b\00002b {
+  margin: 2rem !important;
+}
+
+.u-mt\00002b\00002b {
+  margin-top: 2rem !important;
+}
+
+.u-mr\00002b\00002b {
+  margin-right: 2rem !important;
+}
+
+.u-mb\00002b\00002b {
+  margin-bottom: 2rem !important;
+}
+
+.u-ml\00002b\00002b {
+  margin-left: 2rem !important;
+}
+
+.u-mh\00002b\00002b {
+  margin-right: 2rem !important;
+  margin-left: 2rem !important;
+}
+
+.u-mv\00002b\00002b {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+/** Remove margins. */
+
+.u-m0 {
+  margin: 0 !important;
+}
+
+.u-mt0 {
+  margin-top: 0 !important;
+}
+
+.u-mr0 {
+  margin-right: 0 !important;
+}
+
+.u-mb0 {
+  margin-bottom: 0 !important;
+}
+
+.u-ml0 {
+  margin-left: 0 !important;
+}
+
+.u-mh0 {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.u-mv0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/** Negative margins. */
+
+.u--m {
+  margin: -1rem !important;
+}
+
+.u--mt {
+  margin-top: -1rem !important;
+}
+
+.u--mr {
+  margin-right: -1rem !important;
+}
+
+.u--mb {
+  margin-bottom: -1rem !important;
+}
+
+.u--ml {
+  margin-left: -1rem !important;
+}
+
+.u--mh {
+  margin-right: -1rem !important;
+  margin-left: -1rem !important;
+}
+
+.u--mv {
+  margin-top: -1rem !important;
+  margin-bottom: -1rem !important;
+}
+
+/** Tiny negative margins. */
+
+.u--m-- {
+  margin: -0.33333rem !important;
+}
+
+.u--mt-- {
+  margin-top: -0.33333rem !important;
+}
+
+.u--mr-- {
+  margin-right: -0.33333rem !important;
+}
+
+.u--mb-- {
+  margin-bottom: -0.33333rem !important;
+}
+
+.u--ml-- {
+  margin-left: -0.33333rem !important;
+}
+
+.u--mh-- {
+  margin-right: -0.33333rem !important;
+  margin-left: -0.33333rem !important;
+}
+
+.u--mv-- {
+  margin-top: -0.33333rem !important;
+  margin-bottom: -0.33333rem !important;
+}
+
+/** Small negative margins. */
+
+.u--m- {
+  margin: -0.66667rem !important;
+}
+
+.u--mt- {
+  margin-top: -0.66667rem !important;
+}
+
+.u--mr- {
+  margin-right: -0.66667rem !important;
+}
+
+.u--mb- {
+  margin-bottom: -0.66667rem !important;
+}
+
+.u--ml- {
+  margin-left: -0.66667rem !important;
+}
+
+.u--mh- {
+  margin-right: -0.66667rem !important;
+  margin-left: -0.66667rem !important;
+}
+
+.u--mv- {
+  margin-top: -0.66667rem !important;
+  margin-bottom: -0.66667rem !important;
+}
+
+/** Large negative margins. */
+
+.u--m\00002b {
+  margin: -1.33333rem !important;
+}
+
+.u--mt\00002b {
+  margin-top: -1.33333rem !important;
+}
+
+.u--mr\00002b {
+  margin-right: -1.33333rem !important;
+}
+
+.u--mb\00002b {
+  margin-bottom: -1.33333rem !important;
+}
+
+.u--ml\00002b {
+  margin-left: -1.33333rem !important;
+}
+
+.u--mh\00002b {
+  margin-right: -1.33333rem !important;
+  margin-left: -1.33333rem !important;
+}
+
+.u--mv\00002b {
+  margin-top: -1.33333rem !important;
+  margin-bottom: -1.33333rem !important;
+}
+
+/** Huge negative margins. */
+
+.u--m\00002b\00002b {
+  margin: -2rem !important;
+}
+
+.u--mt\00002b\00002b {
+  margin-top: -2rem !important;
+}
+
+.u--mr\00002b\00002b {
+  margin-right: -2rem !important;
+}
+
+.u--mb\00002b\00002b {
+  margin-bottom: -2rem !important;
+}
+
+.u--ml\00002b\00002b {
+  margin-left: -2rem !important;
+}
+
+.u--mh\00002b\00002b {
+  margin-right: -2rem !important;
+  margin-left: -2rem !important;
+}
+
+.u--mv\00002b\00002b {
+  margin-top: -2rem !important;
+  margin-bottom: -2rem !important;
+}
+
+/** Padding helper classes. Add paddings. */
+
+.u-p {
+  padding: 1rem !important;
+}
+
+.u-pt {
+  padding-top: 1rem !important;
+}
+
+.u-pr {
+  padding-right: 1rem !important;
+}
+
+.u-pb {
+  padding-bottom: 1rem !important;
+}
+
+.u-pl {
+  padding-left: 1rem !important;
+}
+
+.u-ph {
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
+
+.u-pv {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+/** Add tiny paddings. */
+
+.u-p-- {
+  padding: 0.33333rem !important;
+}
+
+.u-pt-- {
+  padding-top: 0.33333rem !important;
+}
+
+.u-pr-- {
+  padding-right: 0.33333rem !important;
+}
+
+.u-pb-- {
+  padding-bottom: 0.33333rem !important;
+}
+
+.u-pl-- {
+  padding-left: 0.33333rem !important;
+}
+
+.u-ph-- {
+  padding-right: 0.33333rem !important;
+  padding-left: 0.33333rem !important;
+}
+
+.u-pv-- {
+  padding-top: 0.33333rem !important;
+  padding-bottom: 0.33333rem !important;
+}
+
+/** Add small paddings. */
+
+.u-p- {
+  padding: 0.66667rem !important;
+}
+
+.u-pt- {
+  padding-top: 0.66667rem !important;
+}
+
+.u-pr- {
+  padding-right: 0.66667rem !important;
+}
+
+.u-pb- {
+  padding-bottom: 0.66667rem !important;
+}
+
+.u-pl- {
+  padding-left: 0.66667rem !important;
+}
+
+.u-ph- {
+  padding-right: 0.66667rem !important;
+  padding-left: 0.66667rem !important;
+}
+
+.u-pv- {
+  padding-top: 0.66667rem !important;
+  padding-bottom: 0.66667rem !important;
+}
+
+/** Add large paddings. */
+
+.u-p\00002b {
+  padding: 1.33333rem !important;
+}
+
+.u-pt\00002b {
+  padding-top: 1.33333rem !important;
+}
+
+.u-pr\00002b {
+  padding-right: 1.33333rem !important;
+}
+
+.u-pb\00002b {
+  padding-bottom: 1.33333rem !important;
+}
+
+.u-pl\00002b {
+  padding-left: 1.33333rem !important;
+}
+
+.u-ph\00002b {
+  padding-right: 1.33333rem !important;
+  padding-left: 1.33333rem !important;
+}
+
+.u-pv\00002b {
+  padding-top: 1.33333rem !important;
+  padding-bottom: 1.33333rem !important;
+}
+
+/** Add huge paddings. */
+
+.u-p\00002b\00002b {
+  padding: 2rem !important;
+}
+
+.u-pt\00002b\00002b {
+  padding-top: 2rem !important;
+}
+
+.u-pr\00002b\00002b {
+  padding-right: 2rem !important;
+}
+
+.u-pb\00002b\00002b {
+  padding-bottom: 2rem !important;
+}
+
+.u-pl\00002b\00002b {
+  padding-left: 2rem !important;
+}
+
+.u-ph\00002b\00002b {
+  padding-right: 2rem !important;
+  padding-left: 2rem !important;
+}
+
+.u-pv\00002b\00002b {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/** Remove paddings. */
+
+.u-p0 {
+  padding: 0 !important;
+}
+
+.u-pt0 {
+  padding-top: 0 !important;
+}
+
+.u-pr0 {
+  padding-right: 0 !important;
+}
+
+.u-pb0 {
+  padding-bottom: 0 !important;
+}
+
+.u-pl0 {
+  padding-left: 0 !important;
+}
+
+.u-ph0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.u-pv0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.inline--flex {
+  display: inline-flex;
+}
+
+.flex--row {
+  flex-direction: row;
+}
+
+.flex--row--rev {
+  flex-direction: row-reverse;
+}
+
+.flex--col {
+  flex-direction: column;
+}
+
+.flex--col--rev {
+  flex-direction: column-reverse;
+}
+
+.flex--nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex--wrap {
+  flex-wrap: wrap;
+}
+
+.flex--wrap--rev {
+  flex-wrap: wrap-reverse;
+}
+
+.flex--left {
+  justify-content: flex-start;
+}
+
+.flex--center {
+  justify-content: center;
+}
+
+.flex--right {
+  justify-content: flex-end;
+}
+
+.flex--justify {
+  justify-content: space-between;
+}
+
+.flex--spaced {
+  justify-content: space-around;
+}
+
+.flex--top {
+  align-items: flex-start;
+}
+
+.flex--middle {
+  align-items: center;
+}
+
+.flex--bottom {
+  align-items: flex-end;
+}
+
+.flex--stretch {
+  align-items: stretch;
+}
+
+.flex--baseline {
+  align-items: baseline;
+}
+
+.flex--top--multi {
+  align-content: flex-start;
+}
+
+.flex--middle--multi {
+  align-content: center;
+}
+
+.flex--bottom--multi {
+  align-content: flex-end;
+}
+
+.flex--stretch--multi {
+  align-content: stretch;
+}
+
+.flex--justify--multi {
+  align-content: space-between;
+}
+
+.flex--spaced--multi {
+  align-content: space-around;
+}
+
+.flex__item {
+  flex: 1;
+}
+
+.flex__item--msfix {
+  flex: 1 1 auto;
+}
+
+.flex__item--top {
+  align-self: flex-start;
+}
+
+.flex__item--middle {
+  align-self: center;
+}
+
+.flex__item--bottom {
+  align-self: flex-end;
+}
+
+.flex__item--baseline {
+  align-self: baseline;
+}

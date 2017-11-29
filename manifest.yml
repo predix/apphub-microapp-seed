@@ -1,0 +1,13 @@
+---
+applications:
+  - name: ui-microapp-base
+    buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+    memory: 512MB
+    stack: cflinuxfs2
+    path: .
+    command: npm run serve:dist
+    services:
+      - my_uaa_instance
+    env:
+      NODE_ENV: 'production'
+      DEBUG: '*'

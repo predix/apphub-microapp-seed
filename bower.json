@@ -1,0 +1,20 @@
+{
+  "name": "ui-microapp",
+  "version": "1.0.0",
+  "repository": "https://github.build.ge.com/212400520/ui-microapp",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/**/bower_components",
+    "test",
+    "tests",
+    "target",
+    "test-target",
+    "sass"
+  ],
+  "devDependencies": {
+    "px-starter-kit-design": "^1.0.1",
+    "px-mobile-design": "^1.0.0"
+  }
+}

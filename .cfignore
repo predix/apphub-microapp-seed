@@ -1,0 +1,8 @@
+.git
+bower_components
+node_modules
+coverage
+junit
+
+karma.conf.js
+readme.md
