@@ -7,62 +7,67 @@ const cookieParser = require('cookie-parser');
 const proxy = require('express-request-proxy');
 const Lingo = require('./lingo');
 const languagesDict = require('../static/locales');
+
 const config = require('../config');
+const log = require('./logger')('app');
+const port = config.port;
+
+
 const app = express();
-const http = require('http').Server(app);
 
-//Lingo middleware for internationalization (i18n) purpose
-app.use(Lingo.create({
-  defaultLanguage: 'en'
-}, languagesDict).middleware());
 
-app.disable('x-powered-by');
+
+
+
+
+// TODO: Express Middleware
 app.use(cookieParser());
+app.use(Lingo.create({ defaultLanguage: 'en' }, languagesDict).middleware());
 
-app.use(serveStatic(config.paths.static));
+
+// TODO: Express Settings
+app.disable('x-powered-by');
 
 if(config.env.production){
-  app.use(serveStatic(config.paths.dest));
+  log.debug('Setting production only settings.');
+  app.use(serveStatic(path.resolve(__dirname, '..', config.paths.dest)));
 }
+
+app.use(serveStatic(path.resolve(__dirname, '..', config.paths.static)));
+
+
+// TODO: Express Routes
+require('./routes')(app);
+
+
 
 // ========================================================================
 // START THE SERVER
+const http = require('http').Server(app);
+
 // Need to let CF set the port if we're deploying there.
-const port = process.env.PORT || 9000;
-
 const boot = function(cb) {
-  console.info('Starting ui-microapp');
-
-  // Listen application request on port
+  log.debug('Boot');
   http.listen(port, function() {
-    console.log(`${config.appName} started on port ${port}`);
+    log.debug(`Started on port ${port}`);
     if (cb) {
       cb();
     }
   });
 
-  http.on('error', function(err) {
-    console.error(err.stack);
-  });
 };
 
 const shutdown = function(cb) {
   http.close(cb);
-  console.log(`${config.appName} shutdown`);
+  log.debug(`Shutdown`);
 };
 
 
 
-require('./routes')(app);
-/*
-   * Accessing the main module by checking require.main
-   * Node.js v5.10.1
-   * */
 /* istanbul ignore if */
 if (require.main === module) {
   boot();
 } else {
-  console.info('Running ui-microapp as a module');
   app.boot = boot;
   app.shutdown = shutdown;
   app.port = port;

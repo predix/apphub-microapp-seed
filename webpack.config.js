@@ -23,19 +23,26 @@ Webpack Plugins
 https://webpack.js.org/configuration/#options
 ============================================ */
 const webpackPlugins = ([
-  extractSass, new webpack.NamedModulesPlugin(), new webpack.NoEmitOnErrorsPlugin(),
+  extractSass,
+  new webpack.NamedModulesPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
 
   //https://webpack.js.org/plugins/environment-plugin/#usage
   new webpack.EnvironmentPlugin({'NODE_ENV': process.env.NODE_ENV, 'PRODUCTION': IS_PRODUCTION}),
 
   //https://www.npmjs.com/package/webpack-bundle-analyzer
-  new BundleAnalyzerPlugin({generateStatsFile: true, openAnalyzer: false,
+  new BundleAnalyzerPlugin({
+    generateStatsFile: true,
+    openAnalyzer: false,
     reportFilename: 'report.html',
-  statsFilename: 'stats.json', analyzerMode: 'static'}),
+    statsFilename: 'stats.json',
+    analyzerMode: 'static'
+  }),
+
   //https://github.com/jantimon/html-webpack-plugin#configuration
   new HtmlWebpackPlugin({
     template: './index.ejs',
-    inject: true,
+    inject: false,
     title: config.appName,
     minify: {
       collapseWhitespace: true
@@ -43,16 +50,8 @@ const webpackPlugins = ([
   }),
   new CopyWebpackPlugin([
     {
-      from: './assets/icons/*.*',
-      to: './assets/icons/[name].[ext]'
-    },
-    {
       from: './locales/*.*',
       to: './locales/[name].[ext]'
-    },
-    {
-      from: './favicon.ico',
-      to: './'
     },
     {
       from: './manifest.json',
@@ -108,13 +107,13 @@ https://webpack.js.org/configuration/#options
 ============================================
 */
 let webpackConfig = {
-  context: config.paths.src,
+  context: path.resolve(__dirname, config.paths.src),
   entry: {
-    main: 'index.js',
+    main: 'main.js',
     //vendor: ['']
   },
   output: {
-    path: config.paths.dest,
+    path: path.resolve(__dirname, config.paths.dest),
     publicPath: '/',
     filename: IS_PRODUCTION
       ? `[name].[hash].bundle.js`
@@ -134,12 +133,6 @@ let webpackConfig = {
   },
   module: {
     rules: [
-      //.html
-      {
-        test: /\.wc.html$/,
-        exclude: [/(node_modules|bower_components)/],
-        use: ['babel-loader', 'polymer-webpack-loader']
-      },
 
       //.js
       {
@@ -228,11 +221,11 @@ let webpackConfig = {
     ? 'source-map'
     : 'cheap-module-eval-source-map'),
   devServer: {
-    port: process.env.PORT || 9000,
+    port: process.env.PORT || 9090,
     host: 'localhost',
     hot: true,
     compress: true,
-    publicPath: '/',
+    publicPath: './',
     contentBase: config.webpack.devServer.contentBase,
     historyApiFallback: true,
     open: true,

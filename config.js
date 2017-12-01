@@ -6,10 +6,10 @@ const Config = {
   port: process.env.PORT || 9001,
   pkg: pkg,
 	paths: {
-		static: path.resolve(__dirname, './static'),
-		dest: path.resolve(__dirname, './build'),
-		src: path.resolve(__dirname, './src'),
-		test: path.resolve(__dirname, './test'),
+		static: './static',
+		dest: './build',
+		src: './src',
+		test: './test',
 		modules: [
 			path.resolve(__dirname, './src'),
 			path.resolve(__dirname, './vendor'),
@@ -40,12 +40,7 @@ const Config = {
 
 			// TODO: Setup express app,
 			before: (app) =>{
-        require('./server/app')(app)
-				app.get('/api/mock-data', (req, res) => {
-					res.json({
-						docs: [1,2,3,4,5]
-					});
-				});
+        require('./server/routes')(app);
 			},
 
       // TODO: Proxy configuation for webpack-dev-server

@@ -15,6 +15,14 @@ export no_proxy="localhost, 127.0.0.1, *.ge.com"
 # npm config set https-proxy http://sjc1intproxy01.crd.ge.com:8080/
 # npm config set strict-ssl false
 
+installYarn(){
+	curl -o- -L https://yarnpkg.com/install.sh | bash
+	export PATH="$HOME/.yarn/bin:$PATH"
+	ls -la $HOME/.yarn
+	yarn --version
+}
+
+
 # Configure node and npm
 rm -rf /root/.npm/*.lock.STALE
 echo -------------
