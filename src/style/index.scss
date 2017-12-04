@@ -15,7 +15,13 @@ html {
   color           : $global-font-color;
 }
 
-#root {
+.app {
   height: 100%;
-
+  h1 {
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+  }
 }

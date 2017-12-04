@@ -225,12 +225,28 @@ let webpackConfig = {
     host: 'localhost',
     hot: true,
     compress: true,
-    publicPath: './',
-    contentBase: config.webpack.devServer.contentBase,
+    publicPath: '/',
+    contentBase: [
+      path.resolve(__dirname, './bower_components'),
+      path.resolve(__dirname, './static'),
+      path.resolve(__dirname, './src')
+    ],
     historyApiFallback: true,
     open: true,
-    before: config.webpack.devServer.before,
-    proxy: config.webpack.devServer.proxy
+    // TODO: Setup express app,
+    before: (app) =>{
+      console.log('webpack.before', app);
+      require('./server/app')(app);
+    },
+    // TODO: Proxy configuation for webpack-dev-server
+    proxy: {
+      '/api/v2/**': {
+        target: 'https://pouchdb.run.aws-usw02-pr.ice.predix.io',
+        pathRewrite: {
+          "^/api/v2": ""
+        }
+      }
+    }
   }
 };
 

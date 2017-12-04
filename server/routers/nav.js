@@ -1,9 +1,9 @@
-const log = require('../../../logger')('routes/api/nav');
+const log = require('../logger')('routers/nav');
 const express = require('express');
-module.exports = () => {
+
+module.exports = (app) => {
   log.debug('loaded');
   const router = new express.Router();
-
   router.route('/api/nav')
     .get((req, res) => {
       const translate = req.t;
@@ -58,5 +58,6 @@ module.exports = () => {
       }
     ]);
   });
-  return router;
+  app.use(router);
+  return this;
 };

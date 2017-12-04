@@ -91,9 +91,11 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "consign": "^0.1.6",
     "cookie-parser": "^1.4.3",
     "cross-env": "^5.1.1",
     "express": "^4.14.0",
+    "express-load": "^1.1.16",
     "express-request-proxy": "^2.0.0",
     "i18next": "^3.4.3",
     "i18next-express-middleware": "^1.0.2",

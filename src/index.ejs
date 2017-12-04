@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8" />
   <title>
@@ -37,20 +36,27 @@
         integrity="<%= htmlWebpackPlugin.files.cssIntegrity[key] %>"
         crossorigin="<%= webpackConfig.output.crossOriginLoading %>">
     <% } else { %>
-      <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet">
+      <link href=".<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet"/>
     <% } %>
   <% } %>
 </head>
-
 <body>
 
   <noscript>
     JavaScript must be enabled to view this app.
   </noscript>
 
-  <!-- TODO: App gets rendered below -->
-  <div id="root"></div>
-
+  <!-- TODO: App gets rendered below - Class names will be changing to apphub-* -->
+  <div class="pxh-wrapper app">
+    <div class="pxh-view-header pxh-view-header--wide@md pxh-view-header--narrow@lg pxh-view-header--nudge-until@md">
+      <h1 class="pxh-view-header__title u-p-- flex flex--middle flex--center">
+        <a href="#" class="pxh-view-header__title-link"><%= htmlWebpackPlugin.options.title %> </a>
+      </h1>
+    </div>
+    <div class="pxh-view pxh-view--wide@md pxh-view--narrow@lg" id="js-view">
+      <div id="root"></div>
+    </div>
+  </div>
 
   <% for (key in htmlWebpackPlugin.files.chunks) { %>
     <% if (htmlWebpackPlugin.files.jsIntegrity) { %>

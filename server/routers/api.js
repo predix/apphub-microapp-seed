@@ -1,4 +1,4 @@
-const log = require('../../logger')('routes/api');
+const log = require('../logger')('routers/api');
 const express = require('express');
 
 
@@ -33,5 +33,6 @@ module.exports = (app) => {
         message: 'Removed'
       });
     });
-  return router;
+    app.use(router);
+  return this;
 };

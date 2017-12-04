@@ -17,8 +17,17 @@ describe('App Routes', () => {
   });
 
   describe('/api', () => {
-    it('responds successfully', (done) => {
+    it('GET - / responds successfully', (done) => {
       request(app).get('/api').expect(200, done);
+    });
+    it('PUT - / responds successfully', (done) => {
+      request(app).put('/api').expect(200, done);
+    });
+    it('POST - / responds successfully', (done) => {
+      request(app).post('/api').expect(201, done);
+    });
+    it('DELETE - / responds successfully', (done) => {
+      request(app).delete('/api').expect(200, done);
     });
   });
 

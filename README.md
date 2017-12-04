@@ -38,3 +38,32 @@ $ yarn install
   ```
   $ yarn deploy
   ```
+
+
+## Development
+
+
+
+### Server Routes
+The routes are loaded via folders by (consign)[https://www.npmjs.com/package/consign].
+
+#### Nested Folders
+If you had nested folders like the following example:
+
+```
+  models
+  	humans
+  		cool.js
+  		not.js
+  	animals
+  		dog.js
+  		cat.js
+```  
+You would end up with the scripts being available in the following structure:
+
+```
+app.models.humans.cool
+app.models.humans.not
+app.models.animals.dog
+app.models.animals.cat
+```
