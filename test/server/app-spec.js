@@ -8,7 +8,7 @@ describe('App Routes', () => {
   var app;
 
   before(function (done) {
-    app = require('../../server/app');
+    app = require('../../server/app')();
     app.boot(done);
   });
 
