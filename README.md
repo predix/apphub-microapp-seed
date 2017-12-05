@@ -41,24 +41,28 @@ $ yarn install
 
 
 ## Development
+For development we use `webpack` which provides some awesome features, you can read more about it on there documentation page https://webpack.js.org/concepts/
 
 
 
-### Server Routes
+
+
+
+#### Server Routes
 The routes are loaded via folders by (consign)[https://www.npmjs.com/package/consign].
 
-#### Nested Folders
 If you had nested folders like the following example:
 
 ```
-  models
-  	humans
-  		cool.js
-  		not.js
-  	animals
-  		dog.js
-  		cat.js
+models
+	humans
+		cool.js
+		not.js
+	animals
+		dog.js
+		cat.js
 ```  
+
 You would end up with the scripts being available in the following structure:
 
 ```
@@ -67,3 +71,20 @@ app.models.humans.not
 app.models.animals.dog
 app.models.animals.cat
 ```
+
+
+
+
+## Testing
+The testing setup is as follows:
+
+```
+test/
+  e2e
+  server
+  client
+```
+
+- e2e testing with Nightwatch - http://nightwatchjs.org/gettingstarted
+- Server testing with mocha - https://mochajs.org/
+- Client testing with mocha - https://mochajs.org/

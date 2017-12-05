@@ -1,0 +1,11 @@
+{
+  "baseURL": "ws.ci.build.ge.com",
+  "port": 443,
+  "https": "yes",
+  "checkPolicies": false,
+  "apiKey": "2c813327-ae40-477e-89c9-00af9b84757b",
+  "productName": "Predix_PCE_AppHub",
+  "includes": "**/*.jar **/*.js",
+  "followSymbolicLink": true,
+  "devDep": false
+}

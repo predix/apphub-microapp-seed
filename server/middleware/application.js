@@ -20,27 +20,19 @@ const staticServerConfig = {
  * application middleware
  */
 module.exports = function(app) {
-
+  app.set('x-powered-by', false);
 
   app.use(bodyParser.json());
   app.use(cookieParser());
   app.use(Lingo.create({ defaultLanguage: 'en' }, languagesDict).middleware());
-  app.set('x-powered-by', false);
-
-
-
-
   app.use(serveStatic(path.resolve(__dirname, '..', '..', 'static'), staticServerConfig));
-
 
   // TODO: Production only settings
   // ========================================================================
-
   if(app.get('env') === 'production'){
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
   }
-
 
 
   return this;

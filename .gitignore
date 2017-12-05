@@ -21,3 +21,4 @@ bower_components
 build
 .nyc-output
 .nyc_output
+reports

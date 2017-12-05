@@ -3,21 +3,18 @@ const path = require('path');
 const express = require('express');
 const load = require('consign');
 const proxy = require('express-request-proxy');
-
+const routesList = require('express-api-routes-list');
 
 module.exports = (app) => {
   /**
    *  Express v3 application instance
    */
-  if(!app){
+  if (!app) {
     app = express();
   }
   const config = require('../config');
   const log = require('./logger')('app');
   const port = config.port;
-
-
-
 
   /**
    *  Autoload Configuration.
@@ -36,18 +33,15 @@ module.exports = (app) => {
    *  Autoload models, controllers and routes into application instance.
    */
   load({cwd: 'server'})
-   .include('models')
-   .then('middleware')
-   .then('routers')
-   .into(app);
+    .include('models')
+    .then('middleware')
+    .then('routers')
+    .into(app);
 
 
+  console.log(routesList(app).toString());
 
-  // ========================================================================
-  // START THE SERVER
   var http;
-
-  // Need to let CF set the port if we're deploying there.
   const boot = function(cb) {
     http = require('http').Server(app);
     log.debug('Boot');
@@ -57,15 +51,12 @@ module.exports = (app) => {
         cb();
       }
     });
-
   };
 
   const shutdown = function(cb) {
     http.close(cb);
     log.debug(`Shutdown`);
   };
-
-
 
   /* istanbul ignore if */
   if (require.main === module) {
