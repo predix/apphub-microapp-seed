@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 
 const setStaticAssetsCacheControl = (res, path) => {
-  if (req.get('cache-control')) {
-    res.set('cache-control', req.get('cache-control'));
+  if (res && res.req && res.req.get('cache-control')) {
+    res.set('cache-control', res.req.get('cache-control'));
   }
 };
 
