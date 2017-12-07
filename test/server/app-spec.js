@@ -3,7 +3,8 @@ const expect = require('chai').expect;
 const request = require('supertest');
 const assert = require('chai').assert;
 const locales = require('../../static/locales');
-
+const Server = require('../../server/common/server');
+const express = require('express');
 describe('App Routes', () => {
   var app;
 
@@ -24,34 +25,38 @@ describe('App Routes', () => {
       request(app).get('/api/example/1').expect(200, done);
     });
     it('PUT - / responds successfully', (done) => {
-      request(app).put('/api/example/1').expect(200, done);
+      request(app)
+        .put('/api/example/1').expect(200, done);
     });
     it('POST - / responds successfully', (done) => {
-      request(app).post('/api/example').expect(201, done);
+      request(app)
+        .post('/api/example').expect(201, done);
     });
     it('DELETE - / responds successfully', (done) => {
       request(app).delete('/api/example/1').expect(200, done);
     });
   });
 
-  describe('/api/nav', () => {
+  describe('/nav', () => {
 
-    describe('CRUD on service', () => {
-      it('GET - / responds successfully', (done) => {
-        request(app).get('/api/nav').expect(200, done);
-      });
-      it('PUT - / responds successfully', (done) => {
-        request(app)
-          .put('/api/nav')
-          .send({
-            "label": "Settings",
-            "path": "/settings"
-          })
+    it('GET - /api/nav responds successfully', (done) => {
+      request(app)
+        .get('/api/nav')
         .expect(200, done);
-      });
     });
 
-    xit('GET - /api/nav - responds successfully with nav service request', (done) => {
+    it('PUT - /api/nav responds successfully', (done) => {
+      request(app)
+        .put('/api/nav')
+        .send({
+          "id": "settings",
+          "label": "Settings",
+          "path": "/settings"
+        })
+        .expect(200, done);
+    });
+
+    it('GET - /api/nav - responds successfully with nav service request', (done) => {
       request(app)
         .get('/api/nav')
         .expect(200, done);

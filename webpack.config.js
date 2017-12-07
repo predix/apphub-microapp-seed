@@ -229,6 +229,7 @@ let webpackConfig = {
     publicPath: '/',
     contentBase: [
       path.resolve(__dirname, './bower_components'),
+      path.resolve(__dirname, './public'),
       path.resolve(__dirname, './static'),
       path.resolve(__dirname, './src')
     ],
@@ -237,7 +238,9 @@ let webpackConfig = {
     // TODO: Setup express app,
     before: (app) =>{
       console.log('webpack.before', app);
-      require('./server/app')(app);
+      var server = require('./server/common/server');
+      var s = new server(app);
+      s.router();
     },
     // TODO: Proxy configuation for webpack-dev-server
     proxy: {
