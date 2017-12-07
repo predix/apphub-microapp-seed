@@ -34,7 +34,6 @@ describe('ApiController', () => {
         .expect(201)
         .end((err, res) => {
           mockId = res.body.id;
-          console.log('response', res);
           done();
         });
     });
