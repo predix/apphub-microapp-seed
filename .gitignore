@@ -22,3 +22,6 @@ build
 .nyc-output
 .nyc_output
 reports
+.temp
+temp
+.*.json

@@ -10,33 +10,59 @@ class ApiController {
     res.status(200).json(req.app.models.example.find());
   }
   get(req, res, next){
-    if(req.params.id){
-      res.status(200).json(req.app.models.example.findByName(req.params.id));
+    var model = req.app.models.db.instance;
+    var id = req.params.id;
+    if(id && model.get('docs').find({id: id})){
+      res.status(200).json(
+        model.get('docs').find({id: id}).value()
+      );
     } else {
       res.status(404).json({
-        error: 'Provide a id'
+        error: `${id} not found`
       });
     }
   }
   put(req, res, next){
-    res.status(200).json({
-      message: 'Updated',
-      headers: req.headers,
-      body: req.body
-    });
+    var model = req.app.models.db.instance;
+    var id = req.params.id;
+    if(req.params.id && model.get('docs').find({id: id}).value()){
+      model.get('docs')
+        .find({id: id})
+        .assign( req.body )
+        .write();
+
+      res.status(200).json({
+        ok: true,
+        message: `updated ${id}`
+      });
+    } else {
+      res.status(404).json({
+        error: `${id} not found`
+      });
+    }
   }
+
   post(req, res, next){
-    res.status(201).json({
-      message: 'Saved',
-      headers: req.headers,
-      body: req.body
-    });
+    if(req.body){
+      req.body.id = `doc-${Date.now()}`;
+    }
+    req.app.models.db.instance.get('docs').push( req.body ).write();
+    res.status(201).json(req.body);
   }
+
   delete(req, res, next){
-    res.status(200).json({
-      message: 'Removed',
-      headers: req.headers
-    });
+    var model = req.app.models.db.instance;
+    var id = req.params.id;
+    if(req.params.id && model.get('docs').find({id: id}).value()){
+      model.get('docs').remove({id: id}).write();
+      res.status(200).json({
+        ok: true
+      });
+    } else {
+      res.status(404).json({
+        error: `${id} not found`
+      });
+    }
   }
 }
 

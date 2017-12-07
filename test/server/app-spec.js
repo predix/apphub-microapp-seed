@@ -17,7 +17,8 @@ describe('App Routes', () => {
     //app.shutdown();
   });
 
-  describe('/api', () => {
+  xdescribe('/api', () => {
+    var mockId = null;
     it('GET - / responds successfully', (done) => {
       request(app).get('/api/example').expect(200, done);
     });
@@ -30,10 +31,21 @@ describe('App Routes', () => {
     });
     it('POST - / responds successfully', (done) => {
       request(app)
-        .post('/api/example').expect(201, done);
+        .post('/api/example')
+        .send({
+          some: 'value'
+        })
+        .expect(201)
+        .end((err, res) => {
+          mockId = res.body.id;
+          console.log('response', res);
+        });
     });
-    it('DELETE - / responds successfully', (done) => {
-      request(app).delete('/api/example/1').expect(200, done);
+    it(`DELETE - /api/example/${mockId} - returns success`, (done) => {
+      request(app).delete(`/api/example/${mockId}`).expect(200, done);
+    });
+    it(`DELETE - /api/example/some-id - returns error`, (done) => {
+      request(app).delete(`/api/example/99`).expect(404, done);
     });
   });
 
