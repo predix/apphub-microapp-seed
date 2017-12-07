@@ -8,26 +8,29 @@ describe('App Routes', () => {
   var app;
 
   before(function (done) {
-    app = require('../../server/app')();
-    app.boot(done);
+    app = require('../../server');
+    done();
   });
 
   after(function () {
-    app.shutdown();
+    //app.shutdown();
   });
 
   describe('/api', () => {
     it('GET - / responds successfully', (done) => {
-      request(app).get('/api').expect(200, done);
+      request(app).get('/api/example').expect(200, done);
+    });
+    it('GET - / responds successfully', (done) => {
+      request(app).get('/api/example/1').expect(200, done);
     });
     it('PUT - / responds successfully', (done) => {
-      request(app).put('/api').expect(200, done);
+      request(app).put('/api/example/1').expect(200, done);
     });
     it('POST - / responds successfully', (done) => {
-      request(app).post('/api').expect(201, done);
+      request(app).post('/api/example').expect(201, done);
     });
     it('DELETE - / responds successfully', (done) => {
-      request(app).delete('/api').expect(200, done);
+      request(app).delete('/api/example/1').expect(200, done);
     });
   });
 

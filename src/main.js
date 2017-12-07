@@ -5,9 +5,8 @@ let root;
 
 const init = () => {
   root = document.querySelector('#root');
-  console.log('Render app now into dom');
   let App = require('./components/app').default;
-  new App(root)
+  new App(root);
 };
 
 init();

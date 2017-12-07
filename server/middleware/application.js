@@ -1,5 +1,5 @@
 const path = require('path');
-const log = require('../logger')('middleware/application');
+const log = require('../common/logger')('middleware/application');
 const Lingo = require('../lingo');
 const languagesDict = require('../../static/locales');
 const cookieParser = require('cookie-parser');
@@ -26,6 +26,7 @@ module.exports = function(app) {
   app.use(cookieParser());
   app.use(Lingo.create({ defaultLanguage: 'en' }, languagesDict).middleware());
   app.use(serveStatic(path.resolve(__dirname, '..', '..', 'static'), staticServerConfig));
+  app.use(serveStatic(path.resolve(__dirname, '..', '..', 'public'), staticServerConfig));
 
   // TODO: Production only settings
   // ========================================================================

@@ -9,7 +9,7 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "postinstall": "./node_modules/.bin/bower install --force-latest",
+    "bower": "./node_modules/.bin/bower install --force-latest",
     "pretest": "rimraf coverage",
     "clean": "rimraf coverage dist",
     "test": "nyc --reporter=lcov mocha test/server",
@@ -100,6 +100,7 @@
     "consign": "^0.1.6",
     "cookie-parser": "^1.4.3",
     "cross-env": "^5.1.1",
+    "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "express-api-routes-list": "^1.1.2",
     "express-request-proxy": "^2.0.0",
@@ -107,6 +108,7 @@
     "i18next-express-middleware": "^1.0.2",
     "request": "^2.79.0",
     "serve-static": "^1.10.2",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "swagger-express-middleware": "^1.0.0-alpha.12"
   }
 }

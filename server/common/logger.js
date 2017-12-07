@@ -1,7 +1,6 @@
 'use strict';
 const debug = require('debug');
-const ns = require('../package.json').name;
-
+const ns = require('../../package.json').name;
 /**
  * Logger class enables a nicely formatted console logger.
  * Output is enabled when setting the environment variable `DEBUG`

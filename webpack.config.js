@@ -82,21 +82,22 @@ if (IS_PRODUCTION) {
   //https://webpack.js.org/plugins/commons-chunk-plugin/#options
   webpackPlugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'manifest', async: true, minChunks: Infinity}));
 
-  //https://github.com/NekR/offline-plugin#setup
-  webpackPlugins.push(new OfflinePlugin({
-    relativePaths: true,
-    AppCache: false,
-    ServiceWorker: {
-      events: true
-    },
-    publicPath: '/'
-  }));
-
   webpackPlugins.push(new CriticalPlugin({
     src: 'index.html',
     inline: true,
     minify: true,
     dest: 'index.html'
+  }));
+
+  //https://github.com/NekR/offline-plugin#setup
+  webpackPlugins.push(new OfflinePlugin({
+    relativePaths: true,
+    AppCache: false,
+    ServiceWorker: {
+      events: true,
+      // TODO: This needs to be the apphub/{microapp-path}
+      scope: '/dev/microapp1'
+    }
   }));
 }
 

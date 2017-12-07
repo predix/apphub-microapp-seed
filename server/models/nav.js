@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const log = require('../logger')('models/nav');
+const log = require('../common/logger')('models/nav');
+
 /**
  * nav model
  */

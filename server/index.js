@@ -1,10 +1,8 @@
-const express = require('express');
+require('./common/env');
 const config = require('../config');
-const log = require('./logger')('server');
+const Server = require('./common/server');
+const log = require('./common/logger')('server');
 
-require('./app')().boot((err) => {
-	if (err) {
-		throw err;
-	}
-	log.info(`> Ready on http://:${config.port}`);
-});
+module.exports = new Server(config)
+	.router()
+	.listen(process.env.PORT);
