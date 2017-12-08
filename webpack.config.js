@@ -228,9 +228,9 @@ let webpackConfig = {
     compress: true,
     publicPath: '/',
     contentBase: [
-      path.resolve(__dirname, './bower_components'),
-      path.resolve(__dirname, './public'),
-      path.resolve(__dirname, './static'),
+      //path.resolve(__dirname, './bower_components'),
+      //path.resolve(__dirname, './public'),
+      //path.resolve(__dirname, './static'),
       path.resolve(__dirname, './src')
     ],
     historyApiFallback: true,

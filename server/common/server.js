@@ -8,7 +8,6 @@ const http = require('http');
 const log = require('./logger')('server');
 const swaggerify = require('./swagger');
 
-
 var app = express();
 
 class Server {
@@ -16,8 +15,6 @@ class Server {
     if(!a){
       app = express();
     }
-
-
     this.app = app;
 
     load({cwd: 'server'})
@@ -39,7 +36,8 @@ class Server {
       port = process.env.PORT;
     }
     http.createServer(app).listen(port, () => {
-      log.info(`up and running in ${process.env.NODE_ENV || 'development'} @: ${os.hostname()} on port: ${port}`);
+      console.log(`Server running in ${process.env.NODE_ENV || 'development'}
+      @: ${os.hostname()} on port: ${port}`);
       if (callback) {
         callback(app);
       }

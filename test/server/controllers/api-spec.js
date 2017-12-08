@@ -5,7 +5,7 @@ const helpers = require('../../helpers');
 const requireHelper = helpers.require;
 
 describe('ApiController', () => {
-  var app, mockId;
+  var app, mockId, mockDoc;
   const baseUrl = '/api/example';
 
   before(function (done) {
@@ -23,8 +23,6 @@ describe('ApiController', () => {
         .expect(200, done);
     });
 
-
-
     it('POST - / responds successfully', (done) => {
       request(app)
         .post('/api/example')
@@ -33,10 +31,18 @@ describe('ApiController', () => {
         })
         .expect(201)
         .end((err, res) => {
-          mockId = res.body.id;
+          mockDoc = res.body.doc;
+          mockId = mockDoc.id;
           done();
         });
     });
+
+    it(`GET - ${baseUrl} - 200 - responds success`, (done) => {
+      request(app)
+        .get(`${baseUrl}?some=value`)
+        .expect(200, done);
+    });
+
 
     it(`GET - ${baseUrl}/:id - 200 - responds success`, (done) => {
       request(app)
@@ -45,11 +51,10 @@ describe('ApiController', () => {
     });
 
     it(`PUT - ${baseUrl}/:id - 200 - responds success`, (done) => {
+      mockDoc.updated = Date.now();
       request(app)
         .get(`/api/example/${mockId}`)
-        .send({
-          name: 'updated-name'
-        })
+        .send(mockDoc)
         .expect(200, done);
     });
 

@@ -45,6 +45,100 @@ For development we use `webpack` which provides some awesome features, you can r
 
 
 
+### Directory Structure
+The following is the directly structure.
+
+```
+.
+├── Jenkinsfile
+├── LICENSE.md
+├── README.md
+├── bower.json
+├── config.js
+├── manifest.yml
+├── nightwatch.conf.js
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── public
+│   └── api-explorer
+├── server
+│   ├── common
+│   │   ├── database.js
+│   │   ├── env.js
+│   │   ├── logger.js
+│   │   ├── server.js
+│   │   └── swagger
+│   │       ├── Api.yaml
+│   │       └── index.js
+│   ├── config
+│   │   ├── development.js
+│   │   ├── production.js
+│   │   └── staging.js
+│   ├── controllers
+│   │   ├── api
+│   │   │   ├── controller.js
+│   │   │   └── routes.js
+│   │   └── nav
+│   │       ├── controller.js
+│   │       └── routes.js
+│   ├── index.js
+│   ├── lingo.js
+│   ├── middleware
+│   │   ├── application.js
+│   │   ├── swagger.js
+│   │   └── user.js
+│   ├── models
+│   │   ├── database.js
+│   │   ├── example.js
+│   │   ├── nav.js
+│   │   └── user.js
+│   └── nav.json
+├── src
+│   ├── components
+│   │   └── app.js
+│   ├── index.ejs
+│   ├── main.js
+│   ├── manifest.json
+│   ├── pwa.js
+│   └── style
+│       ├── _mixins.scss
+│       ├── _variables.scss
+│       ├── helpers.scss
+│       ├── index.scss
+│       └── theme.scss
+├── static
+│   ├── assets
+│   │   └── icons
+│   ├── favicon.ico
+│   └── locales
+│       ├── index.js
+│       ├── locale-ar.json
+│       ├── locale-de.json
+│       ├── locale-en.json
+│       ├── locale-es.json
+│       ├── locale-hi.json
+│       └── locale-zh.json
+├── test
+│   ├── e2e
+│   ├── helpers.js
+│   └── server
+│       ├── app-spec.js
+│       ├── common
+│       │   ├── db-spec.js
+│       │   └── logger-spec.js
+│       └── controllers
+│           ├── api-spec.js
+│           └── nav-spec.js
+├── tools
+│   ├── build.sh
+│   ├── buildLocal.sh
+│   └── cdnify.js
+├── webpack.config.js
+├── whitesource.config.json
+└── yarn.lock
+```
+
 
 
 

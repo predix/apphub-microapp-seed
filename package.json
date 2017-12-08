@@ -110,6 +110,7 @@
     "request": "^2.79.0",
     "serve-static": "^1.10.2",
     "socket.io": "^1.5.1",
-    "swagger-express-middleware": "^1.0.0-alpha.12"
+    "swagger-express-middleware": "^1.0.0-alpha.12",
+    "uuid": "^3.1.0"
   }
 }

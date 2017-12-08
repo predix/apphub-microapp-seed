@@ -1,18 +1,18 @@
 const path = require('path');
-const DB = require('../common/db');
+const uuid = require('uuid');
+const Database = require('../common/database');
 
 /**
  * Generic database model
  *
  */
 module.exports = (app) => {
-
-  var db = new DB(path.resolve(__dirname, '../../.db.json'), {user: {}, docs: []});
-
-  this.instance = db;
-  this.set = db.set;
+  const db = new Database(path.resolve(__dirname, '../../.db.json'), {user: {}, docs: []});
+  this.instance = db.instance;
   this.get = db.get;
-  this.read = db.read;
-  this.write = db.write;
+  this.put = db.put;
+  this.post = db.post;
+  this.remove = db.remove;
+  this.allDocs = db.allDocs;
   return this;
 };
