@@ -22,6 +22,11 @@ export default class App {
         <div class="u-p">
           <p>This is a simple micro app that contains just enough to get you started.</p>
           <button id="toastBtn">New Toast</button>
+
+          <p>This microapp also has built in authentication using UAA</p>
+          <a href="/login">Login</a>
+          <a href="/userinfo">User Info</a>
+          <a href="/logout">Logout</a>
         </div>
       </div>
     </div>

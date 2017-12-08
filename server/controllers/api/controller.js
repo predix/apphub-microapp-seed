@@ -7,6 +7,12 @@ class ApiController {
     log.debug('constructor');
   }
 
+  index(req, res){
+    res.status(200).send({
+      message: 'Welcome to the API'
+    });
+  }
+
   all(req, res, next){
     req.app.models.db.allDocs(req.query)
       .then(resp => res.status(200).send(resp))

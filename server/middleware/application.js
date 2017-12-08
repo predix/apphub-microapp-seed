@@ -2,10 +2,22 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
+const session = require('express-session');
+const Logger = require('../common/logger');
 /**
  * Application level middleware
  */
 module.exports = (app) => {
+
+  const sessionOptions = {
+    secret: process.env.SESSION_SECRET,
+    name: process.env.COOKIE_NAME || 'test',
+    maxAge: 30 * 60 * 1000,  // expire token after 30 min.
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+    // cookie: {secure: true} // secure cookie is preferred, but not possible in some clouds.
+  };
 
   const setStaticAssetsCacheControl = (res, path) => {
     if (res && res.req && res.req.get('cache-control')) {
@@ -40,10 +52,14 @@ module.exports = (app) => {
   };
 
   app.set('x-powered-by', false);
+  app.set('trust proxy', 1);
+
+  app.use(cookieParser(process.env.SESSION_SECRET));
+  app.use(session(sessionOptions));
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(cookieParser(process.env.SESSION_SECRET));
+
 
   app.use(serveStatic(path.resolve(__dirname, '..', '..', 'public'), staticServerConfig));
   app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
@@ -58,6 +74,13 @@ module.exports = (app) => {
   app.use(logErrors);
   app.use(clientErrorHandler);
   app.use(errorHandler);
+
+
+
+  // TODO: Add some access methods
+  this.getLogger = (name) => {
+    return Logger(name);
+  };
 
 
   return this;

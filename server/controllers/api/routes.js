@@ -15,6 +15,7 @@ module.exports = (app) => {
     .delete('/:id', controller.delete)
     .post('/', controller.post)
 
+  app.get('/api', controller.index);
   app.use('/api/example?', router);
   return this;
 };
