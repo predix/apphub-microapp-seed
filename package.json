@@ -13,6 +13,7 @@
     "pretest": "rimraf coverage",
     "clean": "rimraf coverage dist",
     "test": "nyc --reporter=lcov --reporter=text --reporter=text-summary mocha test/server/**/*-spec.js",
+    "test:e2e": "./node_modules/.bin/nightwatch --config ./test/e2e/nightwatch.conf.js",
     "predeploy": "npm test",
     "deploy": "npm run build && cf push -f manifest.yml",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --progress",
