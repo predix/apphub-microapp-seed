@@ -96,7 +96,7 @@ if (IS_PRODUCTION) {
     ServiceWorker: {
       events: true,
       // TODO: This needs to be the apphub/{microapp-path}
-      scope: '/dev/microapp1'
+      scope: ''
     }
   }));
 }

@@ -1,6 +1,6 @@
 {
-  "name": "ui-microapp",
-  "short_name": "ui-microapp",
+  "name": "apphub-microapp-seed",
+  "short_name": "apphub-microapp-seed",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",

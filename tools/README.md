@@ -5,16 +5,19 @@ This document explains how to setup UAA and AppHub services.
 
 ## Steps
 
+### Setting Up
 1. Create uaa instance
-2. Create uaa user
-3. Create apphub client
-4. Create apphub service
-5. Create apphub service key
+2. Create apphub client
+3. Create apphub service instance
+4. Create apphub service key
     - Store config url
     - Store zone id
     - Store apphub url
+5. Configure uaa apphub client
+  - Set callback url (which was not known until you created service key)
+  - Set scope with zone-id 
 
-
+### Configure Apphub
 1. Authorize (using apphub client)
     - On response store token
 2. Get config (using token and zone-id)
@@ -104,7 +107,7 @@ Getting key my-apphub-service-key for service instance my_apphub_instance as jon
 }
 ```
 
-5. Update uaa client with scope and redirect_uri
+3. Update uaa client with scope and redirect_uri
 
 ```
 $ uaac client update apphub \
@@ -115,7 +118,7 @@ $ uaac client update apphub \
 ```
 
 
-6. Authenticate with uaa
+4. Authenticate with uaa
 
 ```
 $ curl -X POST \

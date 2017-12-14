@@ -1,10 +1,9 @@
-const log = require('../../common/logger')('controllers/nav');
+//const log = require('../../common/logger')('controllers:nav');
 /**
- * @description API Controller
+ * @description Nav Controller
  */
 class NavController {
   constructor(){
-    log.debug('constructor');
   }
   all(req, res, next){
     next();

@@ -5,7 +5,7 @@ const Config = {
   port: process.env.PORT || 9001,
   pkg: pkg,
 	paths: {
-		static: './static',
+		static: './public',
 		dest: './build',
 		src: './src',
 		test: './test',

@@ -1,21 +1,22 @@
-const log = require('../../common/logger')('api/routes');
-const express = require('express');
-
 /**
- * @description API Router
+ * @description API Routes
  */
 module.exports = (app) => {
+  const log = app.middleware.application.getLogger('controllers:api');
   const controller = app.controllers.api.controller;
 
-  const router = express
-    .Router()
-    .get('/', controller.all)
-    .get('/:id', controller.get)
-    .put('/:id', controller.put)
-    .delete('/:id', controller.delete)
-    .post('/', controller.post)
+  app.route('/api')
+    .get(controller.index);
 
-  app.get('/api', controller.index);
-  app.use('/api/example?', router);
+  app.route('/api/example')
+    .get(controller.all)
+    .post(controller.post);
+
+  app.route('/api/example/:id')
+    .get(controller.get)
+    .put(controller.put)
+    .delete(controller.delete);
+
+
   return this;
 };

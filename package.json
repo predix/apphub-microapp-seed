@@ -4,10 +4,10 @@
   "repository": "https://github.build.ge.com/212400520/ui-microapp",
   "private": true,
   "engines": {
-    "node": "^v8.0.0",
+    "node": "^8.0.0",
     "npm": "^5.0.0"
   },
-  "main": "src/index.js",
+  "main": "src/main.js",
   "scripts": {
     "bower": "./node_modules/.bin/bower install --force-latest",
     "pretest": "rimraf coverage",

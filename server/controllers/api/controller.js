@@ -1,14 +1,14 @@
-const log = require('../../common/logger')('controllers/api');
+//const log = require('../../common/logger')('controllers/api');
 /**
  * @description API Controller
  */
 class ApiController {
   constructor(){
-    log.debug('constructor');
   }
 
   index(req, res){
     res.status(200).send({
+      name: req.t('APPLICATION_NAME'),
       message: 'Welcome to the API'
     });
   }

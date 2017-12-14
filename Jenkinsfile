@@ -4,7 +4,7 @@ pipeline
 pipeline {
   agent any
 	environment {
-		DEBUG = '*'
+		DEBUG = ''
 	}
   stages {
     stage('System Info') {
@@ -16,8 +16,9 @@ pipeline {
     }
     stage('Build') {
       steps {
-        echo 'Building...'
+        echo 'Installing...'
         sh 'npm install'
+        sh 'bower install --force'
       }
     }
     stage('Test') {

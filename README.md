@@ -145,6 +145,94 @@ The following is the directly structure.
 #### Server Routes
 The routes are loaded via folders by (consign)[https://www.npmjs.com/package/consign].
 
+
+
+The server routes are setup in different folders. For example for `/api/nav` routes, here is how it looks.
+
+```
+./server
+  /controllers
+    /nav
+      routes.js
+      controller.js
+```
+
+Here is what the `server/controllers/nav/routes.js` file looks like:
+
+```
+/**
+ * @description Nav Router
+ */
+module.exports = (app) => {
+  const log = app.middleware.application.getLogger('controllers:nav');
+  const controller = app.controllers.nav.controller;
+
+  app
+    .route('/api/nav')
+    .all(controller.all)
+    .get(controller.get)
+    .put(controller.put)
+    .post(controller.post)
+    .delete(controller.delete);
+
+  return this;
+};
+```
+
+Here is what the `server/controllers/nav/controller.js` file looks like:
+
+```
+/**
+ * @description Nav Controller
+ */
+class NavController {
+  constructor(){
+  }
+  all(req, res, next){
+    next();
+  }
+  get(req, res, next){
+    req.app.models.nav.read()
+      .then(n => res.status(200).send(n))
+      .catch(next);
+  }
+  put(req, res, next){
+    req.app.models.nav
+      .update(req.body)
+      .then(r => res.status(200).send(r))
+      .catch(next);
+  }
+  post(req, res, next){
+    if(req.body){
+      req.app.models.nav
+        .update(req.body)
+        .then(r => res.status(201).send(r))
+        .catch(next);
+    } else {
+      res.status(400).send({error:'Must provide a request body'});
+    }
+  }
+  delete(req, res, next){
+    res.status(200).json({
+      message: 'Removed',
+      headers: req.headers
+    });
+  }
+}
+module.exports = new NavController();
+```
+
+
+
+
+
+
+
+
+
+
+
+
 If you had nested folders like the following example:
 
 ```

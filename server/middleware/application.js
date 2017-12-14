@@ -15,8 +15,8 @@ module.exports = (app) => {
     maxAge: 30 * 60 * 1000,  // expire token after 30 min.
     proxy: true,
     resave: true,
-    saveUninitialized: true
-    // cookie: {secure: true} // secure cookie is preferred, but not possible in some clouds.
+    saveUninitialized: true,
+    cookie: {secure: true}
   };
 
   const setStaticAssetsCacheControl = (res, path) => {
