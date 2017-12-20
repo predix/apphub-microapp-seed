@@ -6,7 +6,7 @@ module.exports = (app) => {
   const controller = app.controllers.nav.controller;
 
   app
-    .route('/api/nav')
+    .route(['/nav','/api/nav'])
     .all(controller.all)
     .get(controller.get)
     .put(controller.put)

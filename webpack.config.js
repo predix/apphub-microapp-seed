@@ -90,6 +90,7 @@ if (IS_PRODUCTION) {
   }));
 
   //https://github.com/NekR/offline-plugin#setup
+  /*
   webpackPlugins.push(new OfflinePlugin({
     relativePaths: true,
     AppCache: false,
@@ -98,7 +99,7 @@ if (IS_PRODUCTION) {
       // TODO: This needs to be the apphub/{microapp-path}
       scope: ''
     }
-  }));
+  }));*/
 }
 
 /***

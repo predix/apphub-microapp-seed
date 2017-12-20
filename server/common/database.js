@@ -1,3 +1,4 @@
+const log = require('./logger')('database');
 const uuid = require('uuid');
 const path = require('path');
 const low = require('lowdb');
@@ -12,7 +13,11 @@ var instance;
 class Database {
   constructor(name, defaults){
     if(!defaults){
-      defaults = {user: {}, nav: []};
+      defaults = {user: {}, nav: [{
+        "label": "Microapp Seed",
+        "icon": "fa-home",
+        "path": "/microapp1"
+      }]};
     }
     this.adapter = new FileSync(name || path.resolve(__dirname, '../../.db.json'));
     db = low(this.adapter);
