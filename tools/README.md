@@ -38,10 +38,9 @@ The following steps are used to get setup with Predix AppHub quickly for develop
 
 ## Steps
 
-1. Create new uaa instance
+1. Set some variables and create new uaa instance:
 
   ```
-  
   UAA_SERVICE_NAME=predix-uaa
   UAA_SERVICE_PLAN=Free
   UAA_SERVICE_ADMIN_CLIENT_ID=admin
@@ -49,12 +48,14 @@ The following steps are used to get setup with Predix AppHub quickly for develop
   UAA_SERVICE_INSTANCE_NAME=test_uaa_instance
   UAA_SERVICE_INSTANCE_SUBDOMAIN=test-uaa-instance
   UAA_URI=https://${UAA_SERVICE_INSTANCE_SUBDOMAIN}.predix-uaa.run.aws-usw02-pr.ice.predix.io/login
+  ```
   
-
-  $ cf cs $UAA_SERVICE_NAME $UAA_SERVICE_PLAN $UAA_SERVICE_INSTANCE_NAME -c '{"adminClientSecret": "admin","subdomain":"test-uaa-instance"}'
+  ```
+  $ cf cs $UAA_SERVICE_NAME $UAA_SERVICE_PLAN $UAA_SERVICE_INSTANCE_NAME \
+    -c '{"adminClientSecret": "admin","subdomain":"test-uaa-instance"}'
   ```
 
-2. Login with `uaac` using your admin client and secret.
+2. Login with `uaac` using your admin client and secret:
 
   ```
   $ uaac target $UAA_URI
@@ -62,10 +63,9 @@ The following steps are used to get setup with Predix AppHub quickly for develop
   ```
 
 3. Create a new client that will be used by your `predix-apphub` instance.
-
+  
   ```
   export UAA_CLIENT_SCOPE="openid, uaa.resource, uaa.user, uaa.none, scim.write, scim.read, zones.read, zones.write, microapp"
-  
   $ uaac client add --name apphub \
   	--scope $UAA_CLIENT_SCOPE \
   	--authorities "predix-apphub-service, zones.write, scim.write, scim.read, scim.create, uaa.user, uaa.none, microapp" \
@@ -76,15 +76,21 @@ The following steps are used to get setup with Predix AppHub quickly for develop
 
 4. Push a sample micro app to bind the UAA instance to.
 
-```
-$ git clone 
-```
+  ```
+  $ git clone git@github.build.ge.com:predix-apphub/apphub-microapp-seed.git && cd apphub-microapp-seed
+  $ yarn install
+  $ bower install
+  $ yarn deploy
+  ```
 
 
 2. Create a `predix-apphub` service instance:
 
   ```
-  $ cf cs predix-apphub Beta my_apphub_instance -c '{"uaa":{"uaaUri":"https://69687fd0-c926-4e4f-8563-5c88042db69c.predix-uaa.run.aws-usw02-pr.ice.predix.io","clientID":"apphub","clientSecret":"apphub"},"appConfigURL":"","routeInfo":{"hostName":"apphub-dev","context":"dev","shared":false},"applicationChrome":true, "customHeader": {}}'
+  $ export APPHUB_INSTANCE_NAME=my_apphub_instance \
+    export APPHUB_SERVICE_KEY_NAME=my-apphub-service-key
+  
+  $ cf create-service predix-apphub Beta $APPHUB_INSTANCE_NAME -c '{"uaa":{"uaaUri":"https://69687fd0-c926-4e4f-8563-5c88042db69c.predix-uaa.run.aws-usw02-pr.ice.predix.io","clientID":"apphub","clientSecret":"apphub"},"appConfigURL":"","routeInfo":{"hostName":"apphub-dev","context":"dev","shared":false},"applicationChrome":true, "customHeader": {}}'
 
   Creating service instance my_apphub_instance in org jonnie.spratley@ge.com / space Development as jonnie.spratley@ge.com...
   OK
@@ -94,7 +100,7 @@ $ git clone
 3. Create AppHub service key:
 
   ```
-  $ cf csk my_apphub_instance my-apphub-service-key
+  $ cf create-service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME
 
   Creating service key my-apphub-service-key for service instance my_apphub_instance as jonnie.spratley@ge.com...
   OK
@@ -103,7 +109,7 @@ $ git clone
 4. Get AppHub service key details:
 
   ```
-  $ cf service-key  my_apphub_instance my-apphub-service-key
+  $ cf service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME
 
   Getting key my-apphub-service-key for service instance my_apphub_instance as jonnie.spratley@ge.com...
 
@@ -119,15 +125,23 @@ $ git clone
   
   > Store Apphub Config URI and URL
   
+  ```
+  $ export APPHUB_SERVICE_KEY=$(cf service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME) \
+    export APPHUB_CONFIG_URI=$(cf service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME | grep '"predix_apphub_config_uri"' | cut -d '"' -f 4) \
+    export APPHUB_URL=$(cf service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME |  grep '"predix_apphub_url"' | cut -d '"' -f 4) \
+    export APPHUB_PREDIX_ZONE_ID=$(cf service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME |  grep '"predix_zone_id"' | cut -d '"' -f 4) \
+    export APPHUB_ZAC_SCOPE=$(cf service-key $APPHUB_INSTANCE_NAME $APPHUB_SERVICE_KEY_NAME |  grep '"zac_scope"' | cut -d '"' -f 4) 
+  ```
+  
 
 3. Update uaa client with scope and redirect_uri
 
   ```
   $ uaac client update apphub \
   	--redirect_uri https://apphub-dev.predix-apphub-prod.run.aws-usw02-pr.ice.predix.io/callback \
-  	--autoapprove "predix-apphub-service.zones.$APPHUB_ZONE_ID.user" \
+  	--autoapprove "${APPHUB_ZAC_SCOPE}" \
   	--authorities "predix-apphub-service, zones.write, zones.read, scim.write, scim.read, scim.create, uaa.resource, uaa.user, uaa.none, microapp" \
-  	--scope "opened, uaa.resource, uaa.user, uaa.none, scim.write, scim.read, zones.read, zones.write, microapp, predix-apphub-service.zones.$APPHUB_ZONE_ID.user"
+  	--scope "opened, uaa.resource, uaa.user, uaa.none, scim.write, scim.read, zones.read, zones.write, microapp, ${APPHUB_ZAC_SCOPE}"
   ```
 
 

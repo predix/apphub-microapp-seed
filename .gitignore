@@ -24,3 +24,5 @@ reports
 .temp
 temp
 
+.*.json
+package-lock.json

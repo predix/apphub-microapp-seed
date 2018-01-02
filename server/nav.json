@@ -1,5 +1,1 @@
-[{
-  "label": "Microapp Seed",
-  "icon": "fa-bug",
-  "path": "/#/"
-}]
+[{"label":"Microapp Seed","icon":"fa-bug","path":"/#/"},{"id":"settings","label":"Settings","path":"/settings"},{"id":"app1","label":"Some App","path":"/some-app"}]

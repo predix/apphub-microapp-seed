@@ -4,14 +4,18 @@ const expect = require('chai').expect;
 const helpers = require('../../helpers');
 const requireHelper = helpers.require;
 const locales = requireHelper('server/locales');
-describe('ApiController', () => {
+
+
+describe('ApiController', function() {
+  this.timeout(20000);
   var app, mockId, mockDoc;
   const baseUrl = '/api/example';
 
-  before(function () {
+  before(function (done) {
     //app = requireHelper('server/controllers/api');
     //todo - test in isolation
     app = requireHelper('server');
+    done();
   });
 
   describe(baseUrl, () => {
