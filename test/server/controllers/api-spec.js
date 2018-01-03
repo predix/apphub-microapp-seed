@@ -14,7 +14,7 @@ describe('ApiController', function() {
   before(function (done) {
     //app = requireHelper('server/controllers/api');
     //todo - test in isolation
-    app = requireHelper('server');
+    app = requireHelper('server').getExpressApp();
     done();
   });
 

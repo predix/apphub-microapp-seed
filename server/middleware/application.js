@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 const session = require('express-session');
 const Logger = require('../common/logger');
+const log = Logger('application');
 /**
  * Application level middleware
  */
@@ -62,19 +63,18 @@ module.exports = (app) => {
 
 
   app.use(serveStatic(path.resolve(__dirname, '..', '..', 'public'), staticServerConfig));
-  app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
+
 
   // TODO: Production only settings
   // ========================================================================
   if (app.get('env') === 'production') {
     log.debug('Setting production only settings.');
-
+    app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
   }
 
   app.use(logErrors);
   app.use(clientErrorHandler);
   app.use(errorHandler);
-
 
 
   // TODO: Add some access methods

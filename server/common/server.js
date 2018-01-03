@@ -12,22 +12,27 @@ var app = express();
 
 class Server {
   constructor(a, config) {
-    if(!a){
-      app = express();
+    if(a){
+      app = a;
     }
     this.app = app;
 
-    load({cwd: 'server'})
+    load({cwd: path.resolve(__dirname, '../../server')})
       .include('models')
       .then('middleware')
       .then('controllers')
-      .into(app);
+      .into(this.app);
 
-    log.info(routesList(app).toString());
   }
 
+  getExpressApp(){
+    return this.app;
+  }
+
+
+
   router(routes) {
-    swaggerify(app, routes);
+    swaggerify(this.app, routes);
     return this;
   }
 
@@ -35,14 +40,14 @@ class Server {
     if (!port) {
       port = process.env.PORT;
     }
-    http.createServer(app).listen(port, () => {
+    http.createServer(this.app).listen(port, () => {
       console.log(`Server running in ${process.env.NODE_ENV || 'development'}
       @: ${os.hostname()} on port: ${port}`);
       if (callback) {
-        callback(app);
+        callback(this.app);
       }
     });
-    return app;
+    return this;
   }
 
   boot(callback) {

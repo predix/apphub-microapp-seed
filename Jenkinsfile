@@ -1,5 +1,5 @@
 /*
-pipeline
+  pipeline
 */
 pipeline {
   agent any
@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('System Info') {
       steps {
-        echo 'Running ${env.BUILD_ID} on ${env.JENKINS_URL}'
+        echo 'Running ${BUILD_ID} on ${JENKINS_URL}'
         sh 'node --version'
         sh 'npm --version'
       }
@@ -18,7 +18,7 @@ pipeline {
       steps {
         echo 'Installing...'
         sh 'npm install'
-        sh 'bower install --force'
+        sh 'bower install --force-latest'
       }
     }
     stage('Test') {

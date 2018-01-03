@@ -223,7 +223,7 @@ let webpackConfig = {
     ? 'source-map'
     : 'cheap-module-eval-source-map'),
   devServer: {
-    port: process.env.PORT || 9090,
+    port: process.env.PORT || 9000,
     host: 'localhost',
     hot: true,
     compress: true,
@@ -231,19 +231,11 @@ let webpackConfig = {
     contentBase: [
       //path.resolve(__dirname, './bower_components'),
       //path.resolve(__dirname, './public'),
-      //path.resolve(__dirname, './static'),
       path.resolve(__dirname, './src')
     ],
     historyApiFallback: true,
     open: true,
-    // TODO: Setup express app,
-    before: (app) =>{
-      console.log('webpack.before', app);
-      var server = require('./server/common/server');
-      var s = new server(app);
-      s.router();
-    },
-    // TODO: Proxy configuation for webpack-dev-server
+    // TODO: Proxy configuration for webpack-dev-server
     proxy: {
       '/api/v2/**': {
         target: 'https://pouchdb.run.aws-usw02-pr.ice.predix.io',

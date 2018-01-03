@@ -9,7 +9,7 @@ describe('/login', () => {
   var app;
 
   before(function (done) {
-    app = requireHelper('server');
+    app = requireHelper('server').getExpressApp();
     done();
   });
 
