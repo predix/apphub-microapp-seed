@@ -13,11 +13,13 @@ module.exports = (app) => {
   const sessionOptions = {
     secret: process.env.SESSION_SECRET,
     name: process.env.COOKIE_NAME || 'test',
-    maxAge: 30 * 60 * 1000,  // expire token after 30 min.
+    maxAge: 30 * 60 * 1000, // expire token after 30 min.
     proxy: true,
     resave: true,
     saveUninitialized: true,
-    cookie: {secure: true}
+    cookie: {
+      secure: app.get('env') === 'production'
+    }
   };
 
   const setStaticAssetsCacheControl = (res, path) => {
@@ -41,9 +43,7 @@ module.exports = (app) => {
 
   //Handle rendering error
   const errorHandler = (err, req, res, next) => {
-    res
-      .status(500)
-      .render('error', {error: err});
+    res.status(500).render('error', {error: err});
   };
 
   //Handle logging error
@@ -54,20 +54,18 @@ module.exports = (app) => {
 
   app.set('x-powered-by', false);
   app.set('trust proxy', 1);
+  app.use(serveStatic(path.resolve(__dirname, '..', '..', 'public'), staticServerConfig));
 
   app.use(cookieParser(process.env.SESSION_SECRET));
   app.use(session(sessionOptions));
 
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-
-
-  app.use(serveStatic(path.resolve(__dirname, '..', '..', 'public'), staticServerConfig));
-
+  app.use(bodyParser.urlencoded({extended: true}));
 
   // TODO: Production only settings
   // ========================================================================
   if (app.get('env') === 'production') {
+
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
   }
@@ -76,12 +74,18 @@ module.exports = (app) => {
   app.use(clientErrorHandler);
   app.use(errorHandler);
 
-
   // TODO: Add some access methods
   this.getLogger = (name) => {
     return Logger(name);
   };
 
+  this.checkAuthentication = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      res.redirect('/login');
+    }
+  }
 
   return this;
 };

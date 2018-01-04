@@ -18,15 +18,58 @@ export default class App {
           </a>
         </h1>
       </div>
-      <div class="pxh-view pxh-view--wide@md pxh-view--narrow@lg" id="js-view">
+      <div class="pxh-view pxh-view--wide@md pxh-view--narrow@lg">
         <div class="u-p">
-          <p>This is a simple micro app that contains just enough to get you started.</p>
-          <button id="toastBtn">New Toast</button>
 
-          <p>This microapp also has built in authentication using UAA</p>
-          <a href="/login">Login</a>
-          <a href="/userinfo">User Info</a>
-          <a href="/logout">Logout</a>
+          <div class="px-card u-mb">
+            <header>Overview</header>
+            <section>
+              <p>This simple micro-app seed contains just enough to get you started.</p>
+              <p>Some features include:</p>
+              <ul>
+                <li>Webpack</li>
+                <li>Swagger</li>
+                <li>Express</li>
+                <li>ES6 with Babel</li>
+                <li>and more...</li>
+              </ul>
+
+            </section>
+          </div>
+
+
+          <div class="px-card u-mb">
+            <header>Webpack</header>
+            <section>
+              <p>We are using Webpack module bundler for building the client-side code, which makes adding any framework of your choice very easy.</p>
+              <p>Simply install the framework of choice using <code>npm</code>, import that library in your application and your ready to go.</p>
+              <p>There might be some minor configuration changes to match your applications needs. <a target="_blank" href="https://webpack.js.org/configuration/">https://webpack.js.org/configuration</a></p>
+            </section>
+          </div>
+
+          <div class="px-card u-mb">
+            <header>Swagger API</header>
+            <section>
+              <p>You can modify the <code>api.yaml</code> file is located in the <code>server/common/swagger</code> directory.</p>
+              <p>You can also explore the API using the <a href="/api-explorer" target="_blank">API Explorer</a></p>
+            </section>
+          </div>
+
+            <div class="px-card u-mb">
+              <header>Notifications</header>
+              <section>
+                <button id="toastBtn" class="btn btn-primary">New Toast</button>
+              </section>
+            </div>
+
+          <p>This micro-app also has built in authentication using UAA</p>
+
+          <a href="/login" class="btn">Login</a>
+          <a href="/userinfo" class="btn">User Info</a>
+          <a href="/logout" class="btn">Logout</a>
+
+
+
         </div>
       </div>
     </div>
@@ -42,7 +85,7 @@ export default class App {
       console.log('Adding toast');
       var toastObject = {
         type : 'green',
-        isPersistent : true,
+        //isPersistent : true,
         icon : 'dashboard',
         text : 'Hello, this is a message for you!',
         timestamp: new Date().toString()

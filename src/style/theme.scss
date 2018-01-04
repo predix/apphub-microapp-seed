@@ -1,8 +1,8 @@
 /**
  * Add your css-variables here
  */
-@import "px-colors-design/_settings.colors.scss";
-@import "px-defaults-design/_settings.defaults.scss";
+@import 'variables';
+
 :root{
   // Card
   --px-card-background-color                                          : $gray1;

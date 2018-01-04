@@ -39,7 +39,7 @@ module.exports = (app) => {
 
     // route to fetch user info from UAA for use in the browser
     app.get('/userinfo', userInfo(process.env.UAA_URL), (req, res) => {
-      res.send(req.user.details);
+      res.send(req.user);
     });
 
   } else {

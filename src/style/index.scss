@@ -1,5 +1,53 @@
+/*
+ * Copyright (c) 2018 GE Digital. All rights reserved.
+ *
+ * The copyright to the computer software herein is the property of
+ * GE Global Research. The software may be used and/or copied only
+ * with the written permission of GE Global Research or in accordance
+ * with the terms and conditions stipulated in the agreement/contract
+ * under which the software has been supplied.
+ */
 @import 'helpers';
+
+// Settings
+@import "px-colors-design/_settings.colors.scss";
+@import "px-defaults-design/_settings.defaults.scss";
+
+// Tools
+@import "px-mobile-design/sass/px-mobile-design-predix.scss";
+
+// Generic
+@import "px-normalize-design/_generic.normalize.scss";
+@import "px-box-sizing-design/_generic.box-sizing.scss";
+@import "px-helpers-design/_generic.helpers.scss";
+
+// Base
+@import "px-flexbox-design/_base.flexbox.scss";
+@import "px-viewport-design/_base.viewport.scss";
+
+// Meta
+
+// Objects
+@import "px-buttons-design/_objects.buttons.scss";
+// Component
+// Your css goes in here
+
+
+$inuit-enable-margins: true;
+$inuit-enable-responsive-margins: true;
+$inuit-enable-paddings: true;
+$inuit-enable-responsive-paddings: true;
+$inuit-enable-responsive-paddings--tiny: true;
+
+// Trumps
+@import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";
+
+
+
+
 @import 'theme';
+
 /**
  * Global App Styles
  */
@@ -9,7 +57,7 @@ html {
   width           : 100%;
   padding         : 0;
   margin          : 0;
-  background-color: $global-background-color !important;
+  background-color: $global-background-color;
   font-family     : $global-font-family;
   font-weight     : 400;
   color           : $global-font-color;
@@ -20,4 +68,61 @@ html {
   a {
     text-decoration: none;
   }
+
+  .px-card {
+    display: block;
+    width: auto;
+    background-color: var(--px-card-background-color, lightgray);
+    padding-bottom: 4rem;
+    border-top: 1px solid var(--px-card-border-color, gray);
+  }
+
+  .px-card[full-bleed] .contents {
+    padding: 0;
+  }
+
+  .px-card header {
+    padding: 1rem;
+    padding-top: 1.33333rem;
+    border-bottom: 1px solid var(--px-card-border-color, transparent);
+    margin-bottom: 1rem;
+  }
+
+  .px-card header .epsilon {
+    height: 2rem;
+    line-height: 2rem;
+    color: var(--px-card-header-color, black);
+  }
+
+  .px-card #headericon {
+    height: 2rem;
+    width: 2rem;
+    color: var(--px-card-icon-color, black);
+    cursor: auto;
+  }
+
+  .px-card header i {
+    color: var(--px-card-action-icon-color, black);
+    cursor: pointer;
+  }
+
+  .px-card header i:hover {
+    color: var(--px-card-action-icon-color--hover, blue);
+  }
+
+  .px-card header i:active {
+    color: var(--px-card-action-icon-color--pressed, blue);
+  }
+
+  .px-card header i:not(:last-of-type) {
+    margin-right: .66666rem;
+  }
+
+  .px-card section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
 }
+
+
