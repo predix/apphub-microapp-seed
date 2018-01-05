@@ -226,13 +226,6 @@ module.exports = new NavController();
 
 
 
-
-
-
-
-
-
-
 If you had nested folders like the following example:
 
 ```
@@ -253,6 +246,47 @@ app.models.humans.not
 app.models.animals.dog
 app.models.animals.cat
 ```
+
+
+## Docker
+Here is how to build and run this app as a docker container.
+
+
+1. Build the image: 
+
+```
+$ docker build -t <username>/apphub-microapp-seed .
+```
+
+2. Run the image:
+
+```
+$ docker run -p 49160:8080 -d <username>/apphub-microapp-seed
+```
+
+3. Print the output of your app:
+
+```
+# Get container ID
+$ docker ps
+
+# Print app output
+$ docker logs <container-id>
+```
+
+4. Execute commands inside the image:
+
+```
+$ docker exec -it <container-id> /bin/bash
+```
+
+5. Test api access to the container:
+
+```
+$ curl -i localhost:49160/api
+```
+
+
 
 
 
