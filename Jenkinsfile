@@ -34,7 +34,8 @@ pipeline {
 
     stage('Archive') {
 			steps {
-				sh "zip -r ./${APP_NAME}-${env.BUILD_ID}.zip ./dist/**"
+        echo 'Creating zip...'
+				sh "zip -r ./${APP_NAME}-${env.BUILD_ID}.zip ./build/**"
       }
     }
 
