@@ -1,5 +1,5 @@
 /**
- * @description API Router
+ * @description Nav Router
  */
 module.exports = (app) => {
   const log = app.middleware.application.getLogger('controllers:nav');

@@ -9,11 +9,11 @@
   },
   "main": "src/main.js",
   "scripts": {
-    "bower": "./node_modules/.bin/bower install --force-latest",
+    "bower": "bower install --force-latest",
     "pretest": "rimraf coverage",
     "clean": "rimraf coverage dist",
-    "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary mocha test/server/**/*-spec.js",
-    "test:e2e": "nightwatch --config ./test/e2e/nightwatch.conf.js",
+    "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
+    "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
     "predeploy": "npm test",
     "deploy": "npm run build && cf push -f manifest.yml",
     "webpack": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --progress",
@@ -25,7 +25,9 @@
     "prebuild": "rimraf build",
     "build": "cross-env NODE_ENV=production webpack --env dist",
     "docs": "esdoc",
-    "dist": "npm run bower && npm run build"
+    "dist": "npm run bower && npm run build",
+    "docker:build": "docker build -t predix-apphub/apphub-microapp-seed .",
+    "docker:run": "docker run -p 49160:8080 -d predix-apphub/apphub-microapp-seed"
   },
   "keywords": [
     "predix-microapp"
@@ -118,5 +120,26 @@
     "socket.io": "^1.5.1",
     "swagger-express-middleware": "^1.0.0-alpha.12",
     "uuid": "^3.1.0"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 10,
+    "statements": 10,
+    "functions": 0,
+    "include": [
+      "server/**/*.js"
+    ],
+    "exclude": [
+      "server/**/*.spec.js",
+      "test/server/**/*-spec.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": true,
+    "all": true,
+    "report-dir": "./coverage"
   }
 }

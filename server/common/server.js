@@ -17,7 +17,10 @@ class Server {
     }
     this.app = app;
 
-    load({cwd: path.resolve(__dirname, '../../server')})
+    load({
+      verbose: false,
+      cwd: path.resolve(__dirname, '../../server')
+    })
       .include('models')
       .then('middleware')
       .then('controllers')

@@ -27,8 +27,23 @@ describe('DB', () => {
 
   describe('db methods', ()=> {
     var mockDoc;
+
+    it('post - should create doc and add ID', (done) => {
+      db.post({
+        title: 'Test Comment',
+        type: 'comment'
+      }).then((resp) => {
+        expect(resp).to.not.be.null;
+        expect(resp.id).to.be.defined;
+        done();
+      }).catch(done);
+    });
+
     it('post - should create doc', (done) => {
-      db.post({title: 'test'}).then((resp) => {
+      db.post({
+        title: 'Test Post',
+        type: 'post'
+      }).then((resp) => {
         mockDoc = resp.doc;
         expect(mockDoc).to.not.be.null;
         expect(mockDoc.id).to.be.defined;
@@ -36,7 +51,16 @@ describe('DB', () => {
       }).catch(done);
     });
 
-    it('put - should update doc', (done) => {
+    it('post - should reject if no doc passed', (done) => {
+      db.post().then((resp) => {
+        done();
+      }).catch((err) => {
+        expect(err).to.not.be.null;
+        done();
+      });
+    });
+
+    it('put - should update doc and resolve on success', (done) => {
       mockDoc.updated = Date.now();
       db.put(mockDoc).then((resp) => {
         mockDoc = resp.doc;
@@ -46,15 +70,53 @@ describe('DB', () => {
       }).catch(done);
     });
 
+    it('put - should reject if doc was not found', (done) => {
+      mockDoc.updated = Date.now();
+      db.put({
+        id: 'some-id'
+      }).then((resp) => {
+        done();
+      }).catch((err) => {
+        expect(err).to.not.be.null;
+        done();
+      });
+    });
+
+
+    it('get - should reject if no id passed', (done) => {
+      db.get().then((resp) => {
+        done();
+      }).catch((err) => {
+        expect(err).to.not.be.null;
+        done();
+      });
+    });
+
     it('get - should get doc', (done) => {
       db.get(mockDoc.id).then((doc) => {
         mockDoc = doc;
         expect(doc).to.not.be.null;
         expect(doc.id).to.be.defined;
-        expect(doc.title).to.equal('test');
+        expect(doc.title).to.equal('Test Post');
         done();
       }).catch(done);
     });
+
+    it('allDocs - should return all docs', (done) => {
+      db.allDocs().then((docs) => {
+        expect(docs).to.not.be.null;
+        done();
+      }).catch(done);
+    });
+
+    it('allDocs - should return all docs filtered', (done) => {
+      db.allDocs({type: 'comment'}).then((docs) => {
+        expect(docs).to.not.be.null;
+        expect(docs[0].title).to.equal('Test Comment');
+        done();
+      }).catch(done);
+    });
+
   });
 
   describe('lowdb instance', ()=> {

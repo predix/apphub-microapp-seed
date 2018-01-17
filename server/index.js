@@ -4,13 +4,12 @@ const Server = require('./common/server');
 const log = require('./common/logger')('server');
 
 const {env} = process;
-
 const app = new Server(null, config).router();
-
+const port = env.PORT || 9000;
 
 //If development mode
 if (env.NODE_ENV === 'development') {
-  console.log('Loading webpack middleware');
+  log.debug('Loading webpack middleware');
 
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -23,14 +22,11 @@ if (env.NODE_ENV === 'development') {
 }
 
 if (require.main === module) {
-  console.log('was run directly!');
-
-  app.listen(env.PORT || 9000);
+  log.debug('server was ran directly');
+  app.listen(port, () =>{
+    console.log(`Running on port ${port}`)
+  });
 } else {
-  console.log('was require()d');
+  log.debug('server was required as a module');
   module.exports = app;
 }
-
-
-
-

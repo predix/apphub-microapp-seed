@@ -155,10 +155,8 @@ let webpackConfig = {
             {
               loader: 'css-loader',
               options: {
-                camelCase: true,
-                //modules: true,
                 sourceMap: true,
-                importLoaders: 2,
+                importLoaders: 1,
                 localIdentName: '[name]__[local]___[hash:base64:5]'
               }
             },
@@ -173,7 +171,7 @@ let webpackConfig = {
                   css: true,
                   bower: true
                 },
-                includePaths: ['src', 'style', 'node_modules', 'bower_components'].map((d) => path.join(__dirname, d)).map((g) => glob.sync(g)).reduce((a, c) => a.concat(c), [])
+                includePaths: ['node_modules', 'bower_components']
               }
             }
           ]
@@ -187,7 +185,7 @@ let webpackConfig = {
           use: [
             {
               loader: 'css-loader',
-              query: {
+              options: {
                 //modules: true,
                 localIdentName: '[name]__[local]___[hash:base64:5]'
               }
@@ -196,6 +194,26 @@ let webpackConfig = {
           ]
         })
       },
+      //.css modules
+      {
+        test: /\.module.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                sourceMap: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]___[hash:base64:5]'
+              }
+            },
+            'postcss-loader'
+          ]
+        })
+      },
+
       //.txt
       {
         test: /\.(xml|html|txt|md)$/,
