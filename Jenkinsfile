@@ -44,7 +44,8 @@ pipeline {
       post {
         success {
           echo 'Build and unit stage completed'
-          sh "zip -r ./${APP_NAME}-${BUILD_NUMBER}.zip ./build/**"
+          sh 'npm run zip'
+        //  sh "zip -r ./${APP_NAME}-${BUILD_NUMBER}.zip ./build/**"
           stash includes: '*.zip', name: 'artifact'
         }
         failure {

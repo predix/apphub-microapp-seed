@@ -11,6 +11,7 @@
   "scripts": {
     "bower": "bower install --force-latest --allow-root",
     "pretest": "rimraf coverage",
+    "zip": "bestzip bundle.zip build/*",
     "clean": "rimraf coverage dist",
     "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
@@ -47,6 +48,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.26.0",
     "babel-runtime": "^6.26.0",
+    "bestzip": "^1.1.4",
     "bower": "^1.8.2",
     "cdnizer": "^1.1.6",
     "chai": "^3.5.0",
