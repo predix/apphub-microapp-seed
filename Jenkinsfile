@@ -20,8 +20,14 @@ pipeline {
       steps {
         echo 'Running ${BUILD_ID} on ${JENKINS_URL}'
         sh 'printenv'
-        sh "npm config set strict-ssl false"
+
+        echo 'Setting npm config'
+
+        sh 'npm config set strict-ssl false'
         sh "npm config set registry $CACHING_REPO_URL"
+        sh 'npm config list'
+
+        echo 'Checking versions'
         sh 'node -v'
         sh 'npm -v'
 
@@ -38,7 +44,7 @@ pipeline {
       post {
         success {
           echo 'Build and unit stage completed'
-          sh "zip -r ./${APP_NAME}-${env.BUILD_ID}.zip ./build/**"
+          sh "zip -r ./${APP_NAME}-${BUILD_NUMBER}.zip ./build/**"
           stash includes: '*.zip', name: 'artifact'
         }
         failure {
@@ -77,9 +83,9 @@ pipeline {
      }
    }
    stage('Deploy') {
-    steps {
-      echo 'Skipping'
-    }
+      steps {
+        echo 'Skipping'
+      }
     }
   }
 	post {

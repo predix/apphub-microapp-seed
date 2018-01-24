@@ -6,7 +6,8 @@ const routesList = require('express-api-routes-list');
 const os = require('os');
 const http = require('http');
 const log = require('./logger')('server');
-const swaggerify = require('./swagger');
+/* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
+//const swaggerify = require('./swagger');
 
 var app = express();
 
@@ -21,21 +22,18 @@ class Server {
       verbose: false,
       cwd: path.resolve(__dirname, '../../server')
     })
-      .include('models')
-      .then('middleware')
-      .then('controllers')
-      .into(this.app);
-
+    .include('models')
+    .then('middleware')
+    .then('controllers')
+    .into(this.app);
   }
 
   getExpressApp(){
     return this.app;
   }
 
-
-
   router(routes) {
-    swaggerify(this.app, routes);
+    //swaggerify(this.app, routes);
     return this;
   }
 
