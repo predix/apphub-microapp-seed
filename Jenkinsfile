@@ -1,8 +1,13 @@
-/*
-  pipeline
-*/
+#!groovy
+
+// Define DevCloud Artifactory for publishing non-docker image artifacts
+def artUploadServer = Artifactory.server('devcloud')
+
+// Snapshot = DevCloud Artifactory repo name
+def Snapshot = 'PREDIX'
+
 pipeline {
-  agent any
+  agent none
 	environment {
 		DEBUG = ''
     APP_NAME = 'apphub-microapp-seed'
@@ -14,24 +19,44 @@ pipeline {
 	}
   stages {
     stage('Build') {
+      agent {
+        docker {
+          image 'repo.ci.build.ge.com:8443/predixci-node6.9-base'
+          label 'dind'
+        }
+      }
+      environment {
+        CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
+      }
       steps {
         echo 'Running ${BUILD_ID} on ${JENKINS_URL}'
         sh 'printenv'
-        sh 'node --version'
-        sh 'npm --version'
-        sh 'yarn -v'
-        sh 'yarn install'
-        sh 'yarn dist'
+        sh "npm config set strict-ssl false"
+        sh "npm config set registry $CACHING_REPO_URL"
+        sh 'node -v'
+        sh 'npm -v'
+        echo 'Installing...'
+        sh 'npm install'
+        sh 'bower install --force-latest --allow-root'
+        sh 'npm run dist'
+      }
+      post {
+        success {
+          echo 'Build and unit stage completed'
+          sh "zip -r ./${APP_NAME}-${env.BUILD_ID}.zip ./build/**"
+          stash includes: '*.zip', name: 'artifact'
+        }
+        failure {
+          echo 'Build and unit stage failed'
+        }
       }
     }
-
     stage('Test') {
       steps {
         echo 'Testing...'
         sh 'yarn test'
       }
     }
-
     stage('Archive') {
 			steps {
         echo 'Creating zip...'
@@ -41,8 +66,9 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh "cf login -a ${CF_ENDPOINT} -u ${CF_USERNAME} -p ${CF_PASSWORD} -o ${CF_ORG} -s ${CF_SPACE}"
-        sh "cf push"
+        echo 'Skipping'
+        //sh "cf login -a ${CF_ENDPOINT} -u ${CF_USERNAME} -p ${CF_PASSWORD} -o ${CF_ORG} -s ${CF_SPACE}"
+        //sh "cf push"
       }
     }
   }
