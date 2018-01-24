@@ -1,21 +1,13 @@
 #!groovy
-
-// Define DevCloud Artifactory for publishing non-docker image artifacts
 def artUploadServer = Artifactory.server('devcloud')
-
-// Snapshot = DevCloud Artifactory repo name
 def Snapshot = 'PREDIX'
 
 pipeline {
   agent none
 	environment {
 		DEBUG = ''
+    CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
     APP_NAME = 'apphub-microapp-seed'
-    CF_ENDPOINT = "https://api.system.aws-usw02-pr.ice.predix.io"
-    CF_ORG = 'jonnie.spratley@ge.com'
-    CF_SPACE = 'development'
-    CF_USERNAME = credentials('CF_USERNAME');
-    CF_PASSWORD = credentials('CF_PASSWORD');
 	}
   stages {
     stage('Build') {
@@ -25,9 +17,6 @@ pipeline {
           label 'dind'
         }
       }
-      environment {
-        CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
-      }
       steps {
         echo 'Running ${BUILD_ID} on ${JENKINS_URL}'
         sh 'printenv'
@@ -35,9 +24,15 @@ pipeline {
         sh "npm config set registry $CACHING_REPO_URL"
         sh 'node -v'
         sh 'npm -v'
+
         echo 'Installing...'
         sh 'npm install'
         sh 'bower install --force-latest --allow-root'
+
+        echo 'Testing...'
+        sh 'npm test'
+
+        echo 'Creating Dist'
         sh 'npm run dist'
       }
       post {
@@ -51,31 +46,46 @@ pipeline {
         }
       }
     }
-    stage('Test') {
+    stage('Publish Artifacts') {
+      agent {
+        docker {
+          image 'repo.ci.build.ge.com:8443/jfrog-cli-go'
+          label 'dind'
+        }
+      }
       steps {
-        echo 'Testing...'
-        sh 'yarn test'
-      }
+        script {
+          echo 'Publishing Artifacts to Artifactory'
+          unstash 'artifact'
+          def uploadSpec = """{
+            "files": [{
+                "pattern": "*.zip",
+                "target": "${Snapshot}/build/${APP_NAME}/master/${BUILD_NUMBER}/"
+            }]
+          }"""
+          def buildInfo = artUploadServer.upload(uploadSpec)
+             artUploadServer.publishBuildInfo(buildInfo)
+          }
+     }
+     post {
+       success {
+         echo 'Deploy Artifact to Artifactory stage completed'
+       }
+       failure {
+         echo 'Deploy Artifact to Artifactory stage failed'
+       }
+     }
+   }
+   stage('Deploy') {
+    steps {
+      echo 'Skipping'
     }
-    stage('Archive') {
-			steps {
-        echo 'Creating zip...'
-				sh "zip -r ./${APP_NAME}-${env.BUILD_ID}.zip ./build/**"
-      }
-    }
-
-    stage('Deploy') {
-      steps {
-        echo 'Skipping'
-        //sh "cf login -a ${CF_ENDPOINT} -u ${CF_USERNAME} -p ${CF_PASSWORD} -o ${CF_ORG} -s ${CF_SPACE}"
-        //sh "cf push"
-      }
     }
   }
 	post {
     always {
       echo 'Done.'
-			archiveArtifacts artifacts: '*.zip', fingerprint: true
+			//archiveArtifacts artifacts: '*.zip', fingerprint: true
 			//junit 'coverage/*.xml'
     }
   }
