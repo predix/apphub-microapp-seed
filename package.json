@@ -9,7 +9,7 @@
   },
   "main": "src/main.js",
   "scripts": {
-    "bower": "bower install --force-latest",
+    "bower": "bower install --force-latest --allow-root",
     "pretest": "rimraf coverage",
     "clean": "rimraf coverage dist",
     "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",

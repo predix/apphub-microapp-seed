@@ -13,7 +13,8 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-          image 'repo.ci.build.ge.com:8443/predixci-node6.9-base'
+          //image 'repo.ci.build.ge.com:8443/predixci-node6.9-base'
+          image 'node:8'
           label 'dind'
         }
       }
@@ -33,7 +34,6 @@ pipeline {
 
         echo 'Installing...'
         sh 'npm install'
-        sh 'bower install --force-latest --allow-root'
 
         echo 'Testing...'
         sh 'npm test'
