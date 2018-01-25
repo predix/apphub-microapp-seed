@@ -9,7 +9,6 @@ pipeline {
     CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
     ORG_NAME = 'Predix-Apphub'
     APP_NAME = 'apphub-microapp-seed'
-    ARTIFACT_TARGET = "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/"
 	}
   stages {
     stage('Build') {
@@ -69,7 +68,7 @@ pipeline {
           def uploadSpec = """{
             "files": [{
                 "pattern": "*.zip",
-              "target": "${ARTIFACT_TARGET}"
+              "target": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/"
             }]
           }"""
           def buildInfo = artUploadServer.upload(uploadSpec)
