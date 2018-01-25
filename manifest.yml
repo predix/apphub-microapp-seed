@@ -9,7 +9,7 @@ applications:
     command: node server
     services:
       #- my_uaa_instance
-      - apphub-test-uaa-instance
+      - jps-uaa-instance
     env:
       NODE_ENV: 'production'
       DEBUG: 'apphub-microapp-seed:*'
