@@ -1,7 +1,9 @@
 #!groovy
 def artUploadServer = Artifactory.server('devcloud')
 def Snapshot = 'PREDIX'
-
+/**
+ *
+ */
 pipeline {
   agent none
 	environment {
@@ -11,7 +13,7 @@ pipeline {
     APP_NAME = 'apphub-microapp-seed'
 	}
   stages {
-    stage('Build') {
+    stage('Build & Test') {
       agent {
         docker {
           //image 'repo.ci.build.ge.com:8443/predixci-node6.9-base'
@@ -24,29 +26,26 @@ pipeline {
         sh 'printenv'
 
         echo 'Setting npm config'
-
-        sh 'npm config set strict-ssl false'
-        sh "npm config set registry $CACHING_REPO_URL"
-        sh 'npm config list'
-
-        echo 'Checking versions'
-        sh 'node -v'
-        sh 'npm -v'
+        sh """
+          node -v
+          npm -v
+          npm config set strict-ssl false
+          npm config set registry $CACHING_REPO_URL
+          npm config ls
+        """
 
         echo 'Installing...'
         sh 'npm install'
 
-        //echo 'Testing...'
-        //sh 'npm test'
+        echo 'Testing...'
+        sh 'npm test'
 
-        echo 'Creating Dist'
+        echo 'Building...'
         sh 'npm run dist'
       }
       post {
         success {
-          echo 'Build and unit stage completed'
-          //sh 'npm run zip'
-          //sh "zip -r ./${APP_NAME}-${BUILD_NUMBER}.zip ./build/**"
+          echo 'Build and Test stage completed'
           stash includes: '*.zip', name: 'artifact'
         }
         failure {
@@ -54,6 +53,10 @@ pipeline {
         }
       }
     }
+    /**
+     * Publish Artifacts will take the .zip from the build task
+     * and upload to artifactory.
+     */
     stage('Publish Artifacts') {
       agent {
         docker {
@@ -68,12 +71,12 @@ pipeline {
           def uploadSpec = """{
             "files": [{
                 "pattern": "*.zip",
-              "target": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/"
+                "target": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/"
             }]
           }"""
           def buildInfo = artUploadServer.upload(uploadSpec)
              artUploadServer.publishBuildInfo(buildInfo)
-          }
+        }
      }
      post {
        success {
@@ -84,17 +87,22 @@ pipeline {
        }
      }
    }
-   stage('Deploy') {
+   /**
+    * Deploy stage will take the artifact from the build step and push to Cloud Foundry
+    */
+   stage('Deploy to CF3 Dev') {
       steps {
         echo 'Skipping'
       }
     }
   }
+
+  /**
+   * Steps to always run.
+   */
 	post {
     always {
       echo 'Done.'
-			//archiveArtifacts artifacts: '*.zip', fingerprint: true
-			//junit 'coverage/*.xml'
     }
   }
 }

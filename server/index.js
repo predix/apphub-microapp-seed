@@ -9,7 +9,7 @@ const port = env.PORT || 9000;
 
 //If development mode
 if (env.NODE_ENV === 'development') {
-  log.debug('Loading webpack middleware');
+  log.debug('\nLoading webpack middleware');
 
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');

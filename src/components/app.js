@@ -33,7 +33,6 @@ export default class App {
                 <li>ES6 with Babel</li>
                 <li>and more...</li>
               </ul>
-
             </section>
           </div>
 
@@ -41,7 +40,7 @@ export default class App {
           <div class="px-card u-mb">
             <header>Webpack</header>
             <section>
-              <p>We are using Webpack module bundler for building the client-side code, which makes adding any framework of your choice very easy.</p>
+              <p>We are using Webpack building the client-side, which makes adding any framework of very easy.</p>
               <p>Simply install the framework of choice using <code>npm</code>, import that library in your application and your ready to go.</p>
               <p>There might be some minor configuration changes to match your applications needs. <a target="_blank" href="https://webpack.js.org/configuration/">https://webpack.js.org/configuration</a></p>
             </section>
@@ -55,18 +54,33 @@ export default class App {
             </section>
           </div>
 
-            <div class="px-card u-mb">
-              <header>Notifications</header>
-              <section>
-                <button id="toastBtn" class="btn btn-primary">New Toast</button>
-              </section>
-            </div>
+          <div class="px-card u-mb">
+            <header>Notifications</header>
+            <section>
+              <p>When this micro-app is running in AppHub you can test the toast notifications.</p>
+              <button id="toastBtn" class="btn btn-primary">New Toast</button>
+            </section>
+          </div>
 
-          <p>This micro-app also has built in authentication using UAA</p>
+          <div class="px-card u-mb">
+            <header>Authentication</header>
+            <section>
+              <p>This micro-app also has built in authentication using UAA. When running inside AppHub this is already taken care of.</p>
+              <p>If you want to use your own UAA authentication, you can set the following environment variables.</p>
+              <pre>
+UAA_URL             = https://uaa-instance.predix-uaa.run.aws-usw02-pr.ice.predix.io
+UAA_CALLBACK_URL    = http://localhost:9000/oauth/callback
+UAA_CLIENT_ID       = test-client
+UAA_CLIENT_SECRET   = test
+              </pre>
 
-          <a href="/login" class="btn">Login</a>
-          <a href="/userinfo" class="btn">User Info</a>
-          <a href="/logout" class="btn">Logout</a>
+              <a href="/login" class="btn">Login</a>
+              <a href="/userinfo" class="btn">User Info</a>
+              <a href="/logout" class="btn">Logout</a>
+            </section>
+          </div>
+
+
 
 
 

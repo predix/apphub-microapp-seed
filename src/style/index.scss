@@ -29,10 +29,8 @@
 
 // Objects
 @import "px-buttons-design/_objects.buttons.scss";
+
 // Component
-// Your css goes in here
-
-
 $inuit-enable-margins: true;
 $inuit-enable-responsive-margins: true;
 $inuit-enable-paddings: true;
@@ -44,9 +42,10 @@ $inuit-enable-responsive-paddings--tiny: true;
 @import "px-widths-responsive-design/_trumps.widths-responsive.scss";
 
 
-
-
+// Your theme goes in here
 @import 'theme';
+
+// Your css goes in here
 
 /**
  * Global App Styles
@@ -73,8 +72,8 @@ html {
     display: block;
     width: auto;
     background-color: var(--px-card-background-color, lightgray);
-    padding-bottom: 4rem;
-    border-top: 1px solid var(--px-card-border-color, gray);
+    padding-bottom: 1rem;
+    border: 1px solid var(--px-card-border-color, gray);
   }
 
   .px-card[full-bleed] .contents {
@@ -86,6 +85,7 @@ html {
     padding-top: 1.33333rem;
     border-bottom: 1px solid var(--px-card-border-color, transparent);
     margin-bottom: 1rem;
+    font-weight: 500;
   }
 
   .px-card header .epsilon {
@@ -124,5 +124,3 @@ html {
   }
 
 }
-
-
