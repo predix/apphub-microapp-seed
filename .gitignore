@@ -26,3 +26,5 @@ temp
 
 .*.json
 package-lock.json
+
+*.tgz

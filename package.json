@@ -9,11 +9,11 @@
   },
   "main": "src/main.js",
   "scripts": {
-    "copy": "copyfiles build/** server/**/*.* public/**/*.* config.js .cfignore package.json manifest.yml ./dist",
+    "copy": "copyfiles build/** server/*.* server/**/*.* public/*.* public/**/*.* config.js .cfignore package.json manifest.yml ./dist",
     "bower": "bower install --force-latest --allow-root",
     "pretest": "rimraf coverage",
     "zip": "bestzip $npm_package_name-$npm_package_version.zip dist/*",
-    "clean": "rimraf coverage dist",
+    "clean": "rimraf coverage dist .nyc_output build",
     "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
     "predeploy": "npm test",
