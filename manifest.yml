@@ -11,5 +11,15 @@ applications:
       #- my_uaa_instance
       - jps-uaa-instance
     env:
+      APP_ID: apphub-microapp-seed
+      LOG_LEVEL: debug
       NODE_ENV: 'production'
       DEBUG: 'apphub-microapp-seed:*'
+      UAA_URL: https://jps-test-uaa-instance.predix-uaa.run.aws-usw02-pr.ice.predix.io
+      UAA_CALLBACK_URL: http://localhost:9000/oauth/callback
+      UAA_CLIENT_ID: test-client
+      UAA_CLIENT_SECRET: test
+      REQUEST_LIMIT: 500kb
+      SESSION_SECRET: mySecret
+      COOKIE_NAME: myCookie
+      SWAGGER_API_SPEC: /spec
