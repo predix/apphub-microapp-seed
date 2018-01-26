@@ -3,7 +3,8 @@ const uuid = require('uuid');
 const path = require('path');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
-
+const homeOrTmp = require('home-or-tmp');
+const pkg = require('../../package.json');
 var db;
 var instance;
 /**
@@ -19,9 +20,13 @@ class Database {
         "path": "/microapp1"
       }]};
     }
-    this.adapter = new FileSync(name || path.resolve(__dirname, '../../.db.json'));
+    this.adapter = new FileSync(name || path.resolve(homeOrTmp, `.${pkg.name}-db.json`));
     db = low(this.adapter);
-    db.defaults(defaults).write();
+    try {
+      db.defaults(defaults).write();
+    } catch (e) {
+      log.error('error writing defaults', e);
+    }
 
     //lowdb instance
     this.db = db;

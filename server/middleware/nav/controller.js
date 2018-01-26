@@ -1,7 +1,3 @@
-//const log = require('../../common/logger')('controllers:nav');
-/**
- * @description Nav Controller
- */
 class NavController {
   constructor(){
   }
@@ -9,19 +5,19 @@ class NavController {
     next();
   }
   get(req, res, next){
-    req.app.models.nav.read()
+    req.app.locals.nav.read()
       .then(n => res.status(200).send(n))
       .catch(next);
   }
   put(req, res, next){
-    req.app.models.nav
+    req.app.locals.nav
       .update(req.body)
       .then(r => res.status(200).send(r))
       .catch(next);
   }
   post(req, res, next){
     if(req.body){
-      req.app.models.nav
+      req.app.locals.nav
         .update(req.body)
         .then(r => res.status(201).send(r))
         .catch(next);

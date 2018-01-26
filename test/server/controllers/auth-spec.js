@@ -9,7 +9,7 @@ describe('/login', () => {
   var app;
 
   before(function (done) {
-    app = requireHelper('server').getExpressApp();
+    app = require('../../../server/index').getExpressApp();
     done();
   });
 
@@ -26,6 +26,17 @@ describe('/login', () => {
   it('GET - /logout responds successfully', (done) => {
     request(app)
       .get('/logout')
+      .expect(302, done);
+  });
+
+  it('GET - /user/info - responds successfully', (done) => {
+    request(app)
+      .get('/user/info')
+      .expect(200, done);
+  });
+  it('GET - /user/verify - responds successfully', (done) => {
+    request(app)
+      .get('/user/verify')
       .expect(302, done);
   });
 

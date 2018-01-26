@@ -1,15 +1,12 @@
-const passportConfig = require('../common/passport');
-const userInfo = require('../common/user-info');
-
+const passportConfig = require('./passport');
+const userInfo = require('./user-info');
+const log = require('../../common/logger')('middleware:auth');
 /**
  * This middleware will handle the authentication of the application. (If enabled);
  * @param app {Express} The application instance that will be attached to.
  * @returns {*}
  */
-module.exports = (app) => {
-  const log = app.middleware.application.getLogger('middleware:auth');
-
-
+module.exports = function(app){
   if (process.env.UAA_URL) {
     log.debug('setting up oauth with', process.env.UAA_URL);
 
@@ -38,8 +35,26 @@ module.exports = (app) => {
     });
 
     // route to fetch user info from UAA for use in the browser
-    app.get('/userinfo', userInfo(process.env.UAA_URL), (req, res) => {
+    app.get(['/user/info', '/oauth/user'], userInfo(process.env.UAA_URL), (req, res) => {
       res.send(req.user);
+    });
+
+    // route to fetch user info from UAA for use in the browser
+    app.get(['/user/verify', '/oauth/verify'], (req, res, next) => {
+      if(req.user && req.user.currentUser){
+        const pft = require('predix-fast-token');
+        const token = req.user.currentUser.access_token;
+        const trustedIssuers = [`${process.env.UAA_URL}/oauth/token`];
+        pft.verify(token, trustedIssuers).then((decoded) => {
+             log.debug('verify', decoded);
+             res.send(decoded);
+        }).catch((err) => {
+            log.debug('verify.error', err);
+            res.send(err);
+        });
+      } else {
+        res.redirect('/login');
+      }
     });
 
   } else {
@@ -48,7 +63,12 @@ module.exports = (app) => {
     app.get([
       '/login',
       '/logout',
-      '/callback'
+      '/callback',
+      '/userinfo',
+      '/user/info',
+      '/user/verify',
+      '/oauth/user',
+      '/oauth/verify',
     ], (req, res) => {
       log.debug('authentication not configured');
       res.redirect('/');

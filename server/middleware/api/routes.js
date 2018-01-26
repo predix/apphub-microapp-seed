@@ -1,9 +1,10 @@
+const controller = require('./controller');
+const log = require('../../common/logger')('controllers:api');
+
 /**
  * @description API Routes
  */
 module.exports = (app) => {
-  const log = app.middleware.application.getLogger('controllers:api');
-  const controller = app.controllers.api.controller;
 
   app.route('/api')
     .get(controller.index);
@@ -18,5 +19,5 @@ module.exports = (app) => {
     .delete(controller.delete);
 
 
-  return this;
+  return app;
 };

@@ -1,13 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const log = require('../common/logger')('models/nav');
+const log = require('../../common/logger')('middleware/nav/model');
 
-/**
- * nav model
- */
 module.exports = function(app) {
-  const navFilePath = path.resolve(__dirname, '../nav.json');
-
+  const navFilePath = path.resolve(__dirname, '../../nav.json');
+  var nav = {};
   var navMap = {};
 
   const readNavFile = () => {
@@ -44,17 +41,22 @@ module.exports = function(app) {
   };
 
 
-  this.mapToArray = mapToArray;
-  this.read = readNavFile;
-  this.update = update;
-  this.get = () => {
+  nav.mapToArray = mapToArray;
+  nav.read = readNavFile;
+  nav.update = update;
+  nav.get = () => {
     return readNavFile();
   };
 
-  this.toArray = () =>{
+  nav.toArray = () =>{
     return mapToArray(navMap);
   };
 
-  return this;
+  app.use((req, res, next) => {
+    req.app.locals.nav = nav;
+    next();
+  });
+
+  return app;
 
 };

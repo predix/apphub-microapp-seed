@@ -12,38 +12,71 @@ The build stack is completely new and will change the way you develop applicatio
 After you clone the repo.
 
 ```
-$ yarn install
+$ npm install
 ```
 
 1. Develop
 
-  ```
-  $ yarn dev
-  ```
-  
+```
+$ npm run dev
+```
+
 2. Test
 
-  ```
-  $ yarn test
-  ```
+```
+$ npm test
+```
 
-3. Build 
+3. Build for production
 
-  ```
-  $ yarn build
-  ```
-  
+```
+$ npm run dist
+```
+
 4. Deploy
 
-  ```
-  $ yarn deploy
-  ```
-  
+```
+$ npm run deploy
+```
+
 4. Start
 
-  ```
-  $ yarn start
-  ```
+```
+$ npm start
+```
+
+
+
+## Notes
+
+
+```
+# Build the frontend on development mode
+webpack
+ 
+# Build the frontend on production mode
+NODE_ENV=production webpack
+ 
+# Build the backend on development mode
+BUILD_TARGET=backend webpack
+ 
+# Build the backend on production mode
+NODE_ENV=production BUILD_TARGET=backend webpack
+ 
+# Build the backend on development mode, as a commonjs library
+BUILD_AS_LIB=true BUILD_TARGET=backend webpack
+ 
+# Build the backend on production mode, as a commonjs library
+BUILD_AS_LIB=true NODE_ENV=production BUILD_TARGET=backend webpack
+
+```
+
+
+
+
+
+
+
 
 
 

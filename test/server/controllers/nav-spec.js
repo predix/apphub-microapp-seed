@@ -9,7 +9,7 @@ describe('/nav', () => {
   var app;
 
   before(function (done) {
-    app = requireHelper('server').getExpressApp();
+    app = require('../../../server/index').getExpressApp();
     done();
   });
 
