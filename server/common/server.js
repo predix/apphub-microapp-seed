@@ -17,6 +17,7 @@ class Server {
       app = a;
     }
     this.app = app;
+    this.app.use(express.static('./'));
 
     load({
       verbose: false,
@@ -41,9 +42,11 @@ class Server {
     if (!port) {
       port = process.env.PORT;
     }
+
     http.createServer(this.app).listen(port, () => {
-      console.log(`Server running in ${process.env.NODE_ENV || 'development'}
-      @: ${os.hostname()} on port: ${port}`);
+      console.log(`Server running in ${process.env.NODE_ENV || 'development'}`);
+      console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
+
       if (callback) {
         callback(this.app);
       }

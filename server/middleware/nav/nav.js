@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const log = require('../common/logger')('models/nav');
+const log = require('../../common/logger')('middleware/nav/model');
 
 /**
  * nav model
  */
 module.exports = function(app) {
-  const navFilePath = path.resolve(__dirname, '../nav.json');
+  const navFilePath = path.resolve(__dirname, '../../nav.json');
 
   var navMap = {};
 

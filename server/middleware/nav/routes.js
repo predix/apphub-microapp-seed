@@ -1,9 +1,10 @@
+const controller = require('./controller');
+const log = require('../../common/logger')('controllers:nav');
+
 /**
  * @description Nav Router
  */
 module.exports = (app) => {
-  const log = app.middleware.application.getLogger('controllers:nav');
-  const controller = app.controllers.nav.controller;
 
   app
     .route(['/nav','/api/nav'])
@@ -13,5 +14,5 @@ module.exports = (app) => {
     .post(controller.post)
     .delete(controller.delete);
 
-  return this;
+  return app;
 };

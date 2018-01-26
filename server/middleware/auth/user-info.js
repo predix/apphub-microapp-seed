@@ -1,7 +1,7 @@
 //custom middleware to get the user information from UAA
 //function below hits the UAA endpoint with the access token and fetches user information
 const request = require('request');
-const log = require('./logger')('user-info');
+const log = require('../../common/logger')('user-info');
 
 const getUserInfo = (accessToken, uaaURL, callback) => {
   log.debug('getUserInfo', uaaURL);

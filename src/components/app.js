@@ -75,7 +75,8 @@ UAA_CLIENT_SECRET   = test
               </pre>
 
               <a href="/login" class="btn">Login</a>
-              <a href="/userinfo" class="btn">User Info</a>
+              <a href="/user/info" class="btn">User Info</a>
+              <a href="/user/verify" class="btn">Verify Token</a>
               <a href="/logout" class="btn">Logout</a>
             </section>
           </div>

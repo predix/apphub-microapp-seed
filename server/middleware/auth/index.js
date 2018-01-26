@@ -1,15 +1,12 @@
-const passportConfig = require('../common/passport');
-const userInfo = require('../common/user-info');
-
+const passportConfig = require('./passport');
+const userInfo = require('./user-info');
+const log = require('../../common/logger')('middleware:auth');
 /**
  * This middleware will handle the authentication of the application. (If enabled);
  * @param app {Express} The application instance that will be attached to.
  * @returns {*}
  */
-module.exports = (app) => {
-  const log = app.middleware.application.getLogger('middleware:auth');
-
-
+module.exports = function(app){
   if (process.env.UAA_URL) {
     log.debug('setting up oauth with', process.env.UAA_URL);
 
@@ -38,8 +35,25 @@ module.exports = (app) => {
     });
 
     // route to fetch user info from UAA for use in the browser
-    app.get('/userinfo', userInfo(process.env.UAA_URL), (req, res) => {
+    app.get(['/user/info', '/oauth/user'], userInfo(process.env.UAA_URL), (req, res) => {
       res.send(req.user);
+    });
+
+    // route to fetch user info from UAA for use in the browser
+    app.get(['/user/verify', '/oauth/verify'], (req, res) => {
+      const pft = require('predix-fast-token');
+      const token = req.user.currentUser.access_token;
+      const trustedIssuers = [`${process.env.UAA_URL}/oauth/token`];
+      pft.verify(token, trustedIssuers).then((decoded) => {
+           // The token is valid, not expired and from a trusted issuer
+           // Use the value of the decoded token as you wish.
+           console.log('Good token for', decoded.user_name);
+           res.send(decoded);
+      }).catch((err) => {
+          // Token is not valid, or expired, or from an untrusted issuer.
+          console.log('No access for you', err);
+          res.send(err);
+      });
     });
 
   } else {

@@ -1,32 +1,68 @@
 require('./common/env');
+const express = require('express');
+const routesList = require('express-api-routes-list');
+const path = require('path');
 const config = require('../config');
 const Server = require('./common/server');
 const log = require('./common/logger')('server');
+const server = new Server(null, config).router();
+const app = server.getExpressApp();
+const middleware = require('./middleware');
+middleware(app);
 
-const {env} = process;
-const app = new Server(null, config).router();
-const port = env.PORT || 9000;
-
-//If development mode
+const isDeveloping = process.env.NODE_ENV !== 'production';
+const port = isDeveloping ? 9000 : process.env.PORT;
+/*
+// If development mode
 if (env.NODE_ENV === 'development') {
   log.debug('\nLoading webpack middleware');
 
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const config = require('../webpack.config.js');
-  const compiler = webpack(config);
 
   app.getExpressApp().use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath
   }));
+}*/
+
+if (isDeveloping) {
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const config = require('../webpack.config.js');
+  const compiler = webpack(config);
+  const devMiddleware = webpackDevMiddleware(compiler, {
+    publicPath: '/',
+    contentBase: '../src',
+    stats: {
+      colors: true,
+      hash: false,
+      timings: true,
+      chunks: false,
+      chunkModules: false,
+      modules: false
+    }
+  });
+
+  app.use(devMiddleware);
+  app.use(webpackHotMiddleware(compiler));
+  app.get('*', function response(req, res) {
+    res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../dist/index.html')));
+    res.end();
+  });
+} else {
+  app.use(express.static(__dirname + '/dist'));
+  app.get('*', function response(req, res) {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+  });
 }
 
 if (require.main === module) {
   log.debug('server was ran directly');
-  app.listen(port, () =>{
+  console.log(routesList(app).toString());
+
+  server.listen(port, () => {
     console.log(`Running on port ${port}`)
   });
 } else {
   log.debug('server was required as a module');
-  module.exports = app;
+  module.exports = server;
 }

@@ -8,7 +8,7 @@ const log = Logger('application');
 /**
  * Application level middleware
  */
-module.exports = (app) => {
+module.exports = function(app) {
 
   const sessionOptions = {
     secret: process.env.SESSION_SECRET,
@@ -64,7 +64,7 @@ module.exports = (app) => {
 
   // TODO: Production only settings
   // ========================================================================
-  if (app.get('env') === 'production') {
+  if (process.env.NODE_ENV === 'production') {
 
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
@@ -75,11 +75,11 @@ module.exports = (app) => {
   app.use(errorHandler);
 
   // TODO: Add some access methods
-  this.getLogger = (name) => {
+  app.getLogger = (name) => {
     return Logger(name);
   };
 
-  this.checkAuthentication = (req, res, next) => {
+  app.checkAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) {
       next();
     } else {
@@ -87,5 +87,5 @@ module.exports = (app) => {
     }
   }
 
-  return this;
+  return app;
 };

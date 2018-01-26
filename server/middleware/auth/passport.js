@@ -1,5 +1,5 @@
 'use strict';
-const log = require('./logger')('passport');
+const log = require('../../common/logger')('passport');
 const passport = require('passport');
 const CloudFoundryStrategy = require('passport-predix-oauth').Strategy;
 const OAuth2RefreshTokenStrategy = require('passport-oauth2-middleware').Strategy;

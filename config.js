@@ -6,8 +6,8 @@ const Config = {
   pkg: pkg,
 	paths: {
 		static: './public',
-		dest: './build',
-		src: './src',
+		dest: path.resolve(__dirname, './build'),
+		src: path.resolve(__dirname, './src'),
 		test: './test',
 		modules: [
 			path.resolve(__dirname, './src'),
