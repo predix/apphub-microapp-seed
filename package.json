@@ -135,7 +135,7 @@
   },
   "nyc": {
     "check-coverage": true,
-    "per-file": true,
+    "per-file": false,
     "lines": 10,
     "statements": 10,
     "functions": 0,

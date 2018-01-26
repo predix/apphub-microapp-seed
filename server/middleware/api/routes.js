@@ -1,10 +1,11 @@
+const controller = require('./controller');
+const log = require('../../common/logger')('controllers:api');
 
 /**
  * @description API Routes
  */
 module.exports = (app) => {
-  const controller = require('./controller');
-  const log = require('../../common/logger')('controllers:api');
+
   app.route('/api')
     .get(controller.index);
 

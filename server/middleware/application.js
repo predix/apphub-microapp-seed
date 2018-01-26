@@ -34,16 +34,18 @@ module.exports = function(app) {
 
   //Handle ajax errors so clients wont hang
   const clientErrorHandler = (err, req, res, next) => {
+    log.error('clientErrorHandler', err);
     if (req.xhr) {
       res.status(500).send({error: 'Something failed!'});
     } else {
-      next(err)
+      next(err);
     }
   };
 
   //Handle rendering error
   const errorHandler = (err, req, res, next) => {
-    res.status(500).render('error', {error: err});
+    log.error('errorHandler', err);
+    res.status(500).send({error: err});
   };
 
   //Handle logging error
@@ -65,7 +67,6 @@ module.exports = function(app) {
   // TODO: Production only settings
   // ========================================================================
   if (process.env.NODE_ENV === 'production') {
-
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
   }

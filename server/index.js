@@ -10,8 +10,8 @@ const app = server.getExpressApp();
 const middleware = require('./middleware');
 middleware(app);
 
-const isDeveloping = process.env.NODE_ENV !== 'production';
-const port = isDeveloping ? 9000 : process.env.PORT;
+const isDeveloping = process.env.NODE_ENV === 'development';
+const port = process.env.PORT || 9000;
 /*
 // If development mode
 if (env.NODE_ENV === 'development') {
@@ -49,9 +49,9 @@ if (isDeveloping) {
     res.end();
   });
 } else {
-  app.use(express.static(__dirname + '/dist'));
+  app.use(express.static(path.resolve(__dirname, '../dist')));
   app.get('*', function response(req, res) {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
   });
 }
 

@@ -40,20 +40,24 @@ module.exports = function(app){
     });
 
     // route to fetch user info from UAA for use in the browser
-    app.get(['/user/verify', '/oauth/verify'], (req, res) => {
-      const pft = require('predix-fast-token');
-      const token = req.user.currentUser.access_token;
-      const trustedIssuers = [`${process.env.UAA_URL}/oauth/token`];
-      pft.verify(token, trustedIssuers).then((decoded) => {
-           // The token is valid, not expired and from a trusted issuer
-           // Use the value of the decoded token as you wish.
-           console.log('Good token for', decoded.user_name);
-           res.send(decoded);
-      }).catch((err) => {
-          // Token is not valid, or expired, or from an untrusted issuer.
-          console.log('No access for you', err);
-          res.send(err);
-      });
+    app.get(['/user/verify', '/oauth/verify'], (req, res, next) => {
+      if(req.user && req.user.currentUser){
+        const pft = require('predix-fast-token');
+        const token = req.user.currentUser.access_token;
+        const trustedIssuers = [`${process.env.UAA_URL}/oauth/token`];
+        pft.verify(token, trustedIssuers).then((decoded) => {
+             // The token is valid, not expired and from a trusted issuer
+             // Use the value of the decoded token as you wish.
+             console.log('Good token for', decoded.user_name);
+             res.send(decoded);
+        }).catch((err) => {
+            // Token is not valid, or expired, or from an untrusted issuer.
+            console.log('No access for you', err);
+            res.send(err);
+        });
+      } else {
+        next();
+      }
     });
 
   } else {
@@ -62,7 +66,12 @@ module.exports = function(app){
     app.get([
       '/login',
       '/logout',
-      '/callback'
+      '/callback',
+      '/userinfo',
+      '/user/info',
+      '/user/verify',
+      '/oauth/user',
+      '/oauth/verify',
     ], (req, res) => {
       log.debug('authentication not configured');
       res.redirect('/');

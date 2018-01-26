@@ -12,9 +12,7 @@ describe('ApiController', function() {
   const baseUrl = '/api/example';
 
   before(function (done) {
-    //app = requireHelper('server/controllers/api');
-    //todo - test in isolation
-    app = requireHelper('server').getExpressApp();
+    app = require('../../../server/index').getExpressApp();
     done();
   });
 

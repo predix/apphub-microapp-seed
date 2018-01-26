@@ -4,7 +4,7 @@ const log = require('../../common/logger')('controllers:nav');
 /**
  * @description Nav Router
  */
-module.exports = (app) => {
+module.exports = function(app){
 
   app
     .route(['/nav','/api/nav'])

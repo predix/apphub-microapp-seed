@@ -17,16 +17,8 @@ class Server {
       app = a;
     }
     this.app = app;
-    this.app.use(express.static('./'));
 
-    load({
-      verbose: false,
-      cwd: path.resolve(__dirname, '../../server')
-    })
-    .include('models')
-    .then('middleware')
-    .then('controllers')
-    .into(this.app);
+
   }
 
   getExpressApp(){

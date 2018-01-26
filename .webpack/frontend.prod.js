@@ -10,14 +10,17 @@ const webpackPlugins = [
   new webpack.BannerPlugin({
     banner: "hash:[hash], chunkhash:[chunkhash], name:[name], filebase:[filebase], query:[query], file:[file]"}),
     new webpack.optimize.CommonsChunkPlugin({name: 'manifest', async: true, minChunks: Infinity}),
-    new CriticalPlugin({
+    /*
+  new CriticalPlugin({
       src: 'index.html',
       inline: true,
       minify: true,
       dest: 'index.html'
     }),
+  */
     //https://github.com/NekR/offline-plugin#setup
-    new OfflinePlugin({
+  /*
+  new OfflinePlugin({
       relativePaths: true,
       AppCache: false,
       ServiceWorker: {
@@ -25,7 +28,7 @@ const webpackPlugins = [
         // TODO: This needs to be the apphub/{microapp-path}
         scope: ''
       }
-    }),
+    }),*/
     //https://webpack.js.org/plugins/commons-chunk-plugin/#options
     new webpack.optimize.CommonsChunkPlugin({
       async: false,
@@ -57,7 +60,10 @@ const webpackPlugins = [
 
 module.exports = () => ({
     extends: 'base',
-
+  context: path.resolve(__dirname, '../src'),
+  entry: {
+    main: 'main.js'
+  },
     //entry: {},
     //output: {},
     plugins: webpackPlugins

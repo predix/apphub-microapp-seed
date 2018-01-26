@@ -3,6 +3,7 @@ const middleware = require('i18next-express-middleware');
 const locales = require('../locales');
 
 const Lingo = {
+  locales: locales,
   create: ({
     defaultLanguage
   }, languagesDict) => {
@@ -12,10 +13,4 @@ const Lingo = {
     }
   }
 };
-
-module.exports = (app) => {
-  app.use(Lingo.create({
-    defaultLanguage: 'en'
-  }, locales).middleware());
-  return this;
-};
+module.exports = Lingo;
