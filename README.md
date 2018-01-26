@@ -17,152 +17,81 @@ $ npm install
 
 1. Develop
 
-```
-$ npm run dev
-```
+  ```
+  $ npm run dev
+  ```
 
 2. Test
 
-```
-$ npm test
-```
+  ```
+  $ npm test
+  ```
 
 3. Build client/server for production
 
-```
-$ npm run dist
-```
+  ```
+  $ npm run dist
+  ```
 
 4. Deploy
 
-```
-$ npm run deploy
-```
+  ```
+  $ npm run deploy
+  ```
 
 4. Start
 
-```
-$ npm start
-```
-
-
-
-## Notes
-
-
-```
-# Build the frontend on development mode
-webpack
- 
-# Build the frontend on production mode
-NODE_ENV=production webpack
- 
-# Build the backend on development mode
-BUILD_TARGET=backend webpack
- 
-# Build the backend on production mode
-NODE_ENV=production BUILD_TARGET=backend webpack
- 
-# Build the backend on development mode, as a commonjs library
-BUILD_AS_LIB=true BUILD_TARGET=backend webpack
- 
-# Build the backend on production mode, as a commonjs library
-BUILD_AS_LIB=true NODE_ENV=production BUILD_TARGET=backend webpack
-
-```
-
-
-
-
-
-
-
-
+  ```
+  $ npm start
+  ```
 
 
 ## Directory Structure
 The following is the directory structure:
 
 ```
+server
+├── common
+│   ├── database.js
+│   ├── env.js
+│   ├── logger.js
+│   ├── server.js
+│   └── swagger
+│       ├── Api.yaml
+│       └── index.js
+├── index.js
+├── middleware
+│   ├── api
+│   │   ├── controller.js
+│   │   ├── db.js
+│   │   ├── index.js
+│   │   └── routes.js
+│   ├── app
+│   │   └── index.js
+│   ├── auth
+│   │   ├── index.js
+│   │   ├── passport.js
+│   │   └── user-info.js
+│   ├── index.js
+│   ├── localize
+│   │   ├── index.js
+│   │   └── locales
+│   │       ├── index.js
+│   │       ├── locale-ar.json
+│   │       ├── locale-de.json
+│   │       ├── locale-en.json
+│   │       ├── locale-es.json
+│   │       ├── locale-hi.json
+│   │       └── locale-zh.json
+│   ├── nav
+│   │   ├── controller.js
+│   │   ├── index.js
+│   │   ├── nav.js
+│   │   └── routes.js
+│   └── swagger
+│       └── index.js
+└── nav.json
 ```
-
----
-
-
-## Server
-The server middleware is setup as 'features'
-
-
-For example:
-
-```
-
-```
-
-Here is `server/controllers/nav/routes.js` file contents:
-
-```js
-/**
- * @description Nav Router
- */
-module.exports = (app) => {
-  const log = app.middleware.application.getLogger('controllers:nav');
-  const controller = app.controllers.nav.controller;
-
-  app
-    .route(['/nav','/api/nav'])
-    .all(controller.all)
-    .get(controller.get)
-    .put(controller.put)
-    .post(controller.post)
-    .delete(controller.delete);
-
-  return this;
-};
-```
-
-Here is `server/controllers/nav/controller.js` file contents:
-
-```js
-/**
- * @description NavController - handles CRUD for navigation items.
- */
-class NavController {
-  all(req, res, next){
-    next();
-  }
-  get(req, res, next){
-    req.app.models.nav.read()
-      .then(n => res.status(200).send(n))
-      .catch(next);
-  }
-  put(req, res, next){
-    req.app.models.nav
-      .update(req.body)
-      .then(r => res.status(200).send(r))
-      .catch(next);
-  }
-  post(req, res, next){
-    if(req.body){
-      req.app.models.nav
-        .update(req.body)
-        .then(r => res.status(201).send(r))
-        .catch(next);
-    } else {
-      res.status(400).send({error:'Must provide a request body'});
-    }
-  }
-  delete(req, res, next){
-    res.status(200).json({
-      message: 'Removed',
-      headers: req.headers
-    });
-  }
-}
-module.exports = new NavController();
-```
-
-As you can see the code is clean and modular.
 
 ---
 
@@ -173,13 +102,13 @@ Here is how to build and run this app as a docker container.
 1. Build the image: 
 
 ```
-$ yarn docker:build
+$ npm run docker:build
 ```
 
 2. Run the image:
 
 ```
-$ yarn docker:run
+$ npm run docker:run
 ```
 
 3. Print the output of your app:
@@ -215,16 +144,29 @@ The following is the contents of the `test` directory:
 test
 ├── e2e
 │   ├── commands
+│   │   ├── loginUser.js
+│   │   └── logoutUser.js
 │   ├── globals.js
 │   ├── nightwatch.conf.js
 │   ├── pages
+│   │   ├── app.js
+│   │   └── login.js
 │   └── specs
+│       ├── 0-app-spec.js
+│       └── 1-login-spec.js
 ├── helpers.js
 └── server
-    ├── app-spec.js
     ├── common
-    └── controllers
+    │   ├── db-spec.js
+    │   ├── logger-spec.js
+    │   └── server-spec.js
+    └── middleware
+        ├── api-spec.js
+        ├── app-spec.js
+        ├── auth-spec.js
         └── nav-spec.js
+
+7 directories, 16 files
 ```
 
 The testing setup is pre-configured to run Nightwatch as the e2e runner and Mocha for the server.
@@ -233,14 +175,14 @@ The testing setup is pre-configured to run Nightwatch as the e2e runner and Moch
 To run e2e tests launch your application and in a separate terminal execute the following:
 
 ```
-$ yarn test:e2e
+$ npm run test:e2e
 ```
 
 ### Unit tests
 To run unit tests against your server code execute the following:
 
 ```
-$ yarn test
+$ npm test
 ```
 > You will get detailed code coverage in the `coverage` directory.
 

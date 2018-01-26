@@ -38,15 +38,6 @@ export default class App {
 
 
           <div class="px-card u-mb">
-            <header>Webpack</header>
-            <section>
-              <p>We are using Webpack building the client-side, which makes adding any framework of very easy.</p>
-              <p>Simply install the framework of choice using <code>npm</code>, import that library in your application and your ready to go.</p>
-              <p>There might be some minor configuration changes to match your applications needs. <a target="_blank" href="https://webpack.js.org/configuration/">https://webpack.js.org/configuration</a></p>
-            </section>
-          </div>
-
-          <div class="px-card u-mb">
             <header>Swagger API</header>
             <section>
               <p>You can modify the <code>api.yaml</code> file is located in the <code>server/common/swagger</code> directory.</p>

@@ -10,6 +10,8 @@ module.exports = () => ({
     },
     //output: {},
     plugins: [
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
       //https://github.com/jantimon/html-webpack-plugin#configuration
       new HtmlWebpackPlugin({
         template: './index.ejs',
