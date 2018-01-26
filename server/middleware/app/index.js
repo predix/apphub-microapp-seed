@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 const session = require('express-session');
-const Logger = require('../common/logger');
+const Logger = require('../../common/logger');
 const log = Logger('application');
 /**
  * Application level middleware
@@ -36,7 +36,7 @@ module.exports = function(app) {
   const clientErrorHandler = (err, req, res, next) => {
     log.error('clientErrorHandler', err);
     if (req.xhr) {
-      res.status(500).send({error: 'Something failed!'});
+      res.status(500).json({error: 'Something failed!'});
     } else {
       next(err);
     }
@@ -45,7 +45,12 @@ module.exports = function(app) {
   //Handle rendering error
   const errorHandler = (err, req, res, next) => {
     log.error('errorHandler', err);
-    res.status(500).send({error: err});
+    if(req.is('application/json')){
+      res.status(500).json({error: 'Something failed!'});
+    } else {
+      res.status(500).send({error: err});
+    }
+
   };
 
   //Handle logging error
@@ -55,7 +60,7 @@ module.exports = function(app) {
   };
 
   app.set('x-powered-by', false);
-  app.set('trust proxy', 1);
+
 
   app.use(cookieParser(process.env.SESSION_SECRET));
   app.use(session(sessionOptions));
@@ -63,9 +68,9 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
 
-  // TODO: Production only settings
-  // ========================================================================
+  /* istanbul ignore next */
   if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, './public'), staticServerConfig));
     app.use(serveStatic(path.resolve(__dirname, '.'), staticServerConfig));

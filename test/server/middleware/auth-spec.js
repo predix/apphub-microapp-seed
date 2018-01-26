@@ -1,11 +1,7 @@
 'use strict';
 const request = require('supertest');
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
 
-//const locales = requireHelper('server/locales');
-
-describe('/login', () => {
+describe('Auth Middleware', () => {
   var app;
 
   before(function (done) {

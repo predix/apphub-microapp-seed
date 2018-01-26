@@ -150,7 +150,7 @@
       "lcov",
       "text-summary"
     ],
-    "cache": true,
+    "cache": false,
     "all": true,
     "report-dir": "./coverage"
   }

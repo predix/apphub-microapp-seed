@@ -28,11 +28,14 @@ module.exports = (function(){
   		done(null, profile);
   	}*/);
 
+
+    /* istanbul ignore next */
     passport.serializeUser(function(user, done) {
       log.debug('serializeUser', user);
       done(null, user);
     });
 
+    /* istanbul ignore next */
     passport.deserializeUser(function(obj, done) {
       log.debug('deserializeUser');
       done(null, obj);

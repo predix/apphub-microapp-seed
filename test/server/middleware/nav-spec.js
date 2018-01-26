@@ -1,11 +1,9 @@
 'use strict';
 const request = require('supertest');
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
 
 //const locales = requireHelper('server/locales');
 
-describe('/nav', () => {
+describe('Nav Middleware', () => {
   var app;
 
   before(function (done) {

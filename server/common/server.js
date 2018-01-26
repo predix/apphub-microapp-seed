@@ -3,11 +3,11 @@ const express = require('express');
 const proxy = require('express-request-proxy');
 const routesList = require('express-api-routes-list');
 const os = require('os');
-const http = require('http');
+
 const log = require('./logger')('server');
 /* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
 //const swaggerify = require('./swagger');
-
+var http;
 class Server {
   constructor(a, config) {
     if(a){
@@ -30,8 +30,8 @@ class Server {
     if (!port) {
       port = process.env.PORT;
     }
-
-    http.createServer(this.app).listen(port, () => {
+    http = require('http').createServer(this.app);
+    http.listen(port, () => {
       console.log(`Server running in ${process.env.NODE_ENV || 'development'}`);
       console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
       if (callback) {

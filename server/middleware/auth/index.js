@@ -8,6 +8,7 @@ const log = require('../../common/logger')('middleware:auth');
  */
 module.exports = function(app){
   if (process.env.UAA_URL) {
+    /* istanbul ignore next */
     log.debug('setting up oauth with', process.env.UAA_URL);
 
     const passport = passportConfig.configurePassportStrategy();
@@ -58,6 +59,7 @@ module.exports = function(app){
     });
 
   } else {
+    /* istanbul ignore next */
     log.info('Setting up mock oauth routes');
 
     app.get([

@@ -13,6 +13,7 @@ middleware(app);
 const isDeveloping = process.env.NODE_ENV === 'development';
 const port = process.env.PORT || 9000;
 
+/* istanbul ignore next */
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -38,9 +39,10 @@ if (process.env.NODE_ENV === 'development') {
     res.end();
   });
 } else {
+  /*
   app.get('*', function response(req, res) {
     res.sendFile(path.join(__dirname, './index.html'));
-  });
+  });*/
 }
 
 if (require.main === module) {

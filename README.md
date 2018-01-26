@@ -27,7 +27,7 @@ $ npm run dev
 $ npm test
 ```
 
-3. Build for production
+3. Build client/server for production
 
 ```
 $ npm run dist
@@ -84,63 +84,19 @@ BUILD_AS_LIB=true NODE_ENV=production BUILD_TARGET=backend webpack
 The following is the directory structure:
 
 ```
-.
-├── public
-│   ├── api-explorer
-│   ├── assets
-│   └── favicon.ico
-├── server
-│   ├── common
-│   ├── controllers
-│   ├── locales
-│   ├── middleware
-│   ├── models
-│   ├── index.js
-│   └── nav.json
-├── src
-│   ├── components
-│   ├── style
-│   ├── config.json
-│   ├── index.ejs
-│   ├── main.js
-│   ├── manifest.json
-│   └── pwa.js
-├── test
-│   ├── e2e
-│   ├── server
-│   └── helpers.js
-├── tools
-│   ├── README.md
-│   ├── build.sh
-│   └── create-setup-uaa.sh
-├── Dockerfile
-├── Jenkinsfile
-├── LICENSE.md
-├── README.md
-├── bower.json
-├── config.js
-├── manifest.yml
-├── package.json
-├── postcss.config.js
-├── webpack.config.js
-├── whitesource.config.json
-└── yarn.lock
 ```
 
 ---
 
 
 ## Server
-The server controllers/models/middleware are setup in different folders. 
-> The routes are loaded via folders by (consign)[https://www.npmjs.com/package/consign].
+The server middleware is setup as 'features'
+
 
 For example:
 
 ```
-server/controllers/
-└── nav
-    ├── controller.js
-    └── routes.js
+
 ```
 
 Here is `server/controllers/nav/routes.js` file contents:

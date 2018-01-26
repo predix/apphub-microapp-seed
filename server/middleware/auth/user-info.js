@@ -2,6 +2,7 @@ const request = require('request');
 const log = require('../../common/logger')('user-info');
 
 const getUserInfo = (accessToken, uaaURL, callback) => {
+  /* istanbul ignore next */
   log.debug('getUserInfo', uaaURL);
   var options = {
     method: 'GET',

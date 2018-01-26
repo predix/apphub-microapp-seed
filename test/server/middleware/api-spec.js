@@ -3,10 +3,10 @@ const request = require('supertest');
 const expect = require('chai').expect;
 const helpers = require('../../helpers');
 const requireHelper = helpers.require;
-const locales = requireHelper('server/locales');
+const locales = requireHelper('server/middleware/localize/locales');
 
 
-describe('ApiController', function() {
+describe('Api Middleware', function() {
   this.timeout(20000);
   var app, mockId, mockDoc;
   const baseUrl = '/api/example';
