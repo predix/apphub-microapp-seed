@@ -46,13 +46,10 @@ module.exports = function(app){
         const token = req.user.currentUser.access_token;
         const trustedIssuers = [`${process.env.UAA_URL}/oauth/token`];
         pft.verify(token, trustedIssuers).then((decoded) => {
-             // The token is valid, not expired and from a trusted issuer
-             // Use the value of the decoded token as you wish.
-             console.log('Good token for', decoded.user_name);
+             log.debug('verify', decoded);
              res.send(decoded);
         }).catch((err) => {
-            // Token is not valid, or expired, or from an untrusted issuer.
-            console.log('No access for you', err);
+            log.debug('verify.error', err);
             res.send(err);
         });
       } else {

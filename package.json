@@ -9,7 +9,7 @@
   },
   "main": "src/main.js",
   "scripts": {
-    "copy": "cpy '*.*' 'build/*.*'  'public/**/*.*' 'server/**/*.*' ./dist --parents",
+    "copy": "cpy 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
     "bower": "bower install --force-latest --allow-root",
     "pretest": "rimraf coverage",
     "zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
@@ -24,8 +24,7 @@
     "lint": "eslint {src,test}",
     "start": "cross-env NODE_ENV=production node server",
     "dev": "cross-env NODE_ENV=development node server",
-    "prebuild": "rimraf build",
-    "build": "cross-env NODE_ENV=production webpack --env dist",
+    "build": "npm run build:frontend && npm run build:backend",
     "docs": "esdoc",
     "predist": "rimraf dist",
     "dist": "npm run bower && npm run build && npm run copy && npm run zip",

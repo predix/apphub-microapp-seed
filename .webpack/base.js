@@ -104,13 +104,7 @@ module.exports = () => ({
       'NODE_ENV': process.env.NODE_ENV,
       'PRODUCTION': process.env.NODE_ENV === 'production'
     })
-
-
-
   ],
 
-  devtool: (
-    process.env.NODE_ENV === 'production'
-    ? 'source-map'
-    : 'cheap-module-eval-source-map')
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map'
 });
