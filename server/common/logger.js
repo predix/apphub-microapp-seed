@@ -1,4 +1,3 @@
-'use strict';
 const debug = require('debug');
 const ns = require('../../package.json').name;
 /**

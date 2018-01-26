@@ -1,7 +1,3 @@
-//const log = require('../../common/logger')('controllers:nav');
-/**
- * @description Nav Controller
- */
 class NavController {
   constructor(){
   }

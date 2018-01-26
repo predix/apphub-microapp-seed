@@ -1,9 +1,6 @@
 const controller = require('./controller');
 const log = require('../../common/logger')('controllers:nav');
 
-/**
- * @description Nav Router
- */
 module.exports = function(app){
 
   app

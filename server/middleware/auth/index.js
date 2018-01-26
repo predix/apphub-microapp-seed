@@ -53,7 +53,7 @@ module.exports = function(app){
             res.send(err);
         });
       } else {
-        next();
+        res.redirect('/login');
       }
     });
 

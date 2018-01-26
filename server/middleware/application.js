@@ -56,7 +56,6 @@ module.exports = function(app) {
 
   app.set('x-powered-by', false);
   app.set('trust proxy', 1);
-  app.use(serveStatic(path.resolve(__dirname, '..', '..', 'public'), staticServerConfig));
 
   app.use(cookieParser(process.env.SESSION_SECRET));
   app.use(session(sessionOptions));
@@ -68,7 +67,8 @@ module.exports = function(app) {
   // ========================================================================
   if (process.env.NODE_ENV === 'production') {
     log.debug('Setting production only settings.');
-    app.use(serveStatic(path.resolve(__dirname, '..', '..', 'build'), staticServerConfig));
+    app.use(serveStatic(path.resolve(__dirname, './public'), staticServerConfig));
+    app.use(serveStatic(path.resolve(__dirname, '.'), staticServerConfig));
   }
 
   app.use(logErrors);

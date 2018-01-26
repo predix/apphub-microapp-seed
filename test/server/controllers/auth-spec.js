@@ -37,7 +37,7 @@ describe('/login', () => {
   it('GET - /user/verify - responds successfully', (done) => {
     request(app)
       .get('/user/verify')
-      .expect(200, done);
+      .expect(302, done);
   });
 
 });

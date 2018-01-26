@@ -7,7 +7,7 @@ const Database = require('../../common/database');
  *
  */
 module.exports = function(app) {
-  const db = new Database(path.resolve(__dirname, '../../.db.json'), {user: {}, docs: []});
+  const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []});
   //app.locals.db = db;
   app.use((req, res, next)=>{
     req.app.locals.db = db;

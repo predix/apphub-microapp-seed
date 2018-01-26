@@ -12,18 +12,8 @@ middleware(app);
 
 const isDeveloping = process.env.NODE_ENV === 'development';
 const port = process.env.PORT || 9000;
-/*
-// If development mode
-if (env.NODE_ENV === 'development') {
-  log.debug('\nLoading webpack middleware');
 
-
-  app.getExpressApp().use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath
-  }));
-}*/
-
-if (isDeveloping) {
+if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -41,7 +31,6 @@ if (isDeveloping) {
       modules: false
     }
   });
-
   app.use(devMiddleware);
   app.use(webpackHotMiddleware(compiler));
   app.get('*', function response(req, res) {
@@ -49,16 +38,14 @@ if (isDeveloping) {
     res.end();
   });
 } else {
-  app.use(express.static(path.resolve(__dirname, '../dist')));
   app.get('*', function response(req, res) {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
+    res.sendFile(path.join(__dirname, './index.html'));
   });
 }
 
 if (require.main === module) {
   log.debug('server was ran directly');
   console.log(routesList(app).toString());
-
   server.listen(port, () => {
     console.log(`Running on port ${port}`)
   });
