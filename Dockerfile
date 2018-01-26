@@ -1,4 +1,4 @@
-FROM                      node:8
+FROM                      node:latest
 MAINTAINER                Jonnie Spratley <jonnie.spratley@ge.com>
 
 ENV DEBUG                 *
