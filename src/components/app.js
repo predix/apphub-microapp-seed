@@ -1,104 +1,57 @@
+import React from 'react'
+import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
+//import createBrowserHistory from 'history/createBrowserHistory';
+//const history = createBrowserHistory();
 
-/**
- * @description Vanilla JavaScript App
- */
-export default class App {
-  constructor(el){
-    console.log('App loaded');
-    this.el = el;
-    this.render();
+
+
+//Components
+import { AppHeader } from 'predix-ui';
+
+//Pages
+import About from '../pages/about';
+import Home from '../pages/home';
+import Dashboard from '../pages/dashboard';
+import Topics from '../pages/topics';
+import NoMatch from '../pages/404';
+
+
+const defaultNavItems = [
+  {id : "home", path: '/', label: "Home", icon: "px-fea:home"},
+  {id : "about", path: '/about', label: "About", icon: "px-fea:catalog"},
+  {id : "dashboard", path: '/dashboard', label: "Dashboard", icon: "px-fea:dashboard"},
+  {id : "topics", path: '/topics', label: "Topics", icon: "px-fea:log"}
+];
+
+
+export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      navItems: props.navItems || defaultNavItems
+    };
   }
-  render(){
-    this.el.innerHTML = `
-    <div class="pxh-wrapper app">
-      <div class="pxh-view-header pxh-view-header--wide@md pxh-view-header--narrow@lg pxh-view-header--nudge-until@md">
-        <h1 class="pxh-view-header__title flex flex--middle flex--center">
-          <a href="#" class="pxh-view-header__title-link">
-            Micro-App Seed
-          </a>
-        </h1>
+  componentDidMount(){
+    window.location.hash = '/';
+  }
+  changeRoute(e){
+    window.location.hash = e.selectedItem.path;
+  }
+  render() {
+    return (
+      <Router>
+      <div>
+        <AppHeader title="apphub-microapp-seed" items={this.state.navItems}  onChange={(e) => this.changeRoute(e)}>
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route path="/dashboard" component={Dashboard}/>
+            <Route path="/about" component={About}/>
+            <Route path="/topics" component={Topics}/>
+            <Route component={NoMatch}/>
+          </Switch>
+        </AppHeader>
+
       </div>
-      <div class="pxh-view pxh-view--wide@md pxh-view--narrow@lg">
-        <div class="u-p">
-
-          <div class="px-card u-mb">
-            <header>Overview</header>
-            <section>
-              <p>This simple micro-app seed contains just enough to get you started.</p>
-              <p>Some features include:</p>
-              <ul>
-                <li>Webpack</li>
-                <li>Swagger</li>
-                <li>Express</li>
-                <li>ES6 with Babel</li>
-                <li>and more...</li>
-              </ul>
-            </section>
-          </div>
-
-
-          <div class="px-card u-mb">
-            <header>Swagger API</header>
-            <section>
-              <p>You can modify the <code>api.yaml</code> file is located in the <code>server/common/swagger</code> directory.</p>
-              <p>You can also explore the API using the <a href="/api-explorer" target="_blank">API Explorer</a></p>
-            </section>
-          </div>
-
-          <div class="px-card u-mb">
-            <header>Notifications</header>
-            <section>
-              <p>When this micro-app is running in AppHub you can test the toast notifications.</p>
-              <button id="toastBtn" class="btn btn-primary">New Toast</button>
-            </section>
-          </div>
-
-          <div class="px-card u-mb">
-            <header>Authentication</header>
-            <section>
-              <p>This micro-app also has built in authentication using UAA. When running inside AppHub this is already taken care of.</p>
-              <p>If you want to use your own UAA authentication, you can set the following environment variables.</p>
-              <pre>
-UAA_URL             = https://uaa-instance.predix-uaa.run.aws-usw02-pr.ice.predix.io
-UAA_CALLBACK_URL    = http://localhost:9000/oauth/callback
-UAA_CLIENT_ID       = test-client
-UAA_CLIENT_SECRET   = test
-              </pre>
-
-              <a href="/login" class="btn">Login</a>
-              <a href="/user/info" class="btn">User Info</a>
-              <a href="/user/verify" class="btn">Verify Token</a>
-              <a href="/logout" class="btn">Logout</a>
-            </section>
-          </div>
-
-
-
-
-
-        </div>
-      </div>
-    </div>
-
-    `;
-    this.afterRender();
-  }
-  afterRender(){
-    this.el.querySelector('button').addEventListener('click', this.addToast.bind(this));
-  }
-  addToast(){
-    if(window.pxh){
-      console.log('Adding toast');
-      var toastObject = {
-        type : 'green',
-        //isPersistent : true,
-        icon : 'dashboard',
-        text : 'Hello, this is a message for you!',
-        timestamp: new Date().toString()
-      };
-      window.pxh.toast.add(toastObject);
-    } else {
-      console.warn('pxh needs to be in the window....But this will be changing');
-    }
+    </Router>)
   }
 }

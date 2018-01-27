@@ -1,16 +1,36 @@
 {
 	"sourceMaps": true,
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions", "safari >= 9"],
-        "node": "8"
-      }
-    }]
+    ["react"],
+    ["env"]
   ],
 	"plugins": [
 		"transform-runtime",
 		"transform-class-properties",
 		"transform-es2015-arrow-functions"
-	]
+	],
+  "env": {
+    "server": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "8"
+          }
+        }]
+      ]
+    },
+    "client": {
+      "plugins": [
+        "react-hot-loader/babel"
+      ],
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": {
+            "browsers": ["last 2 versions", "safari >= 9"]
+          }
+        }]
+      ]
+    }
+  }
 }
