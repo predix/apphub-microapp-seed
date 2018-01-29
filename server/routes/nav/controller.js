@@ -1,23 +1,22 @@
+const NavModel = require('./model');
+const nav = new NavModel();
 class NavController {
   constructor(){
   }
-  all(req, res, next){
-    next();
-  }
   get(req, res, next){
-    req.app.locals.nav.read()
+    nav.read()
       .then(n => res.status(200).send(n))
       .catch(next);
   }
   put(req, res, next){
-    req.app.locals.nav
+    nav
       .update(req.body)
       .then(r => res.status(200).send(r))
       .catch(next);
   }
   post(req, res, next){
     if(req.body){
-      req.app.locals.nav
+      nav
         .update(req.body)
         .then(r => res.status(201).send(r))
         .catch(next);

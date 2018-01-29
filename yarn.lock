@@ -3398,6 +3398,10 @@ express-api-routes-list@^1.1.2:
   dependencies:
     cli-table "^0.3.1"
 
+express-controller-routing@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/express-controller-routing/-/express-controller-routing-1.0.0.tgz#d9f01a24fa3aa36a2c48cb6c1cfed210273ff9d6"
+
 express-request-proxy@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/express-request-proxy/-/express-request-proxy-2.0.0.tgz#01919aec61e89a0f824fa5e6e733b8e063c9d64d"

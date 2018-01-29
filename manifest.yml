@@ -1,8 +1,8 @@
 ---
 applications:
-  - name: apphub-microapp-seed
+  - name: apphub-microapp-seed-next
     buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
-    memory: 1G
+    memory: 256M
     stack: cflinuxfs2
     instances: 2
     path: .
@@ -16,7 +16,7 @@ applications:
       NODE_ENV: 'production'
       DEBUG: 'apphub-microapp-seed:*'
       UAA_URL: https://test-uaa-instance.predix-uaa.run.aws-usw02-pr.ice.predix.io
-      UAA_CALLBACK_URL: http://localhost:9000/oauth/callback
+      UAA_CALLBACK_URL: https://apphub-microapp-seed-next.run.aws-usw02-pr.ice.predix.io/oauth/callback
       UAA_CLIENT_ID: test-client
       UAA_CLIENT_SECRET: test
       REQUEST_LIMIT: 500kb

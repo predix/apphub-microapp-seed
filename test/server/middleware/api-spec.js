@@ -9,7 +9,7 @@ const locales = requireHelper('server/middleware/localize/locales');
 describe('Api Middleware', function() {
   this.timeout(20000);
   var app, mockId, mockDoc;
-  const baseUrl = '/api/example';
+  const baseUrl = '/api/db';
 
   before(function (done) {
     app = require('../../../server/index').getExpressApp();

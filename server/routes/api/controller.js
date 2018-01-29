@@ -1,3 +1,7 @@
+const path = require('path');
+const Database = require('../../common/database');
+const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []});
+
 //const log = require('../../common/logger')('controllers/api');
 /**
  * @description API Controller
@@ -14,31 +18,31 @@ class ApiController {
   }
 
   all(req, res, next){
-    req.app.locals.db.allDocs(req.query)
+    db.allDocs(req.query)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).json(err));
   }
 
   get(req, res, next){
-    req.app.locals.db.get(req.params.id)
+    db.get(req.params.id)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).json(err));
   }
 
   put(req, res, next){
-    req.app.locals.db.put(req.body)
+    db.put(req.body)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).send(err));
   }
 
   post(req, res, next){
-    req.app.locals.db.post(req.body)
+    db.post(req.body)
       .then(resp => res.status(201).json(resp))
       .catch(err => res.status(400).send(err));
   }
 
   delete(req, res, next){
-    req.app.locals.db
+    db
       .remove(req.params.id)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).send(err));
