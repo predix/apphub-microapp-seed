@@ -68,6 +68,8 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
 
+
+
   /* istanbul ignore next */
   if (process.env.NODE_ENV === 'production') {
     app.set('trust proxy', 1);

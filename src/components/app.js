@@ -3,10 +3,8 @@ import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
 //import createBrowserHistory from 'history/createBrowserHistory';
 //const history = createBrowserHistory();
 
-
-
 //Components
-import { AppHeader } from 'predix-ui';
+import { AppNav } from 'predix-ui';
 
 //Pages
 import About from '../pages/about';
@@ -41,7 +39,7 @@ export default class App extends React.Component {
     return (
       <Router>
       <div>
-        <AppHeader title="apphub-microapp-seed" items={this.state.navItems}  onChange={(e) => this.changeRoute(e)}>
+        <AppNav title="apphub-microapp-seed" items={this.state.navItems}  onChange={(e) => this.changeRoute(e)}/>
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route path="/dashboard" component={Dashboard}/>
@@ -49,7 +47,6 @@ export default class App extends React.Component {
             <Route path="/topics" component={Topics}/>
             <Route component={NoMatch}/>
           </Switch>
-        </AppHeader>
 
       </div>
     </Router>)

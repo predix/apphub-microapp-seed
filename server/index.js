@@ -13,6 +13,10 @@ const middleware = require('./middleware');
 const server = new Server(null, config).router();
 const app = server.getExpressApp();
 
+// TODO: I have having to bring in web components and Polymer
+const serveStatic = require('serve-static');
+app.use('/bower_components', serveStatic(path.resolve(__dirname, '../bower_components')));
+
 // TODO: Load middleware first
 middleware(app);
 

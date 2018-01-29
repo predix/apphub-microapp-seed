@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function(app){
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -19,7 +21,7 @@ module.exports = function(app){
   app.use(devMiddleware);
   app.use(webpackHotMiddleware(compiler));
   app.get('*', function response(req, res) {
-    res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../dist/index.html')));
+    res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../dist/index.html')));
     res.end();
   });
 };

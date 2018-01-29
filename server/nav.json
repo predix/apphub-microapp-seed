@@ -1,1 +1,15 @@
-[{"label":"Microapp Seed","icon":"fa-bug","path":"/#/"},{"id":"settings","label":"Settings","path":"/settings"},{"id":"app1","label":"Some App","path":"/some-app"}]
+[{
+  "label": "Microapp Seed",
+  "icon": "fa-bug",
+  "path": "/#/",
+  "items": [{
+    "label": "Dashboard",
+    "path": "/#/dashboard"
+  }, {
+    "label": "Topics",
+    "path": "/#/topics"
+  }, {
+    "label": "About",
+    "path": "/#/about"
+  }]
+}]

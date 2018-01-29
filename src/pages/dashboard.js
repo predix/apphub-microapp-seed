@@ -10,16 +10,14 @@ const dashboardData = {
     {label: 'Output', value: 53, uom: 'mw'}
   ],
   cards: [
-    { id: 1, title: 'Card 1', children: [ <div>Lorem ipsum dolor sit</div> ] },
-    { id: 2, title: 'Card 2', children: [ <div>Lorem ipsum dolor sit</div> ] },
-    { id: 3, title: 'Card 3', children: [ <div>Lorem ipsum dolor sit</div> ] }
+    { id: 1, title: 'Card 1', children: <div>Lorem ipsum dolor sit</div> }
   ]
 };
 
 export default () => (
   <div className='u-p'>
     {dashboardData.cards && dashboardData.cards.map((card, index) => (
-      <Card key={card.id} headerText={card.title}>
+      <Card key={index} headerText={card.title}>
         {card.children}
       </Card>
     ))}
