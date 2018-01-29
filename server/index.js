@@ -25,7 +25,7 @@ routes(app);
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === 'development') {
-  require('./common/dev-setup')(app);
+  require('./common/dev')(app);
 }
 
 if (require.main === module) {
