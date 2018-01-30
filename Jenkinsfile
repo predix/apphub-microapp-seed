@@ -74,6 +74,14 @@ pipeline {
                 "target": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/"
             }]
           }"""
+          def downloadSpec = """{
+           "files": [
+            {
+                "pattern": "bazinga-repo/*.zip",
+                "target": "bazinga/"
+              }
+           ]
+          }"""
           def buildInfo = artUploadServer.upload(uploadSpec)
              artUploadServer.publishBuildInfo(buildInfo)
         }
@@ -91,8 +99,39 @@ pipeline {
     * Deploy stage will take the artifact from the build step and push to Cloud Foundry
     */
    stage('Deploy to CF3 Dev') {
-      steps {
-        echo 'Skipping'
+     agent {
+       docker {
+         image 'pivotalpa/cf-cli-resource'
+         label 'dind'
+       }
+     }
+     environment {
+       DEVLOGIN = credentials('CF3Dev_Credentials')
+       CF_DOMAIN='https://api.system.aws-usw02-dev.ice.predix.io';
+       CF_RUN_DOMAIN='run.aws-usw02-dev.ice.predix.io';
+       CF_ORG='predix-apphub';
+       CF_SPACE='dev';
+     }
+     steps {
+       unstash 'artifact'
+       unzip zipFile: 'apphub-microapp-seed-1.0.0.zip'
+       script{
+         echo 'Skipping'
+
+          def downloadSpec = """{
+           "files": [
+            {
+                "pattern": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/*.zip",
+                "target": "./"
+              }
+           ]
+          }"""
+          def buildInfo = artUploadServer.download(downloadSpec)
+          sh 'ls'
+          sh "cf login -a ${CF_DOMAIN} -u $DEVLOGIN_USR -p $DEVLOGIN_PSW -o ${CF_ORG} -s ${CF_SPACE}"
+          sh 'cf push'
+          echo 'Login to CF and Push'
+        }
       }
     }
   }

@@ -1,8 +1,29 @@
 import React from 'react';
-import { Icon, Card } from 'predix-ui';
+import { Button, Icon, Card } from 'predix-ui';
 
 export default class extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      userInfo: null,
+      userVerify: null
+    };
+    this.getUserInfo = this.getUserInfo.bind(this);
+  }
+  getUserInfo(e){
+    e.preventDefault();
+    fetch('/user/info').then(resp => {
+      console.log('json', resp);
+      return resp.json();
+    }).then(json => {
+      console.log(json);
+    });
+  }
+  getVerifyUser(){
+
+  }
   render(){
+    const {userInfo, userVerify} = this.state;
     return (
       <div className='u-p'>
 
@@ -29,11 +50,21 @@ UAA_CLIENT_SECRET   = test
           `}</pre>
 
           <a href="/login" className="btn">Login</a>
+          <Button onClick={this.getUserInfo}>Get User Info</Button>
           <a href="/user/info" className="btn">User Info</a>
           <a href="/user/verify" className="btn">Verify Token</a>
           <a href="/logout" className="btn">Logout</a>
         </Card>
+        {userInfo &&
+          <Card headerText='User Info Response'>
+          {JSON.stringify(userInfo)}
+          </Card>
+        }
+        {userInfo &&
+          <Card headerText='User Verify Response'>
 
+          </Card>
+        }
         {/*
           <Card headerText='Swagger'>
             <p>You can modify the <code>api.yaml</code> file is located in the <code>server/common/swagger</code> directory.</p>
