@@ -37,7 +37,7 @@ module.exports = function(app){
 
     // route to fetch user info from UAA for use in the browser
     app.get(['/user/info', '/oauth/user'], userInfo(process.env.UAA_URL), (req, res) => {
-      res.send(req.user);
+      res.status(200).send(req.user);
     });
 
     // route to fetch user info from UAA for use in the browser

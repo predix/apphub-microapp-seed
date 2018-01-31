@@ -9,14 +9,14 @@ applications:
     command: node server
     services:
       #- my_uaa_instance
-      - jps-uaa-instance
+      - dev-test-uaa
     env:
       APP_ID: apphub-microapp-seed
       LOG_LEVEL: debug
       NODE_ENV: 'production'
       DEBUG: 'apphub-microapp-seed:*'
       UAA_URL: https://test-uaa-instance.predix-uaa.run.aws-usw02-pr.ice.predix.io
-      UAA_CALLBACK_URL: http://localhost:9000/oauth/callback
+      UAA_CALLBACK_URL: https://apphub-microapp-seed-next.run.aws-usw02-pr.ice.predix.io/oauth/callback
       UAA_CLIENT_ID: test-client
       UAA_CLIENT_SECRET: test
       REQUEST_LIMIT: 500kb

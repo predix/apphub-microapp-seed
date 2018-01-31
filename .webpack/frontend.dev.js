@@ -1,17 +1,16 @@
 const pkg = require('../package.json');
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = () => ({
     extends: 'base',
     context: path.resolve(__dirname, '../src'),
-    entry: {
-      main: 'main.js'
-    },
+    entry: ['react-hot-loader/patch', 'main.js'],
     //output: {},
     plugins: [
-      new webpack.optimize.OccurenceOrderPlugin(),
-      new webpack.HotModuleReplacementPlugin(),
+      //new webpack.optimize.OccurenceOrderPlugin(),
+      //new webpack.HotModuleReplacementPlugin(),
       //https://github.com/jantimon/html-webpack-plugin#configuration
       new HtmlWebpackPlugin({
         template: './index.ejs',

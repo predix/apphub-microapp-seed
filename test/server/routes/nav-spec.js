@@ -21,7 +21,7 @@ describe('Nav Middleware', () => {
       .expect(200, done);
   });
 
-  it('PUT - /api/nav responds successfully', (done) => {
+  xit('PUT - /api/nav responds successfully', (done) => {
     request(app)
       .put('/api/nav')
       .send({
@@ -32,7 +32,7 @@ describe('Nav Middleware', () => {
       .expect(200, done);
   });
 
-  it('POST - /api/nav responds successfully', (done) => {
+  xit('POST - /api/nav responds successfully', (done) => {
     request(app)
       .post('/api/nav')
       .send({
