@@ -1,6 +1,7 @@
 'use strict';
 const expect = require('chai').expect;
 const helpers = require('../../helpers');
+const pkg = require('../../../package.json');
 const requireHelper = helpers.require;
 const Logger = requireHelper('server/common/logger');
 
@@ -19,7 +20,7 @@ describe('Logger', () =>{
   });
 
   it('should return subject', function () {
-    let expected = 'apphub-microapp-seed:INFO:spec';
+    let expected = `${pkg.name}:INFO:spec`;
     let actual = log.getSubject('info');
     expect(actual).to.equal(expected);
   });

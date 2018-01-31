@@ -4,7 +4,7 @@ const request = require('supertest');
 const express = require('express');
 const controller = require('express-controller-routing');
 
-const exampleController = require('../../../server/routes/example');
+const exampleController = require('../../../src/server/routes/example');
 const baseUrl = '/api/example';
 
 describe('routes/example', () => {

@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const defaultSetup = module.exports = () => ({
   extends: 'base',
-  context: path.resolve(__dirname, '../server'),
+
   stats: true,
   node: {
     global: true,
@@ -14,7 +14,7 @@ const defaultSetup = module.exports = () => ({
     setImmediate: false
   },
   entry: {
-    server: './index.js'
+    server: './server/index.js'
   },
   target: 'node',
   // in order to ignore all modules in node_modules folder
@@ -23,7 +23,7 @@ const defaultSetup = module.exports = () => ({
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: 'middleware/swagger/Api.yaml',
+        from: 'server/middleware/swagger/Api.yaml',
         to: './'
       }
     ])]

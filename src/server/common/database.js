@@ -4,7 +4,7 @@ const path = require('path');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const homeOrTmp = require('home-or-tmp');
-const pkg = require('../../package.json');
+const pkg = require('../../../package.json');
 var db;
 var instance;
 /**

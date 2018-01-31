@@ -8,7 +8,7 @@
     "npm": "^5.0.0"
   },
   "scripts": {
-    "copy": "cpy 'Dockerfile' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
+    "copy": "cpy '.env' 'Dockerfile' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
     "bower": "bower install --force-latest --allow-root",
     "zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
     "clean": "rimraf coverage dist .nyc_output build",

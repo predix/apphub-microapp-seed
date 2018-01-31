@@ -12,7 +12,7 @@ describe('Api Middleware', function() {
   const baseUrl = '/api/db';
 
   before(function (done) {
-    app = require('../../../server/index').getExpressApp();
+    app = require('../../../src/server/index').getExpressApp();
     done();
   });
 

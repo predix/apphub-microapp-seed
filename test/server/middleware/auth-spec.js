@@ -5,7 +5,7 @@ describe('Auth Middleware', () => {
   var app;
 
   before(function (done) {
-    app = require('../../../server/index').getExpressApp();
+    app = require('../../../src/server/index').getExpressApp();
     done();
   });
 
