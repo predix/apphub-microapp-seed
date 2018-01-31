@@ -2,40 +2,27 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
+var envToSet = {};
 
+const { VCAP_APPLICATION, VCAP_SERVICES, UAA_SERVICE_LABEL } = process.env;
 
-const {VCAP_SERVICES} = process.env;
 if(VCAP_SERVICES){
-  console.log('Parse vcap services');
-
-  if(VCAP_SERVICES['predix-uaa']){
-    const UAA_SERVICE = VCAP_SERVICES['predix-uaa'][0].credentials;
-    process.env.UAA_URL = UAA_SERVICE.uri;
+	var vcapServices = JSON.parse(VCAP_SERVICES);
+	var uaaService = vcapServices[UAA_SERVICE_LABEL];
+  if(uaaService){
+    uaaService = uaaService[0];
+    envToSet.UAA_URL = uaaService.uri;
   }
 }
 
-/**
-{
-  "predix-uaa": [
-   {
-    "credentials": {
-     "dashboardUrl": "https://uaa-dashboard.run.aws-usw02-dev.ice.predix.io/#/login/45ae8f04-0a2a-4890-aeed-aab8d7f2ec71",
-     "issuerId": "https://apphub-test-uaa-instance.predix-uaa.run.aws-usw02-dev.ice.predix.io/oauth/token",
-     "subdomain": "apphub-test-uaa-instance",
-     "uri": "https://apphub-test-uaa-instance.predix-uaa.run.aws-usw02-dev.ice.predix.io",
-     "zone": {
-      "http-header-name": "X-Identity-Zone-Id",
-      "http-header-value": "45ae8f04-0a2a-4890-aeed-aab8d7f2ec71"
-     }
-    },
-    "label": "predix-uaa",
-    "name": "apphub-test-uaa-instance",
-    "plan": "Free",
-    "provider": null,
-    "syslog_drain_url": null,
-    "tags": [],
-    "volume_mounts": []
-   }
-  ]
- }
-*/
+if(VCAP_APPLICATION){
+  var vcapApplication = JSON.parse(VCAP_APPLICATION);
+  envToSet.UAA_CALLBACK_URL = `https://${vcapApplication.uris[0]}/callback`;
+}
+
+Object.keys(envToSet).forEach((key, index) => {
+  console.log('setting =>', key);
+  process.env[key] = envToSet[key];
+});
+
+module.exports = envToSet;

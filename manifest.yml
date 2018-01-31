@@ -1,15 +1,15 @@
 ---
 applications:
-  - name: apphub-microapp-seed-next
+  - name: apphub-microapp-seed
     buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
-    memory: 256M
+    memory: 1G
     stack: cflinuxfs2
     instances: 2
     path: .
     command: node server
     services:
       #- my_uaa_instance
-      - jps-uaa-instance
+      - dev-test-uaa
     env:
       APP_ID: apphub-microapp-seed
       LOG_LEVEL: debug
