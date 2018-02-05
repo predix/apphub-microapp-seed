@@ -1,9 +1,8 @@
 const path = require('path');
 const defaultSetup = module.exports = () => ({
     extends: 'base',
-    context: path.resolve(__dirname, '../server'),
     entry: {
-      main: 'index.js'
+      main: 'server/index.js'
     },
     output: {
       filename: `[name].server.js`

@@ -5,14 +5,14 @@ import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 
 //App component
-import App from './components/app';
+import App from './components/App';
 
 //App styles
 import './styles';
 
 // register ServiceWorker via OfflinePlugin, for prod only:
 if (process.env.NODE_ENV === 'production') {
-  //require('./pwa');
+  require('./pwa');
 }
 
 const render = Component => {
@@ -26,10 +26,12 @@ const render = Component => {
 
 render(App);
 
-// Webpack Hot Module Replacement API
-if (module.hot) {
-  console.warn('In development');
-  module.hot.accept('./components/App', () => {
-    render(App)
-  })
+if (process.env.NODE_ENV === 'development') {
+  // Webpack Hot Module Replacement API
+  if (module.hot) {
+    console.warn('In development');
+    module.hot.accept('./components/App', () => {
+      render(App)
+    })
+  }
 }

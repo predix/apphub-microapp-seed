@@ -6,7 +6,7 @@ const request = require('supertest');
 const helpers = require('../../helpers');
 const requireHelper = helpers.require;
 const express = require('express');
-const Server = require('../../../server/common/server');
+const Server = require('../../../src/server/common/server');
 
 const router = new express.Router();
 const tempApp = express();

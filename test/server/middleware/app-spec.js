@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const request = require('supertest');
-const Server = require('../../../server/index');
+const Server = require('../../../src/server/index');
 const assert = require('assert');
 
 describe('App', () => {

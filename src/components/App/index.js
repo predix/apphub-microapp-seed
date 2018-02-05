@@ -7,11 +7,11 @@ import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { AppNav } from 'predix-ui';
 
 //Pages
-import About from '../pages/about';
-import Home from '../pages/home';
-import Dashboard from '../pages/dashboard';
-import Topics from '../pages/topics';
-import NoMatch from '../pages/404';
+import About from '../../pages/about';
+import Home from '../../pages/home';
+import Dashboard from '../../pages/dashboard';
+import Topics from '../../pages/topics';
+import NoMatch from '../../pages/404';
 
 
 const defaultNavItems = [

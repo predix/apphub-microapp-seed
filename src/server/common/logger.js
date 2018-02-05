@@ -1,5 +1,5 @@
 const debug = require('debug');
-const ns = require('../../package.json').name;
+const ns = require('../../../package.json').name;
 
 module.exports = function(n){
 

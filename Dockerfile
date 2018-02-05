@@ -1,18 +1,24 @@
 FROM                      node:latest
 MAINTAINER                Jonnie Spratley <jonnie.spratley@ge.com>
 
-ENV DEBUG                 *
-ENV PORT                  8080
-ENV NODE_ENV              production
+# System Env Vars
 ENV PROXY                 http://proxy-src.research.ge.com:8080
 ENV http_proxy            $PROXY
 ENV https_proxy           $PROXY
 ENV no_proxy              *.ge.com
 
-# Create app directory
+# Application Env Vars
+ENV DEBUG                 *
+ENV PORT                  8080
+ENV NODE_ENV              production
+ENV REQUEST_LIMIT         500kb
+ENV SESSION_SECRET        mySecret
+ENV COOKIE_NAME           myCookie
+ENV SWAGGER_API_SPEC      /spec
+
 WORKDIR                   /usr/src/app
 
-COPY  .      ./
+COPY                      ./dist      ./
 
 RUN npm config set strict-ssl false
 RUN npm config set proxy $PROXY
@@ -22,8 +28,6 @@ RUN npm -v
 RUN node -v
 RUN npm install --production
 
-# Bundle app source
-COPY . .
-
 EXPOSE 8080
-CMD [ "npm", "start" ]
+
+CMD [ "node", "server" ]
