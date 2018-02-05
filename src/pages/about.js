@@ -4,6 +4,7 @@ import { Button, Icon, Card } from 'predix-ui';
 export default class extends React.Component {
   constructor(props){
     super(props);
+    this.displayName = 'AboutPage';
     this.state = {
       userInfo: null,
       userVerify: null
@@ -28,17 +29,11 @@ export default class extends React.Component {
       <div className='u-p'>
 
         <Card headerText='About'>
-          <p>This simple micro-app seed contains just enough to get you started.</p>
-          <p>Some features include:</p>
-          <ul>
-            <li>React</li>
-            <li>Webpack</li>
-            <li>Swagger</li>
-            <li>Express</li>
-            <li>Babel</li>
-            <li>Nightwatch.js</li>
-          </ul>
+          <p>This is the about page.</p>
+          <p>This is the next version of the microapp-seed it is fast.
+            If compiles both server and client so the bundle that gets deployed is optimized.</p>
         </Card>
+
         <Card headerText='Authentication'>
           <p>This micro-app also has built in authentication using UAA. When running inside AppHub this is already taken care of.</p>
           <p>If you want to use your own UAA authentication, you can set the following environment variables.</p>
@@ -55,11 +50,13 @@ UAA_CLIENT_SECRET   = test
           <a href="/user/verify" className="btn">Verify Token</a>
           <a href="/logout" className="btn">Logout</a>
         </Card>
+
         {userInfo &&
           <Card headerText='User Info Response'>
           {JSON.stringify(userInfo)}
           </Card>
         }
+
         {userInfo &&
           <Card headerText='User Verify Response'>
 

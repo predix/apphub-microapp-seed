@@ -9,6 +9,8 @@ module.exports = () => ({
     entry: ['react-hot-loader/patch', 'main.js'],
     //output: {},
     plugins: [
+       new webpack.HotModuleReplacementPlugin(),
+       new webpack.NoEmitOnErrorsPlugin(),
       //new webpack.optimize.OccurenceOrderPlugin(),
       //new webpack.HotModuleReplacementPlugin(),
       //https://github.com/jantimon/html-webpack-plugin#configuration
