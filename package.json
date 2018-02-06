@@ -12,7 +12,7 @@
     "bower": "bower install --force-latest --allow-root",
     "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *",
     "clean": "rimraf coverage dist .nyc_output build",
-    "start": "cross-env NODE_ENV=production node dist/server",
+    "start": "cross-env NODE_ENV=production node server",
     "pretest": "rimraf coverage",
     "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
