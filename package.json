@@ -10,7 +10,7 @@
   "scripts": {
     "copy": "cpy '.env' 'Dockerfile' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
     "bower": "bower install --force-latest --allow-root",
-    "zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
+    "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *",
     "clean": "rimraf coverage dist .nyc_output build",
     "start": "cross-env NODE_ENV=production node dist/server",
     "pretest": "rimraf coverage",

@@ -30,3 +30,4 @@ package-lock.json
 *.tgz
 report.html
 stats.json
+.vscode
