@@ -2,15 +2,18 @@ const pkg = require('../package.json');
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 module.exports = () => ({
     extends: 'base',
     context: path.resolve(__dirname, '../src'),
     entry: ['react-hot-loader/patch', 'main.js'],
     //output: {},
     plugins: [
-       new webpack.HotModuleReplacementPlugin(),
-       new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new LiveReloadPlugin({
+        appendScriptTag: true
+      }),
       //new webpack.optimize.OccurenceOrderPlugin(),
       //new webpack.HotModuleReplacementPlugin(),
       //https://github.com/jantimon/html-webpack-plugin#configuration

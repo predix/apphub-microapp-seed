@@ -99,6 +99,7 @@
     "webpack-bundle-analyzer": "^2.9.2",
     "webpack-dev-server": "^2.11.1",
     "webpack-hot-middleware": "^2.21.0",
+    "webpack-livereload-plugin": "^1.0.0",
     "webpack-merge": "^4.1.1",
     "webpack-node-externals": "^1.6.0",
     "webpack-node-utils": "^2.1.0",

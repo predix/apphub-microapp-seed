@@ -11,9 +11,15 @@ The build stack is completely new and will change the way you develop applicatio
 ## Getting Started
 After you clone the repo.
 
-```
-$ npm install
-```
+- Install npm dependencies
+  ```
+  $ npm install
+  ```
+- Install bower depenencies
+
+  ```
+  $ npm run bower
+  ```
 
 1. Develop
 
