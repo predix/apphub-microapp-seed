@@ -26,17 +26,23 @@ middleware(app);
 // TODO: Load routes second
 routes(app);
 
-if (require.main === module) {
-  /*server.listen(port, () => {
-    console.log(`Running on port ${port}`);
-  });*/
-} else {
-  
+/* istanbul ignore next */
+if (process.env.NODE_ENV === 'development') {
+  require('./common/dev')(app);
 }
 
+if (require.main === module) {
+  console.log(routesList(app).toString());
+  server.listen(port, () => {
+    console.log(`Running on port ${port}`)
+  });
+} else {
+  module.exports = server;
+}
+/*
 module.exports = function serverRenderer({ clientStats, serverStats, foo }) {
   return (req, res, next) => {
     console.log(req.url);
     next();
   };
-};
+};*/

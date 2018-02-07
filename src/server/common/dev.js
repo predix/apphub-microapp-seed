@@ -17,7 +17,7 @@ module.exports = function(app){
   app.use(devMiddleware);
   // NOTE: Only the client bundle needs to be passed to `webpack-hot-middleware`.
   app.use(webpackHotMiddleware(compiler.compilers.find(compiler => compiler.name === 'client')));
-  app.use(webpackServerMiddleware(compiler));
+ // app.use(webpackServerMiddleware(compiler));
   app.get('*', function response(req, res) {
     res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html')));
     res.end();

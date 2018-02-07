@@ -5,10 +5,6 @@
  */
 //const express = require('express');
 const express = require('express');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotServerMiddleware = require('webpack-server-middleware');
-const config = require('../webpack.config.js')();
 const app = express();
 const serveStatic = require('serve-static');
 const routesList = require('express-api-routes-list');
