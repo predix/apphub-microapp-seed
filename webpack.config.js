@@ -1,8 +1,8 @@
+// File: ./webpack.config.js
+
+const path = require('path');
 const config = require('./config');
 const webpack = require('webpack');
-//module.exports = webpackConfig
-
-// File: ./webpack.config.js
 const webpackNodeUtils = require('webpack-node-utils');
 
 // The directory where the configuration files are.
@@ -26,11 +26,16 @@ const params = {
   //outputDir: './dist/'
 };
 
-const webpackConfigs = [
-  webpackNodeUtils.config(directory, 'frontend', type, createHash, params, variation),
-  webpackNodeUtils.config(directory, 'backend', type, createHash, params, variation)
-];
-
 // Finally, get and export the configuration
-module.exports = webpackConfigs;
 //module.exports = webpackNodeUtils.config(directory, target, type, createHash, params, variation);
+
+
+module.exports = () => {
+  const frontendConfig = webpackNodeUtils.config(directory, 'frontend', type, createHash, params, variation);
+  const backendConfig = webpackNodeUtils.config(directory, 'backend', type, createHash, params, variation);
+  return [
+    frontendConfig,
+    backendConfig
+  ];
+
+};

@@ -9,8 +9,17 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
 module.exports = () => ({
     name: 'client',
     extends: 'base',
-    context: path.resolve(__dirname, '../src'),
+    target: 'web',
+    //context: path.resolve(__dirname, '../src'),
     entry: ['react-hot-loader/patch', 'main.js'],
+    node: {
+      global: true,
+      process: true,
+      Buffer: false,
+      __filename: false,
+      __dirname: false,
+      setImmediate: false
+    },
     //output: {},
     plugins: [
         new webpack.HotModuleReplacementPlugin(),

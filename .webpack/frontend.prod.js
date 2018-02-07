@@ -14,6 +14,7 @@ const OfflinePlugin = require('offline-plugin');
 module.exports = () => ({
   name: 'client',
   extends: 'base',
+  target: 'web',
   context: path.resolve(__dirname, '../src'),
   entry: {
     main: 'main.js'
@@ -22,7 +23,7 @@ module.exports = () => ({
   plugins: [
     new webpack.BannerPlugin({ banner: "hash:[hash], chunkhash:[chunkhash], name:[name], filebase:[filebase], query:[query], file:[file]" }),
     new webpack.optimize.CommonsChunkPlugin({ name: 'manifest', async: true, minChunks: Infinity }),
-    
+
     //https://webpack.js.org/plugins/commons-chunk-plugin/#options
     new webpack.optimize.CommonsChunkPlugin({
       async: false, name: 'vendor', filename: 'vendor.js',
