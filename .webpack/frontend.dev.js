@@ -1,9 +1,13 @@
+/**
+ * Development front-end webpack configuration
+ */
 const pkg = require('../package.json');
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 module.exports = () => ({
+    name: 'client',
     extends: 'base',
     context: path.resolve(__dirname, '../src'),
     entry: ['react-hot-loader/patch', 'main.js'],

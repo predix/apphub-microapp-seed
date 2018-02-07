@@ -1,6 +1,6 @@
 [{
   "label": "Microapp Seed",
-  "icon": "fa-bug",
+  "icon": "fa-square",
   "path": "/#/",
   "items": [{
     "label": "Dashboard",

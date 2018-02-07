@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width" />
   <meta name="description" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="application-name" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="format-detection" content="telephone=no" />
+  
   <meta name="theme-color" content="#ffffff" />
   <meta name="msapplication-TileColor" content="#ffffff" />
-  <meta name="msapplication-TileImage" content="./assets/icons/ms-icon-144x144.png" />
-  <link rel="icon" type="image/png" href="./assets/icons/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="./assets/icons/favicon-16x16.png" sizes="16x16" />
-  <link rel="apple-touch-icon" type="image/png" sizes="57x57" href="./assets/icons/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="./assets/icons/apple-icon-152x152.png" />
-  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="./assets/icons/apple-icon-180x180.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/android-icon-192x192.png" />
+  <meta name="msapplication-TileImage" content="./assets/favicons/mstile-144x144.png" />
+  <link rel="icon" type="image/png" href="./assets/favicons/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="./assets/favicons/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/android-chrome-192x192.png" />
+  <link rel="apple-touch-icon" type="image/png" sizes="57x57" href="./assets/icons/apple-touch-icon-57x57.png"/>
+  <link rel="apple-touch-icon" type="image/png" sizes="72x72" href="./assets/icons/apple-touch-icon-72x72.png"/>
+  <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="./assets/icons/apple-touch-icon-76x76.png"/>
+  <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="./assets/icons/apple-touch-icon-114x114.png"/>
+  <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="./assets/icons/apple-touch-icon-120x120.png"/>
+  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="./assets/icons/apple-touch-icon-144x144.png"/>
+  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="./assets/icons/apple-touch-icon-152x152.png" />
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="./assets/icons/apple-touch-icon-180x180.png" />
+  
 
   <link rel="manifest" href="./manifest.json" />
 
@@ -57,7 +64,7 @@
       integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
       crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script>
     <% } else { %>
-    <script src="./<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="text/javascript"></script>
+    <script src="./<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="text/javascript" defer></script>
     <% } %>
   <% } %>
 

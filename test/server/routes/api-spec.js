@@ -5,11 +5,12 @@ const helpers = require('../../helpers');
 const requireHelper = helpers.require;
 const locales = requireHelper('server/middleware/localize/locales');
 
+const baseUrl = '/api/db';
 
-describe('Api Middleware', function() {
+describe('API Routes', function() {
   this.timeout(20000);
   var app, mockId, mockDoc;
-  const baseUrl = '/api/db';
+  
 
   before(function (done) {
     app = require('../../../src/server/index').getExpressApp();

@@ -5,7 +5,7 @@ const request = require('supertest');
 const Server = require('../../../src/server/index');
 const assert = require('assert');
 
-describe('App', () => {
+describe('App Middleware', () => {
   var app, instance;
   before(function (done) {
     done();

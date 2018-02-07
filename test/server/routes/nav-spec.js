@@ -1,59 +1,23 @@
 'use strict';
 const request = require('supertest');
+const express = require('express');
+const controller = require('express-controller-routing');
 
-//const locales = requireHelper('server/locales');
+const ctrl = require('../../../src/server/routes/nav');
+const baseUrl = '/api/nav';
 
-describe('Nav Middleware', () => {
+describe('Nav Routes', () => {
   var app;
 
   before(function (done) {
-    app = require('../../../src/server/index').getExpressApp();
+    app = express();
+    app.use(baseUrl, controller(ctrl));
     done();
   });
 
-  after(function () {
-    //app.shutdown();
-  });
-
-  it('GET - /api/nav responds successfully', (done) => {
+  it(`GET - ${baseUrl} responds successfully`, (done) => {
     request(app)
-      .get('/api/nav')
-      .expect(200, done);
-  });
-
-  xit('PUT - /api/nav responds successfully', (done) => {
-    request(app)
-      .put('/api/nav')
-      .send({
-        "id": "settings",
-        "label": "Settings",
-        "path": "/settings"
-      })
-      .expect(200, done);
-  });
-
-  xit('POST - /api/nav responds successfully', (done) => {
-    request(app)
-      .post('/api/nav')
-      .send({
-        "id": "app1",
-        "label": "Some App",
-        "path": "/some-app"
-      })
-      .expect(201, done);
-  });
-
-  it('GET - /api/nav - responds successfully with nav service request', (done) => {
-    request(app)
-      .get('/api/nav')
-      .expect(200, done);
-  });
-
-
-
-  it('DELETE - /api/nav - responds successfully with nav service request', (done) => {
-    request(app)
-      .del('/api/nav')
+      .get(baseUrl)
       .expect(200, done);
   });
 

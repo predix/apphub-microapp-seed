@@ -7,12 +7,12 @@ const controller = require('express-controller-routing');
 const exampleController = require('../../../src/server/routes/example');
 const baseUrl = '/api/example';
 
-describe('routes/example', () => {
+describe('Example Routes', () => {
   var app;
 
   before(function (done) {
     app = express();
-    app.use('/api/example', controller(exampleController));
+    app.use(baseUrl, controller(exampleController));
     done();
   });
 
@@ -44,6 +44,7 @@ describe('routes/example', () => {
         done();
       });
   });
+
   it(`PUT - ${baseUrl} - put test - responds 200`, (done) => {
     request(app)
       .put(baseUrl)
@@ -58,17 +59,5 @@ describe('routes/example', () => {
         done();
       });
   });
-
-  xit('POST - /api/nav responds successfully', (done) => {
-    request(app)
-      .post('/api/nav')
-      .send({
-        "id": "app1",
-        "label": "Some App",
-        "path": "/some-app"
-      })
-      .expect(201, done);
-  });
-
 
 });

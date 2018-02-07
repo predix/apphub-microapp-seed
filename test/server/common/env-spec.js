@@ -47,7 +47,7 @@ process.env.VCAP_APPLICATION = mockVcapApplication;
 process.env.VCAP_SERVICES = mockVcapServices;
 
 const env = requireHelper('server/common/env');
-describe('ENV', () => {
+describe('Env', () => {
 
   it('be defined', () => {
     expect(env).to.not.be.null;

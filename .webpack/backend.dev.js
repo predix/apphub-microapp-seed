@@ -1,6 +1,10 @@
+/**
+ * Development backend-end webpack configuration
+ */
 const path = require('path');
 const defaultSetup = module.exports = () => ({
     extends: 'base',
+    name: 'server',
     entry: {
       main: 'server/index.js'
     },
