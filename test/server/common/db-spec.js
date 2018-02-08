@@ -5,16 +5,60 @@ const requireHelper = helpers.require;
 const DB = requireHelper('server/common/database');
 const tempFile = require('path').resolve(__dirname, '../../.temp-db.json');
 
+
+/**
+ * Custom Redist Lowdb Adapter
+ */
+const Base = require('lowdb/adapters/Base');
+const redis = require('redis-node');
+
+class RedisAdapter extends Base {
+  constructor(source, {defaultValue} = {}) {
+    super(source, {defaultValue});
+    console.log('CustomAdapter', source, defaultValue);
+    this.source = source;
+    this.defaultValue = defaultValue;
+    this.client = redis.createClient();
+    this.client.select(0);
+  }
+
+  read(){
+    const data = this.client.get(this.source);
+    if(data){
+      return this.deserialize(data);
+    } else {
+      this.client.set(this.source, this.serialize(this.defaultValue));
+      return this.defaultValue;
+    }
+  }
+
+  write(data){
+    this.client.set(this.source, this.serialize(data));
+  }
+  close(){
+    this.client.close();
+  }
+}
+
+//TODO - Use temp inmemory db for testing.
+
+
+
+
 describe('DB', () => {
   var db, instance;
 
   before(() =>{
     //db = DB.getInstance(tempFile, {docs: [], posts: []});
+   // db = new DB(tempFile, {docs: []}, CustomAdapter);
+    //db = new DB(tempFile, {docs: []}, RedisAdapter);
     db = new DB(tempFile, {docs: []});
   });
 
   after((done) => {
-    require('fs').unlink(tempFile, done);
+    //require('fs').unlink(tempFile, done);
+    //db.adapter.close();
+    done();
   });
 
   it('be defined', ()=>{
@@ -137,11 +181,13 @@ describe('DB', () => {
       expect(instance.get('user.name').value()).to.equal('test-user');
     });
 
-    it('should push item into defaults', function () {
+    xit('should push item into defaults', function () {
       instance.get('docs')
         .push({ id: 1, title: 'lowdb is awesome'})
         .push({ id: 2, title: 'lowdb is fast'})
         .write();
+      var doc = instance.get('docs').find({id: 1});
+      console.log(doc);
       expect(instance.get('docs').find({id: 1}).value().id).to.equal(1);
     });
   });
