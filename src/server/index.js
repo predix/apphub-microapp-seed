@@ -10,7 +10,6 @@ const path = require('path');
 const Server = require('./common/server');
 const log = require('./common/logger')('server');
 
-
 const routes = require('./routes');
 const middleware = require('./middleware');
 
@@ -20,10 +19,10 @@ const app = server.getExpressApp();
 // TODO: I hate having to bring in web components and Polymer
 app.use('/bower_components', serveStatic(path.resolve(__dirname, '../../bower_components')));
 
-// TODO: Load middleware first
+// TODO: 1. Load middleware
 middleware(app);
 
-// TODO: Load routes second
+// TODO: 2. Load routes
 routes(app);
 
 /* istanbul ignore next */
@@ -39,6 +38,7 @@ if (require.main === module) {
 } else {
   module.exports = server;
 }
+
 /*
 module.exports = function serverRenderer({ clientStats, serverStats, foo }) {
   return (req, res, next) => {
