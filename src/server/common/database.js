@@ -23,8 +23,10 @@ class Database {
         "path": "/microapp1"
       }]};
     }
+    const dbPath = path.resolve(homeOrTmp, `./.${pkg.name}-db.json`);
+    console.log('Database', dbPath);
    // const adapter = new LocalStorage(name);
-    this.adapter = (Adapter ? new Adapter(name, {defaultValue: defaults}) : new Memory(name || path.resolve(homeOrTmp, `./.${pkg.name}-db.json`)));
+    this.adapter = (Adapter ? new Adapter(name, {defaultValue: defaults}) : new Memory(name || dbPath));
 
     db = low(this.adapter);
     try {
