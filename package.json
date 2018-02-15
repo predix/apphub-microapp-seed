@@ -15,7 +15,7 @@
     "build:frontend": "cross-env NODE_ENV=production BABEL_ENV=client webpack --progress",
     "build:backend": "cross-env NODE_ENV=production BUILD_TARGET=backend BABEL_ENV=server webpack --progress",
     "build:backend:lib": "cross-env NODE_ENV=production BUILD_AS_LIB=true BUILD_TARGET=backend webpack -p",
-    "copy": "cpy '.env' 'Dockerfile' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
+    "copy": "cpy 'Dockerfile' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
     "clean": "rimraf coverage dist .nyc_output build",
     "docs": "esdoc",
     "predeploy": "npm test",
