@@ -1,6 +1,9 @@
+/**
+ * 
+ * This would be used if we rendered on the server, but instead we are just rendering on the client.
+ */
 //const React = require('react');
 //const renderToString = require('react-dom/server').renderToString;
-
 //import express from 'express';
 import fs from 'fs';
 import path from 'path';
