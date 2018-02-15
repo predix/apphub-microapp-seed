@@ -14,7 +14,7 @@ router.get('/test', (req, res) =>{
   res.status(200).send({message: 'test'});
 })
 
-describe('server', () => {
+describe('Server', () => {
   var server, app;
 
   before(function (done) {

@@ -7,7 +7,8 @@ const log = require('../../common/logger')('middleware:auth');
  * @returns {*}
  */
 module.exports = function(app){
-  if (process.env.UAA_URL) {
+  const { UAA_URL, UAA_CLIENT_ID, UAA_CLIENT_SECRET} = process.env;
+  if (UAA_URL && UAA_CLIENT_ID && UAA_CLIENT_SECRET) {
     /* istanbul ignore next */
     log.debug('setting up oauth with', process.env.UAA_URL);
 

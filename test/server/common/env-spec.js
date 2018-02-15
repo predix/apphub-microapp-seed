@@ -25,6 +25,24 @@ const mockVcapServices = JSON.stringify({
       "tags": [],
       "volume_mounts": []
     }
+  ],
+  "predix-redis": [
+    {
+      "credentials": {
+        "host": "localhost",
+        "password": "test",
+        "port": 6379
+      },
+      "label": "predix-redis",
+      "name": "jps-dev-redis",
+      "plan": "Free",
+      "provider": null,
+      "syslog_drain_url": null,
+      "tags": [
+        "redis"
+      ],
+      "volume_mounts": []
+    }
   ]
 });
 
@@ -46,27 +64,38 @@ const mockVcapApplication = JSON.stringify({
 process.env.VCAP_APPLICATION = mockVcapApplication;
 process.env.VCAP_SERVICES = mockVcapServices;
 
-const env = requireHelper('server/common/env');
-describe('ENV', () => {
+const dotenv = requireHelper('server/common/env');
+const {env} = process;
+describe('Env', () => {
 
   it('be defined', () => {
-    expect(env).to.not.be.null;
-  });
-
-  it('should parse VCAP_SERVICES and set UAA information', () => {
-    expect(env).to.not.be.null;
+    expect(dotenv).to.not.be.null;
   });
 
 
-  it('should parse VCAP_APPLICATION and set UAA callback information', () => {
-    expect(env).to.not.be.null;
-    expect(process.env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
-    expect(env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
+
+
+  describe('VCAP_SERVICES - REDIS', () => {
+    it('should set REDIS_HOST / REDIS_PORT / REDIS_PASSWORD if in VCAP', () => {
+      expect(env.REDIS_HOST).to.equal('localhost');
+      expect(env.REDIS_PORT).to.equal('6379');
+      expect(env.REDIS_PASSWORD).to.equal('test');
+    });
+  });
+
+  describe('VCAP_SERVICES - UAA', () => {
+    it('should parse VCAP_APPLICATION and set UAA callback information', () => {
+      expect(env).to.not.be.null;
+      expect(process.env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
+      expect(env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
+    });
+
+    it('should set UAA_URL', () => {
+      expect(process.env.UAA_URL).to.not.be.null;
+    });
   });
 
 
-  it('should set UAA_URL', () => {
-    expect(process.env.UAA_URL).to.not.be.null;
-  });
+
 
 });

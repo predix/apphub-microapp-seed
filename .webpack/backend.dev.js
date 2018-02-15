@@ -1,13 +1,23 @@
+/**
+ * Development backend-end webpack configuration
+ */
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 const defaultSetup = module.exports = () => ({
     extends: 'base',
-    entry: {
-      main: 'server/index.js'
-    },
+    name: 'server',
+    target: 'node',
+    entry: './server/index.js',
+    devtool: 'source-map',
+    externals: [
+        'predix-ui',
+    nodeExternals()
+    ],
+    plugins: [],
     output: {
-      filename: `[name].server.js`
-    },
-    plugins: {}
+      filename: 'server.js',
+      libraryTarget: 'commonjs2'
+    }
 });
 
 module.exports.library = (params) => {

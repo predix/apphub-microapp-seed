@@ -3,8 +3,11 @@ const uuid = require('uuid');
 const path = require('path');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const Memory = require('lowdb/adapters/Memory');
 const homeOrTmp = require('home-or-tmp');
 const pkg = require('../../../package.json');
+const LocalStorage = require('node-localstorage').LocalStorage;
+
 var db;
 var instance;
 /**
@@ -12,7 +15,7 @@ var instance;
  * https://github.com/typicode/lowdb#usage
  */
 class Database {
-  constructor(name, defaults){
+  constructor(name, defaults, Adapter){
     if(!defaults){
       defaults = {user: {}, nav: [{
         "label": "Microapp Seed",
@@ -20,7 +23,11 @@ class Database {
         "path": "/microapp1"
       }]};
     }
-    this.adapter = new FileSync(name || path.resolve(homeOrTmp, `.${pkg.name}-db.json`));
+    const dbPath = path.resolve(homeOrTmp, `./.${pkg.name}-db.json`);
+    console.log('Database', dbPath);
+   // const adapter = new LocalStorage(name);
+    this.adapter = (Adapter ? new Adapter(name, {defaultValue: defaults}) : new Memory(name || dbPath));
+
     db = low(this.adapter);
     try {
       db.defaults(defaults).write();
@@ -30,6 +37,7 @@ class Database {
 
     //lowdb instance
     this.db = db;
+
   }
 
   static getInstance(name){

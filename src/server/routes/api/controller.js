@@ -1,6 +1,13 @@
 const path = require('path');
 const Database = require('../../common/database');
-const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []});
+const RedisAdapter = require('../../common/database-redis-adapter');
+var adapter = null;
+
+if(process.env.REDIS_HOST){
+  adapter = RedisAdapter;
+}
+
+const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []}, adapter);
 
 //const log = require('../../common/logger')('controllers/api');
 /**

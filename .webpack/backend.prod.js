@@ -1,9 +1,13 @@
+/**
+ * Production backend-end webpack configuration
+ */
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const defaultSetup = module.exports = () => ({
   extends: 'base',
-
+  name: 'server',
+  target: 'node',
   stats: true,
   node: {
     global: true,
@@ -16,10 +20,8 @@ const defaultSetup = module.exports = () => ({
   entry: {
     server: './server/index.js'
   },
-  target: 'node',
   // in order to ignore all modules in node_modules folder
   externals: [nodeExternals()],
-
   plugins: [
     new CopyWebpackPlugin([
       {

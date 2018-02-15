@@ -1,26 +1,23 @@
 const path = require('path');
 
 module.exports = function(app){
+
+  const config = require(path.join(__dirname, '../../../webpack.config.js'))();
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackServerMiddleware = require('webpack-server-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
-  const config = require('../../../webpack.config.js');
   const compiler = webpack(config);
-  const devMiddleware = webpackDevMiddleware(compiler, {
-    publicPath: '/',
-    contentBase: '../../src',
 
-    stats: {
-      colors: true,
-      hash: false,
-      timings: true,
-      chunks: false,
-      chunkModules: false,
-      modules: false
-    }
+  const devMiddleware = webpackDevMiddleware(compiler, {
+    //contentBase: '../../src',
+    publicPath: '/'
+    //publicPath: config[0].output.publicPath,
   });
   app.use(devMiddleware);
-  app.use(webpackHotMiddleware(compiler));
+  // NOTE: Only the client bundle needs to be passed to `webpack-hot-middleware`.
+  app.use(webpackHotMiddleware(compiler.compilers.find(compiler => compiler.name === 'client')));
+ // app.use(webpackServerMiddleware(compiler));
   app.get('*', function response(req, res) {
     res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html')));
     res.end();

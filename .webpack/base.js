@@ -18,12 +18,14 @@ const bundleAnalyzer = new BundleAnalyzerPlugin({
 });
 // File: ./.webpack/base.js
 module.exports = () => ({
-  stats: true,
-  context: path.resolve(__dirname, '../src'),
+  //stats: true,
+  context: path.join(__dirname, '../src'),
+  target: 'web',
 
   output: {
+
     filename: `[name].js`,
-    path: path.resolve(__dirname, '../dist')
+    path: path.join(__dirname, '../dist')
   },
   resolve: {
     extensions: [
@@ -43,7 +45,7 @@ module.exports = () => ({
         test: /\.js$/,
         include: config.modules,
         exclude: [
-          /(bower_components|node_modules)/, /(\*.spec)/
+          /(node_modules)/
         ],
         use: ['babel-loader']
       },
@@ -92,6 +94,7 @@ module.exports = () => ({
   },
   plugins: [
     extractSass,
+
     //bundleAnalyzer,
     new webpack.optimize.OccurrenceOrderPlugin(),
     //

@@ -31,3 +31,4 @@ package-lock.json
 report.html
 stats.json
 .vscode
+.env

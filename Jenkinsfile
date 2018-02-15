@@ -99,6 +99,9 @@ pipeline {
     * Deploy stage will take the artifact from the build step and push to Cloud Foundry
     */
     stage('Deploy to CF3 Dev'){
+      when {
+        branch 'master'
+      }
       agent {
         docker {
           image 'registry.gear.ge.com/spartans/spartans-cicd'
