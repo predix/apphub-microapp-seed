@@ -8093,6 +8093,10 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
+redis-mock@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/redis-mock/-/redis-mock-0.21.0.tgz#860b2a30b364cc3d855df786c8f9f247ab83216b"
+
 redis-node@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/redis-node/-/redis-node-0.4.0.tgz#07dbdeacbbc79cc09b5008bbde2c96e56c71b6af"

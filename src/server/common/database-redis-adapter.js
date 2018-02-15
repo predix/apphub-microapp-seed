@@ -3,16 +3,22 @@ const redis = require('redis-node');
 
 class RedisAdapter extends Base {
   constructor(source, {defaultValue} = {}) {
-    const {REDIS_HOST, REDIS_PORT, REDIS_PASSWORD} = process.env;
+    const { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
     super(source, {defaultValue});
     this.source = source;
     this.defaultValue = defaultValue;
-    if(REDIS_HOST){
-      this.client = redis.createClient(REDIS_PORT, REDIS_HOST); 
+    
+    if (REDIS_HOST && REDIS_PORT && REDIS_PASSWORD && NODE_ENV !== 'test'){
+      this.client = redis.createClient({
+        host: REDIS_HOST,
+        port: REDIS_PORT,
+        password: REDIS_PASSWORD
+      }); 
+    } else if(NODE_ENV === 'test'){
+      this.client = require('redis-mock').createClient();
     } else {
       this.client = redis.createClient();
     }
-    
     this.client.on('connected', (e) => {
       console.log('connected');
     });
