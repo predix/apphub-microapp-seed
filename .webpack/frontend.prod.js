@@ -69,16 +69,19 @@ module.exports = () => ({
       ServiceWorker: {
         events: true,
         // TODO: This needs to be the apphub/{microapp-path}
-        scope: ''
+        scope: '',
+        cacheName: `${pkg.name}`,
+        prefetchRequest: {
+          credentials: 'same-origin',
+          mode: 'cors'
+        }
       },
       externals: [
         'https://dzlpbrbc7yvq0.cloudfront.net/predixdev/fonts/2.0.0/GEInspiraSans.woff',
         'https://dzlpbrbc7yvq0.cloudfront.net/predixdev/fonts/2.0.0/GEInspiraSans-Bold.woff',
         'https://dzlpbrbc7yvq0.cloudfront.net/predixdev/fonts/2.0.0/GEInspiraSans-Italic.woff'
-      ],
-      prefetchRequest: {
-        'credentials': 'same-origin'
-      }
+      ]
+
     }),
     new CriticalPlugin({
       src: 'index.html',
