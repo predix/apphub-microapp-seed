@@ -24,7 +24,7 @@
     "dist": "npm run bower && npm run build && npm run copy && npm run zip",
     "dev": "cross-env NODE_ENV=development node src/server",
     "docker:build": "docker build -t predix-apphub/$npm_package_name .",
-    "docker:run": "docker run -p 49160:8080 -d predix-apphub/$npm_package_name",
+    "docker:run": "docker run -p 49161:8080 -d predix-apphub/$npm_package_name",
     "start": "cross-env NODE_ENV=production node server",
     "pretest": "rimraf coverage",
     "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",

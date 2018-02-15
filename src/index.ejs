@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="application-name" content="<%= htmlWebpackPlugin.options.title %>" />
   <meta name="format-detection" content="telephone=no" />
-  
+
   <meta name="theme-color" content="#ffffff" />
   <meta name="msapplication-TileColor" content="#ffffff" />
   <meta name="msapplication-TileImage" content="./assets/favicons/mstile-144x144.png" />
@@ -27,7 +27,7 @@
   <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="./assets/icons/apple-touch-icon-144x144.png"/>
   <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="./assets/icons/apple-touch-icon-152x152.png" />
   <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="./assets/icons/apple-touch-icon-180x180.png" />
-  
+
 
   <link rel="manifest" href="./manifest.json" />
 
@@ -67,6 +67,15 @@
     <script src="./<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="text/javascript" defer></script>
     <% } %>
   <% } %>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-75468006-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-75468006-2');
+  </script>
 
 </body>
 </html>
