@@ -138,14 +138,10 @@ pipeline {
       }
 
       steps {
-        unstash 'artifact'
-        sh 'ls -la'
         dir('build-scripts') {
           git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
         }
-        sh "cf login -a ${CF_DOMAIN} -u $DEVLOGIN_USR -p $DEVLOGIN_PSW -o ${CF_ORG} -s ${CF_SPACE}"
-        sh("chmod +x ./build-scripts/script/deploy_sequence.sh")
-        sh("./build-scripts/script/deploy_sequence.sh")
+        cfDeploy("${CF_DOMAIN}","$DEVLOGIN_USR","$DEVLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
       }
 
       post {
@@ -298,4 +294,12 @@ pipeline {
       echo 'Done.'
     }
   }
-}
+
+  def cfDeploy(String domain, String user, String password, String org, String space) {
+  	echo "Pushing to ORG: ${org} SPACE: ${space}"
+      unstash 'artifact'
+
+  	sh "cf login -a ${domain} -u ${user} -p ${password} -o ${org} -s ${space}"
+  	sh("chmod +x ./build-scripts/script/deploy_sequence.sh")
+  	sh("./build-scripts/script/deploy_sequence.sh")
+  }
