@@ -179,7 +179,7 @@ pipeline {
 
                   //APP_NAME='ui-app-hub';
                   APP_VERSION='1.0.0';
-                  APP_PATH="${APP_NAME}-${APP_VERSION}.zip";
+                  APP_PATH="${APP_NAME}-${BUILD_NUMBER}.zip";
                   PUBLISHED_HOST="${APP_NAME}-sysint";
 
                   DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
@@ -235,7 +235,7 @@ pipeline {
 
                   //APP_NAME='ui-app-hub';
                   APP_VERSION='1.0.0';
-                  APP_PATH="${APP_NAME}-${APP_VERSION}.zip";
+                  APP_PATH="${APP_NAME}-${BUILD_NUMBER}.zip";
                   PUBLISHED_HOST="${APP_NAME}-stage";
 
                   DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
