@@ -1,322 +1,322 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent none
+   agent none
 
-    environment {
+   environment {
       DEBUG = ''
       CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
       ORG_NAME = 'Predix-Apphub'
       APP_NAME = 'apphub-microapp-seed'
-    }
+   }
+   
+   parameters {
+      string(name: 'DEPLOY_BUILD_NUMBER', defaultValue: '', description: 'Choose a build number to deploy')
+      choice(name: 'POP', choices: 'AZURE\nEU\nMARKETPLACE\nAPMPROD\nASV', description: 'Choose the region to deploy' )
+   }
 
-    parameters {
-        string(name: 'DEPLOY_BUILD_NUMBER', defaultValue: '', description: 'Choose a build number to deploy')
-	    choice(name: 'POP', choices: 'AZURE\nEU\nMARKEPTPLACE\nAPMPROD\nASV', description: 'Choose the region to deploy' )
-    }
+   options {
+      buildDiscarder(logRotator(artifactDaysToKeepStr: '1', artifactNumToKeepStr: '1', daysToKeepStr: '90', numToKeepStr: '20'))
+   }
 
-    options {
-        buildDiscarder(logRotator(artifactDaysToKeepStr: '1', artifactNumToKeepStr: '1', daysToKeepStr: '90', numToKeepStr: '20'))
-    }
+   stages {
+      stage('Clean Up') {
+         agent {
+            label 'dind'
+         }
 
-    stages {
-        stage('Clean Up') {
-            agent {
-                label 'dind'
+         steps {
+            step([$class: 'WsCleanup'])
+            script {
+               currentBuild.displayName = params.POP + '-' + env.BUILD_NUMBER;
             }
+         }
 
-            steps {
-                step([$class: 'WsCleanup'])
-                script {
-                    currentBuild.displayName = params.POP + '-' + env.BUILD_NUMBER;
-                }
+         post {
+            success {
+               echo 'Clean up stage completed'
             }
-
-            post {
-                success {
-                    echo 'Clean up stage completed'
-                }
-                failure {
-                    echo 'Clean up stage failed'
-                }
+            failure {
+               echo 'Clean up stage failed'
             }
-        }
-        stage ('Deploy to AZURE') {
-            when {
-                allOf {
-                    branch 'master'
-                    expression { params.POP == 'AZURE'}
-                }
+         }
+      }
+      stage ('Deploy to AZURE') {
+         when {
+            allOf {
+               branch 'master'
+               expression { params.POP == 'AZURE'}
             }
+         }
 
-            agent {
-                docker {
-                    image 'registry.gear.ge.com/spartans/spartans-cicd'
-                    label 'dind'
-                }
+         agent {
+            docker {
+               image 'registry.gear.ge.com/spartans/spartans-cicd'
+               label 'dind'
             }
+         }
 
-            environment {
-                AZURELOGIN = credentials('AZURE_Credentials')
+         environment {
+            AZURELOGIN = credentials('AZURE_Credentials')
 
-                CF_DOMAIN='https://api.system.azr-usw01-pr.ice.predix.io';
-                CF_RUN_DOMAIN='run.azr-usw01-pr.ice.predix.io';
-                CF_ORG='predix-apphub-platform';
-                CF_SPACE='predix-apphub-platform';
+            CF_DOMAIN='https://api.system.azr-usw01-pr.ice.predix.io';
+            CF_RUN_DOMAIN='run.azr-usw01-pr.ice.predix.io';
+            CF_ORG='predix-apphub-platform';
+            CF_SPACE='predix-apphub-platform';
 
-                PUBLISHED_HOST="${APP_NAME}";
-                BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                INSTANCES='2';
-                DISK_QUOTA='125M';
-                MEMORY='1G';
-                APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
-                SERVICES='';
-                WILD_CARD="${PUBLISHED_HOST}.run.azr-usw01-pr.ice.predix.io";
-                GIT_TOKEN = credentials('GITTOKEN');
-                TO_ENV='AZURE';
+            PUBLISHED_HOST="${APP_NAME}";
+            BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+            INSTANCES='2';
+            DISK_QUOTA='125M';
+            MEMORY='1G';
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
+            SERVICES='';
+            WILD_CARD="${PUBLISHED_HOST}.run.azr-usw01-pr.ice.predix.io";
+            GIT_TOKEN = credentials('GITTOKEN');
+            TO_ENV='AZURE';
+         }
+
+         steps {
+            script {
+               downloadArtifact()
+
+               dir('build-scripts') {
+                  git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+               }
+
+               cfDeploy("${CF_DOMAIN}","$AZURELOGIN_USR","$AZURELOGIN_PSW","${CF_ORG}","${CF_SPACE}")
             }
+         }
+      }
 
-            steps {
-		        script {
-			        downloadArtifact()
-
-                    dir('build-scripts') {
-                       git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
-                    }
-
-                    cfDeploy("${CF_DOMAIN}","$AZURELOGIN_USR","$AZURELOGIN_PSW","${CF_ORG}","${CF_SPACE}")
-		        }
+      stage ('Deploy to EU') {
+         when {
+            allOf {
+               branch 'master'
+               expression { params.POP == 'EU'}
             }
-		}
+         }
 
-        stage ('Deploy to EU') {
-            when {
-                allOf {
-                    branch 'master'
-                    expression { params.POP == 'EU'}
-                }
+         agent {
+            docker {
+               image 'registry.gear.ge.com/spartans/spartans-cicd'
+               label 'dind'
             }
+         }
 
-            agent {
-                docker {
-                    image 'registry.gear.ge.com/spartans/spartans-cicd'
-                    label 'dind'
-                }
+         environment {
+            EULOGIN = credentials('EU_Credentials')
+
+            CF_DOMAIN='https://api.system.aws-eu-central-1-pr.ice.predix.io';
+            CF_RUN_DOMAIN='run.aws-eu-central-1-pr.ice.predix.io';
+            CF_ORG='predix-apphub-platform';
+            CF_SPACE='predix-apphub-platform';
+
+            PUBLISHED_HOST="${APP_NAME}";
+            BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+            INSTANCES='2';
+            DISK_QUOTA='125M';
+            MEMORY='1G';
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
+            SERVICES='';
+            WILD_CARD="${PUBLISHED_HOST}.run.aws-eu-central-1-pr.ice.predix.io"
+            GIT_TOKEN = credentials('GITTOKEN');
+            TO_ENV='EU';
+         }
+
+         steps {
+            script {
+               downloadArtifact()
+
+               dir('build-scripts') {
+                  git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+               }
+
+               cfDeploy("${CF_DOMAIN}","$EULOGIN_USR","$EULOGIN_PSW","${CF_ORG}","${CF_SPACE}")
             }
+         }
+      }
 
-            environment {
-                EULOGIN = credentials('EU_Credentials')
-
-                CF_DOMAIN='https://api.system.aws-eu-central-1-pr.ice.predix.io';
-                CF_RUN_DOMAIN='run.aws-eu-central-1-pr.ice.predix.io';
-                CF_ORG='predix-apphub-platform';
-                CF_SPACE='predix-apphub-platform';
-
-                PUBLISHED_HOST="${APP_NAME}";
-                BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                INSTANCES='2';
-                DISK_QUOTA='125M';
-                MEMORY='1G';
-                APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
-                SERVICES='';
-                WILD_CARD="${PUBLISHED_HOST}.run.aws-eu-central-1-pr.ice.predix.io"
-                GIT_TOKEN = credentials('GITTOKEN');
-                TO_ENV='EU';
+      stage ('Deploy to MARKETPLACE') {
+         when {
+            allOf {
+               branch 'master'
+               expression { params.POP == 'MARKETPLACE'}
             }
+         }
 
-            steps {
-		        script {
-			        downloadArtifact()
-
-                    dir('build-scripts') {
-                       git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
-                    }
-
-                    cfDeploy("${CF_DOMAIN}","$EULOGIN_USR","$EULOGIN_PSW","${CF_ORG}","${CF_SPACE}")
-		        }
+         agent {
+            docker {
+               image 'registry.gear.ge.com/spartans/spartans-cicd'
+               label 'dind'
             }
-		}
+         }
 
-        stage ('Deploy to MARKETPLACE') {
-            when {
-                allOf {
-                    branch 'master'
-                    expression { params.POP == 'MARKETPLACE'}
-                }
+         environment {
+            MARKETPLACELOGIN = credentials('MARKETPLACE_Credentials')
+
+            CF_DOMAIN='https://api.system.aws-usw02-pr.ice.predix.io';
+            CF_RUN_DOMAIN='run.aws-usw02-pr.ice.predix.io';
+            CF_ORG='predix-apphub-platform';
+            CF_SPACE='predix-apphub-platform';
+
+            PUBLISHED_HOST="${APP_NAME}-cf1prod";
+            BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+            INSTANCES='2';
+            DISK_QUOTA='125M';
+            MEMORY='1G';
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
+            SERVICES='';
+            WILD_CARD="${PUBLISHED_HOST}.run.aws-usw02-pr.ice.predix.io|em-sandbox.run.aws-usw02-pr.ice.predix.io"
+            GIT_TOKEN = credentials('GITTOKEN');
+            TO_ENV='MARKETPLACE';
+         }
+
+         steps {
+            script {
+               downloadArtifact()
+
+               dir('build-scripts') {
+                  git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+               }
+
+               cfDeploy("${CF_DOMAIN}","$MARKETPLACELOGIN_USR","$MARKETPLACELOGIN_PSW","${CF_ORG}","${CF_SPACE}")
             }
+         }
+      }
 
-            agent {
-                docker {
-                    image 'registry.gear.ge.com/spartans/spartans-cicd'
-                    label 'dind'
-                }
+      stage ('Deploy to APMPROD') {
+         when {
+            allOf {
+               branch 'master'
+               expression { params.POP == 'APMPROD'}
             }
+         }
 
-            environment {
-                MARKETPLACELOGIN = credentials('MARKETPLACE_Credentials')
-
-                CF_DOMAIN='https://api.system.aws-usw02-pr.ice.predix.io';
-                CF_RUN_DOMAIN='run.aws-usw02-pr.ice.predix.io';
-                CF_ORG='predix-apphub-platform';
-                CF_SPACE='predix-apphub-platform';
-
-                PUBLISHED_HOST="${APP_NAME}-cf1prod";
-                BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                INSTANCES='2';
-                DISK_QUOTA='125M';
-                MEMORY='1G';
-                APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
-                SERVICES='';
-                WILD_CARD="${PUBLISHED_HOST}.run.aws-usw02-pr.ice.predix.io|em-sandbox.run.aws-usw02-pr.ice.predix.io"
-                GIT_TOKEN = credentials('GITTOKEN');
-                TO_ENV='MARKETPLACE';
+         agent {
+            docker {
+               image 'registry.gear.ge.com/spartans/spartans-cicd'
+               label 'dind'
             }
+         }
 
-            steps {
-		        script {
-			        downloadArtifact()
+         environment {
+            APMPRODLOGIN = credentials('APMPROD_Credentials')
 
-                    dir('build-scripts') {
-                       git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
-                    }
+            CF_DOMAIN='https://api.system.aws-usw02-pr.ice.predix.io';
+            CF_RUN_DOMAIN='apm.aws-usw02-pr.predix.io';
+            CF_ORG='HUBS-AWS-Prod';
+            CF_SPACE='apphubprod';
 
-                    cfDeploy("${CF_DOMAIN}","$MARKETPLACELOGIN_USR","$MARKETPLACELOGIN_PSW","${CF_ORG}","${CF_SPACE}")
-		        }
+            PUBLISHED_HOST="${APP_NAME}";
+            BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+            INSTANCES='2';
+            DISK_QUOTA='125M';
+            MEMORY='1G';
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
+            SERVICES='';
+            WILD_CARD=''
+            GIT_TOKEN = credentials('GITTOKEN');
+            TO_ENV='APMPROD';
+         }
+
+         steps {
+            script {
+               downloadArtifact()
+
+               dir('build-scripts') {
+                  git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+               }
+
+               cfDeploy("${CF_DOMAIN}","$APMPRODLOGIN_USR","$APMPRODLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
             }
-		}
+         }
+      }
 
-    stage ('Deploy to APMPROD') {
-            when {
-                allOf {
-                    branch 'master'
-                    expression { params.POP == 'APMPROD'}
-                }
+      stage ('Deploy to ASV') {
+         when {
+            allOf {
+               branch 'master'
+               expression { params.POP == 'ASV'}
             }
+         }
 
-            agent {
-                docker {
-                    image 'registry.gear.ge.com/spartans/spartans-cicd'
-                    label 'dind'
-                }
+         agent {
+            docker {
+               image 'registry.gear.ge.com/spartans/spartans-cicd'
+               label 'dind'
             }
+         }
 
-            environment {
-                APMPRODLOGIN = credentials('APMPROD_Credentials')
+         environment {
+            ASVLOGIN = credentials('ASV_Credentials')
 
-                CF_DOMAIN='https://api.system.aws-usw02-pr.ice.predix.io';
-                CF_RUN_DOMAIN='apm.aws-usw02-pr.predix.io';
-                CF_ORG='HUBS-AWS-Prod';
-                CF_SPACE='apphubprod';
+            CF_DOMAIN='https://api.system.asv-pr.ice.predix.io';
+            CF_RUN_DOMAIN='run.asv-pr.ice.predix.io';
+            CF_ORG='paeprod';
+            CF_SPACE='hubsprod';
 
-                PUBLISHED_HOST="${APP_NAME}";
-                BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                INSTANCES='2';
-                DISK_QUOTA='125M';
-                MEMORY='1G';
-                APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
-                SERVICES='';
-                WILD_CARD=''
-                GIT_TOKEN = credentials('GITTOKEN');
-                TO_ENV='APMPROD';
+            PUBLISHED_HOST="${APP_NAME}";
+            BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+            INSTANCES='2';
+            DISK_QUOTA='125M';
+            MEMORY='1G';
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
+            SERVICES='';
+            WILD_CARD=''
+
+            GIT_TOKEN = credentials('GITTOKEN');
+            TO_ENV='ASV';
+         }
+
+         steps {
+            script {
+               downloadArtifact()
+
+               dir('build-scripts') {
+                  git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+               }
+
+               cfDeploy("${CF_DOMAIN}","$ASVLOGIN_USR","$ASVLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
             }
+         }
+      }
+   }
 
-            steps {
-		        script {
-			        downloadArtifact()
-
-                    dir('build-scripts') {
-                       git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
-                    }
-
-                    cfDeploy("${CF_DOMAIN}","$APMPRODLOGIN_USR","$APMPRODLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
-		        }
-            }
-		}
-
-    stage ('Deploy to ASV') {
-            when {
-                allOf {
-                    branch 'master'
-                    expression { params.POP == 'ASV'}
-                }
-            }
-
-            agent {
-                docker {
-                    image 'registry.gear.ge.com/spartans/spartans-cicd'
-                    label 'dind'
-                }
-            }
-
-            environment {
-                ASVLOGIN = credentials('ASV_Credentials')
-
-                CF_DOMAIN='https://api.system.asv-pr.ice.predix.io';
-                CF_RUN_DOMAIN='run.asv-pr.ice.predix.io';
-                CF_ORG='paeprod';
-                CF_SPACE='hubsprod';
-
-                PUBLISHED_HOST="${APP_NAME}";
-                BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                INSTANCES='2';
-                DISK_QUOTA='125M';
-                MEMORY='1G';
-                APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
-                SERVICES='';
-                WILD_CARD=''
-
-                GIT_TOKEN = credentials('GITTOKEN');
-                TO_ENV='ASV';
-            }
-
-            steps {
-		        script {
-			        downloadArtifact()
-
-                    dir('build-scripts') {
-                       git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
-                    }
-
-                    cfDeploy("${CF_DOMAIN}","$ASVLOGIN_USR","$ASVLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
-		        }
-            }
-		}
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed'
-        }
-        failure {
-            echo 'Pipeline failed'
-        }
-    }
+   post {
+      success {
+         echo 'Pipeline completed'
+      }
+      failure {
+         echo 'Pipeline failed'
+      }
+   }
 }
 
 def downloadArtifact(){
 
-// Define DevCloud Artifactory for publishing non-docker image artifacts
-def devcloudArtServer = Artifactory.server('devcloud')
+   // Define DevCloud Artifactory for publishing non-docker image artifacts
+   def devcloudArtServer = Artifactory.server('devcloud')
 
-// Snapshot = DevCloud Artifactory repo name
-def Snapshot = 'PREDIX'
+   // Snapshot = DevCloud Artifactory repo name
+   def Snapshot = 'PREDIX'
 
-    def downloadSpec = """{
-        "files": [
-            {
-                "pattern": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/",
-                "target": "deploy-workspace/"
-            }
-        ]
-    }"""
+   def downloadSpec = """{
+      "files": [
+      {
+         "pattern": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/",
+         "target": "deploy-workspace/"
+      }
+      ]
+      }"""
 
-    devcloudArtServer.download(downloadSpec)
-}
+      devcloudArtServer.download(downloadSpec)
+   }
 
-def cfDeploy(String domain, String user, String password, String org, String space) {
-	echo "Pushing to ORG: ${org} SPACE: ${space}"
+   def cfDeploy(String domain, String user, String password, String org, String space) {
+      echo "Pushing to ORG: ${org} SPACE: ${space}"
 
-	sh "cf login -a ${domain} -u ${user} -p ${password} -o ${org} -s ${space}"
-	sh("chmod +x ./build-scripts/script/deploy_sequence.sh")
-	sh("./build-scripts/script/deploy_sequence.sh")
-}
+      sh "cf login -a ${domain} -u ${user} -p ${password} -o ${org} -s ${space}"
+      sh("chmod +x ./build-scripts/script/deploy_sequence.sh")
+      sh("./build-scripts/script/deploy_sequence.sh")
+   }
