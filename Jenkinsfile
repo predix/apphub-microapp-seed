@@ -294,6 +294,7 @@ pipeline {
       echo 'Done.'
     }
   }
+}
 
   def cfDeploy(String domain, String user, String password, String org, String space) {
   	echo "Pushing to ORG: ${org} SPACE: ${space}"
