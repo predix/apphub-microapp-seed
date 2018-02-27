@@ -132,7 +132,7 @@ pipeline {
         MEMORY='1G';
         SERVICES='predix-logging';
         BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-        WILD_CARD="${PUBLISHED_HOST}.run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+        WILD_CARD=''
 
         TO_ENV='DEV';
       }
@@ -188,7 +188,7 @@ pipeline {
                   MEMORY='1G';
                   SERVICES='';
                   BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                  WILD_CARD="${PUBLISHED_HOST}.run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+                  WILD_CARD=''
 
                   TO_ENV='SYSINT';
               }
@@ -244,7 +244,7 @@ pipeline {
                   MEMORY='1G';
                   SERVICES='';
                   BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                  WILD_CARD="${PUBLISHED_HOST}.run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+                  WILD_CARD=''
 
                   TO_ENV='STAGE';
               }

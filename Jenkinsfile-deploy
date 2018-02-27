@@ -67,11 +67,11 @@ pipeline {
             PUBLISHED_HOST="${APP_NAME}";
             BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
             INSTANCES='2';
-            DISK_QUOTA='125M';
-            MEMORY='1G';
+            DISK_QUOTA='256M';
+            MEMORY='2G';
             APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
-            WILD_CARD="${PUBLISHED_HOST}.run.azr-usw01-pr.ice.predix.io";
+            WILD_CARD=''
             GIT_TOKEN = credentials('GITTOKEN');
             TO_ENV='AZURE';
          }
@@ -115,11 +115,11 @@ pipeline {
             PUBLISHED_HOST="${APP_NAME}";
             BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
             INSTANCES='2';
-            DISK_QUOTA='125M';
-            MEMORY='1G';
+            DISK_QUOTA='256M';
+            MEMORY='2G';
             APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
-            WILD_CARD="${PUBLISHED_HOST}.run.aws-eu-central-1-pr.ice.predix.io"
+            WILD_CARD=''
             GIT_TOKEN = credentials('GITTOKEN');
             TO_ENV='EU';
          }
@@ -163,11 +163,11 @@ pipeline {
             PUBLISHED_HOST="${APP_NAME}-cf1prod";
             BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
             INSTANCES='2';
-            DISK_QUOTA='125M';
-            MEMORY='1G';
+            DISK_QUOTA='256M';
+            MEMORY='2G';
             APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
-            WILD_CARD="${PUBLISHED_HOST}.run.aws-usw02-pr.ice.predix.io|em-sandbox.run.aws-usw02-pr.ice.predix.io"
+            WILD_CARD=''
             GIT_TOKEN = credentials('GITTOKEN');
             TO_ENV='MARKETPLACE';
          }
@@ -211,8 +211,8 @@ pipeline {
             PUBLISHED_HOST="${APP_NAME}";
             BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
             INSTANCES='2';
-            DISK_QUOTA='125M';
-            MEMORY='1G';
+            DISK_QUOTA='256M';
+            MEMORY='2G';
             APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
             WILD_CARD=''
@@ -259,8 +259,8 @@ pipeline {
             PUBLISHED_HOST="${APP_NAME}";
             BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
             INSTANCES='2';
-            DISK_QUOTA='125M';
-            MEMORY='1G';
+            DISK_QUOTA='256M';
+            MEMORY='2G';
             APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
             WILD_CARD=''
