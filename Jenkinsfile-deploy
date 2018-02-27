@@ -9,7 +9,7 @@ pipeline {
       ORG_NAME = 'Predix-Apphub'
       APP_NAME = 'apphub-microapp-seed'
    }
-   
+
    parameters {
       string(name: 'DEPLOY_BUILD_NUMBER', defaultValue: '', description: 'Choose a build number to deploy')
       choice(name: 'POP', choices: 'AZURE\nEU\nMARKETPLACE\nAPMPROD\nASV', description: 'Choose the region to deploy' )
@@ -69,7 +69,7 @@ pipeline {
             INSTANCES='2';
             DISK_QUOTA='125M';
             MEMORY='1G';
-            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
             WILD_CARD="${PUBLISHED_HOST}.run.azr-usw01-pr.ice.predix.io";
             GIT_TOKEN = credentials('GITTOKEN');
@@ -117,7 +117,7 @@ pipeline {
             INSTANCES='2';
             DISK_QUOTA='125M';
             MEMORY='1G';
-            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
             WILD_CARD="${PUBLISHED_HOST}.run.aws-eu-central-1-pr.ice.predix.io"
             GIT_TOKEN = credentials('GITTOKEN');
@@ -165,7 +165,7 @@ pipeline {
             INSTANCES='2';
             DISK_QUOTA='125M';
             MEMORY='1G';
-            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-1.0.0.zip";
+            APP_PATH="./deploy-workspace/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${params.DEPLOY_BUILD_NUMBER}/${APP_NAME}-${params.DEPLOY_BUILD_NUMBER}.zip";
             SERVICES='';
             WILD_CARD="${PUBLISHED_HOST}.run.aws-usw02-pr.ice.predix.io|em-sandbox.run.aws-usw02-pr.ice.predix.io"
             GIT_TOKEN = credentials('GITTOKEN');
