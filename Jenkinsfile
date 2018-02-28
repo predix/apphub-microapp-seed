@@ -126,26 +126,22 @@ pipeline {
         APP_PATH="${APP_NAME}-${BUILD_NUMBER}.zip";
         PUBLISHED_HOST="${APP_NAME}";
 
-        DOMAIN="run.${CF_REGION}-${CF_SPACE}.ice.predix.io";
+        DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
         INSTANCES='2';
         DISK_QUOTA='125M';
         MEMORY='1G';
         SERVICES='predix-logging';
         BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-        WILD_CARD="${PUBLISHED_HOST}.run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+        WILD_CARD=''
 
         TO_ENV='DEV';
       }
 
       steps {
-        unstash 'artifact'
-        sh 'ls -la'
         dir('build-scripts') {
           git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
         }
-        sh "cf login -a ${CF_DOMAIN} -u $DEVLOGIN_USR -p $DEVLOGIN_PSW -o ${CF_ORG} -s ${CF_SPACE}"
-        sh("chmod +x ./build-scripts/script/deploy_sequence.sh")
-        sh("./build-scripts/script/deploy_sequence.sh")
+        cfDeploy("${CF_DOMAIN}","$DEVLOGIN_USR","$DEVLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
       }
 
       post {
@@ -157,6 +153,137 @@ pipeline {
         }
       }
     }
+
+    stage('Deploy to SysInt'){
+      when {
+        branch 'master'
+      }
+
+              agent {
+                  docker {
+                      image 'registry.gear.ge.com/spartans/spartans-cicd'
+                      label 'dind'
+                  }
+              }
+
+              environment {
+                  SYSINTLOGIN = credentials('CF3SysInt_Credentials')
+                  GIT_TOKEN = credentials('GITTOKEN');
+
+                  CF_ENV='dev';
+                  CF_REGION='aws-usw02';
+                  CF_SPACE='predix-apphub-sysint';
+                  CF_DOMAIN="https://api.system.aws-usw02-${CF_ENV}.ice.predix.io";
+                  CF_RUN_DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+                  CF_ORG='predix-apphub-sysint';
+
+                  //APP_NAME='ui-app-hub';
+                  APP_VERSION='1.0.0';
+                  APP_PATH="${APP_NAME}-${BUILD_NUMBER}.zip";
+                  PUBLISHED_HOST="${APP_NAME}-sysint";
+
+                  DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+                  INSTANCES='2';
+                  DISK_QUOTA='125M';
+                  MEMORY='1G';
+                  SERVICES='';
+                  BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+                  WILD_CARD=''
+
+                  TO_ENV='SYSINT';
+              }
+
+              steps {
+                  dir('build-scripts') {
+                      git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+                  }
+                  cfDeploy("${CF_DOMAIN}","$SYSINTLOGIN_USR","$SYSINTLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
+              }
+
+              post {
+                  success {
+                       echo "Deploy stage completed"
+                  }
+                  failure {
+                      echo "Deploy stage failed"
+                  }
+              }
+          }
+
+          stage('Deploy to Stage'){
+            when {
+              branch 'master'
+            }
+
+              agent {
+                  docker {
+                      image 'registry.gear.ge.com/spartans/spartans-cicd'
+                      label 'dind'
+                  }
+              }
+
+              environment {
+                  STAGELOGIN = credentials('CF3Stage_Credentials')
+                  GIT_TOKEN = credentials('GITTOKEN');
+
+                  CF_ENV='dev';
+                  CF_REGION='aws-usw02';
+                  CF_SPACE='predix-apphub-stage';
+                  CF_DOMAIN="https://api.system.aws-usw02-${CF_ENV}.ice.predix.io";
+                  CF_RUN_DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+                  CF_ORG='predix-apphub-stage';
+
+                  //APP_NAME='ui-app-hub';
+                  APP_VERSION='1.0.0';
+                  APP_PATH="${APP_NAME}-${BUILD_NUMBER}.zip";
+                  PUBLISHED_HOST="${APP_NAME}-stage";
+
+                  DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
+                  INSTANCES='2';
+                  DISK_QUOTA='125M';
+                  MEMORY='1G';
+                  SERVICES='';
+                  BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
+                  WILD_CARD=''
+
+                  TO_ENV='STAGE';
+              }
+
+              steps {
+                  dir('build-scripts') {
+                      git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
+                  }
+                  cfDeploy("${CF_DOMAIN}","$STAGELOGIN_USR","$STAGELOGIN_PSW","${CF_ORG}","${CF_SPACE}")
+              }
+
+              post {
+                  success {
+                       echo "Deploy stage completed"
+                  }
+                  failure {
+                      echo "Deploy stage failed"
+                  }
+              }
+          }
+
+          stage('Clean Up') {
+              agent {
+                  label 'dind'
+              }
+
+              steps {
+                  step([$class: 'WsCleanup'])
+              }
+
+              post {
+                   success {
+                       echo 'Clean up stage completed'
+                   }
+                   failure {
+                       echo 'Clean up stage failed'
+                   }
+               }
+           }
   }
 
   /**
@@ -168,3 +295,12 @@ pipeline {
     }
   }
 }
+
+  def cfDeploy(String domain, String user, String password, String org, String space) {
+  	echo "Pushing to ORG: ${org} SPACE: ${space}"
+      unstash 'artifact'
+
+  	sh "cf login -a ${domain} -u ${user} -p ${password} -o ${org} -s ${space}"
+  	sh("chmod +x ./build-scripts/script/deploy_sequence.sh")
+  	sh("./build-scripts/script/deploy_sequence.sh")
+  }
