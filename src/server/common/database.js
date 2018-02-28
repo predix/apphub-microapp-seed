@@ -25,9 +25,12 @@ class Database {
     }
     const dbPath = path.resolve(homeOrTmp, `./.${pkg.name}-db.json`);
     console.log('Database', dbPath);
-   // const adapter = new LocalStorage(name);
-    this.adapter = (Adapter ? new Adapter(name, {defaultValue: defaults}) : new Memory(name || dbPath));
-
+   
+   
+     // const adapter = new LocalStorage(name);
+    //this.adapter = (Adapter ? new Adapter(name, {defaultValue: defaults}) : new Memory(name || dbPath));
+    const adapter = new require('./database-custom-adapter')('in-memory', defaults);
+    this.adapter = adapter;
     db = low(this.adapter);
     try {
       db.defaults(defaults).write();

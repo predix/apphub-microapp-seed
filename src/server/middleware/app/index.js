@@ -11,7 +11,7 @@ const log = Logger('application');
 module.exports = function(app) {
 
   const sessionOptions = {
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'test',
     name: process.env.COOKIE_NAME || 'test',
     maxAge: 30 * 60 * 1000, // expire token after 30 min.
     proxy: true,
