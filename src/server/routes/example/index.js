@@ -19,6 +19,42 @@ const mySecondMiddleware = function mySecondMiddleware(req, res, next) {
  *
  */
 module.exports = {
+
+  '/timeout/:time': {
+    get: (req, res) => {
+      console.log('Waiting for', req.params.time);
+      setTimeout(function(){
+        res.status(200).send({
+          headers: req.headers,
+          body: req.body,
+          query: req.query
+        });
+      }, req.params.time || 1000);
+    },
+    post: (req, res) => {
+      res.status(500).send({
+        headers: req.headers,
+        body: req.body,
+        query: req.query
+      });
+    }
+  },
+  '/500': {
+    get: (req, res) => {
+      res.status(500).send({
+        headers: req.headers,
+        body: req.body,
+        query: req.query
+      });
+    },
+    post: (req, res) => {
+      res.status(500).send({
+        headers: req.headers,
+        body: req.body,
+        query: req.query
+      });
+    }
+  },
   '/getCookies': {
     get: (req, res) => {
       res.status(200).send({
