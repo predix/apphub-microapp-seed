@@ -1,47 +1,87 @@
 const Base = require('lowdb/adapters/Base');
 const redis = require('redis-node');
-
+const log = require('./logger')('RedisAdapter');
 class RedisAdapter extends Base {
   constructor(source, {defaultValue} = {}) {
-    const { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
+    const { ENABLE_REDIS_STORE, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
     super(source, {defaultValue});
     this.source = source;
     this.defaultValue = defaultValue;
+    log.debug('RedisAdapter', 'constructor', source, defaultValue);
     
-    if (REDIS_HOST && REDIS_PORT && REDIS_PASSWORD && NODE_ENV !== 'test'){
+    if (ENABLE_REDIS_STORE && REDIS_HOST && REDIS_PORT && REDIS_PASSWORD && NODE_ENV !== 'test'){
+     log.debug('REDIS_HOST', REDIS_HOST);
+     log.debug('REDIS_PORT', REDIS_PORT);
+     log.debug('REDIS_PASSWORD', REDIS_PASSWORD);
       this.client = redis.createClient({
         host: REDIS_HOST,
         port: REDIS_PORT,
         password: REDIS_PASSWORD
       }); 
-    } else if(NODE_ENV === 'test'){
+    } 
+    
+    if(NODE_ENV === 'test'){
       this.client = require('redis-mock').createClient();
     } else {
       this.client = redis.createClient();
     }
+
     this.client.on('connected', (e) => {
-      console.log('connected');
+      log.debug('connected', e);
+    });
+    this.client.on('reconnecting', (e) => {
+      log.debug('reconnecting', e);
+    });
+    this.client.on('reconnected', (e) => {
+      log.debug('reconnected', e);
+    });
+    this.client.on('noconnection', (e) => {
+      log.debug('noconnection', e);
+    });
+    this.client.on('connection error', (e) => {
+      log.debug('connection error', e);
     });
     this.client.on('disconnected', (e) => {
-      console.log('disconnected');
+      log.debug('disconnected', e);
     });
-   // this.client.select(0);
+    
+    this.client.select(0);
   }
 
   read(){
     const data = this.client.get(this.source);
+    log.debug('read', data);
     if(data){
       return this.deserialize(data);
     } else {
-      this.client.set(this.source, this.serialize(this.defaultValue));
+      this.write(this.defaultValue);
       return this.defaultValue;
     }
   }
 
   write(data){
-    console.log('write', data);
-    this.client.set(this.source, this.serialize(data));
+    return new Promise((resolve, reject) => {
+      log.debug('write', data);
+      this.client.set(this.source, this.serialize(data), (err, status) => {
+        log.debug('write', err, status);
+        if(err){
+          reject(err);
+        }
+        resolve(status);
+      });
+    })
   }
+
+  _serialize(o){
+    log.debug('serialize', o);
+    return JSON.stringify(o);
+  }
+  
+  _deserialize(o){
+    log.debug('deserialize', o);
+    return JSON.parse(o);
+  }
+  
   close(){
     this.client.close();
   }

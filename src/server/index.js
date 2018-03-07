@@ -30,11 +30,32 @@ if (process.env.NODE_ENV === 'development') {
   require('./common/dev')(app);
 }
 
+
 if (require.main === module) {
-  console.log(routesList(app).toString());
-  server.listen(port, () => {
-    console.log(`Running on port ${port}`)
-  });
+
+  const port = process.env.PORT || 9000;
+  const cluster = require('cluster');
+
+  // Code to run if we're in the master process
+  if (cluster.isMaster && process.env.CLUSTER_MODE) {
+    console.log(`Master ${process.pid} is running`);
+    const cpuCount = require('os').cpus().length;
+
+    for (let i = 0; i < cpuCount; i += 1) {
+      cluster.fork();
+    }
+    cluster.on('exit', (worker, code, signal) => {
+      console.log(`worker ${worker.process.pid} died`);
+      cluster.fork();
+    });
+  } else {
+
+    console.log(routesList(app).toString());
+    server.listen(port, function () {
+      console.log(`Process ${process.pid} running on ${port}`);
+    });
+  }
+
 } else {
   module.exports = server;
 }

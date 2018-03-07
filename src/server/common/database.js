@@ -1,11 +1,17 @@
+const pkg = require('../../../package.json');
 const log = require('./logger')('database');
 const uuid = require('uuid');
 const path = require('path');
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const CustomAdapter = require('./database-custom-adapter');
 const homeOrTmp = require('home-or-tmp');
-const pkg = require('../../../package.json');
+const low = require('lowdb');
+
+
+const FileSync = require('lowdb/adapters/FileSync');
+
+const RedisAdapter = require('./database-redis-adapter');
+const CustomAdapter = require('./database-custom-adapter');
+
+
 var db;
 var instance;
 /**
@@ -13,7 +19,7 @@ var instance;
  * https://github.com/typicode/lowdb#usage
  */
 class Database {
-  constructor(name, defaults){
+  constructor(name, defaults, adapter){
     if(!defaults){
       defaults = {user: {}, nav: [{
         "label": "Microapp Seed",
@@ -21,8 +27,21 @@ class Database {
         "path": "/microapp1"
       }]};
     }
-    //this.adapter = new FileSync(name || path.resolve(homeOrTmp, `.${pkg.name}-db.json`));
-    this.adapter = new CustomAdapter('test-app', defaults);
+    console.log(typeof(adapter))
+    if(typeof(adapter) === 'string'){
+      if(adapter === 'memory'){
+        adapter = new CustomAdapter(name, defaults);
+      } 
+      if(adapter === 'redis'){
+        adapter = new RedisAdapter(name, defaults);
+      } 
+  
+      if(adapter === 'file') {
+        adapter = new FileSync(name || path.resolve(homeOrTmp, `.${name}-db.json`), defaults);
+      } 
+    }
+    
+    this.adapter = adapter;
     db = low(this.adapter);
     try {
       db.defaults(defaults).write();

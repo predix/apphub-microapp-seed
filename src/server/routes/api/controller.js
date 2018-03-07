@@ -3,6 +3,7 @@ const Database = require('../../common/database');
 const RedisAdapter = require('../../common/database-redis-adapter');
 var adapter = null;
 
+
 if(process.env.REDIS_HOST){
   adapter = RedisAdapter;
 }

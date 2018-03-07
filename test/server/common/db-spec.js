@@ -1,18 +1,22 @@
 'use strict';
-const expect = require('chai').expect;
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
-const DB = requireHelper('server/common/database');
-const tempFile = require('path').resolve(__dirname, '../../.temp-db.json');
+var expect = require('chai').expect;
+var helpers = require('../../helpers');
+var requireHelper = helpers.require;
+var DB = requireHelper('server/common/database');
+var tempFile = require('path').resolve(__dirname, '../../.temp-db.json');
+
+var Base = require('lowdb/adapters/Base');
+var RedisAdapter = requireHelper('server/common/database-redis-adapter');
+
 
 
 /**
  * Custom Redist Lowdb Adapter
  */
-const Base = require('lowdb/adapters/Base');
-const redis = require('redis-node');
 
-class RedisAdapter extends Base {
+var redis = require('redis-node');
+const low = require('lowdb');
+class RedisTestAdapter extends Base {
   constructor(source, {defaultValue} = {}) {
     super(source, {defaultValue});
     console.log('CustomAdapter', source, defaultValue);
@@ -40,19 +44,18 @@ class RedisAdapter extends Base {
   }
 }
 
+
+
+
 //TODO - Use temp inmemory db for testing.
 
-
-
-
 describe('DB', () => {
-  var db, instance;
+  var db, instance, mockDoc;
 
-  before(() =>{
+  before(() => {
     //db = DB.getInstance(tempFile, {docs: [], posts: []});
-   // db = new DB(tempFile, {docs: []}, CustomAdapter);
-    //db = new DB(tempFile, {docs: []}, RedisAdapter);
-    db = new DB(tempFile, {docs: []});
+    db = new DB(tempFile, {docs: []}, 'memory');
+    //db = new DB(tempFile, {docs: []}, new RedisTestAdapter('test', {docs: []}));
   });
 
   after((done) => {
@@ -61,16 +64,24 @@ describe('DB', () => {
     done();
   });
 
-  it('be defined', ()=>{
+  it('be defined', () => {
     expect(DB).to.not.be.null;
   });
 
-  it('should return instance', ()=>{
-    expect(db).to.not.be.null;
-  });
 
-  describe('db methods', ()=> {
-    var mockDoc;
+  /**
+   * Run all crud tests
+   * @param {*} newInstance 
+   */
+  function runCRUDTests(newInstance) {
+    if (newInstance) {
+      console.log('Setting db to new instance');
+      db = newInstance;
+    }
+
+    it('should return instance', () => {
+      expect(db).to.not.be.null;
+    });
 
     it('post - should create doc and add ID', (done) => {
       db.post({
@@ -126,7 +137,6 @@ describe('DB', () => {
       });
     });
 
-
     it('get - should reject if no id passed', (done) => {
       db.get().then((resp) => {
         done();
@@ -154,21 +164,45 @@ describe('DB', () => {
     });
 
     it('allDocs - should return all docs filtered', (done) => {
-      db.allDocs({type: 'comment'}).then((docs) => {
+      db.allDocs({
+        type: 'comment'
+      }).then((docs) => {
         expect(docs).to.not.be.null;
         expect(docs[0].title).to.equal('Test Comment');
         done();
       }).catch(done);
     });
+  }
 
+  describe('CRUD operations (In Memory)', () => {
+    db = new DB('test', {
+      docs: []
+    });
+    runCRUDTests();
   });
 
-  describe('lowdb instance', ()=> {
-    before(() =>{
+  xdescribe('CRUD operations (Filestore)', () => {
+    db = new DB(tempFile, {
+      docs: []
+    }, 'file');
+    runCRUDTests();
+  });
+
+  if (process.env.ENABLE_REDIS_STORE) {
+    xdescribe('CRUD operations (Redis)', () => {
+      db = new DB('apphub-microapp-seed-db', {
+        docs: []
+      }, 'redis');
+      runCRUDTests();
+    });
+  }
+
+  describe('lowdb instance', () => {
+    before(() => {
       instance = DB.getInstance(tempFile).db;
     });
 
-    it('should return instance', ()=> {
+    it('should return instance', () => {
       expect(instance).to.not.be.null;
     });
 
@@ -183,12 +217,22 @@ describe('DB', () => {
 
     xit('should push item into defaults', function () {
       instance.get('docs')
-        .push({ id: 1, title: 'lowdb is awesome'})
-        .push({ id: 2, title: 'lowdb is fast'})
+        .push({
+          id: 1,
+          title: 'lowdb is awesome'
+        })
+        .push({
+          id: 2,
+          title: 'lowdb is fast'
+        })
         .write();
-      var doc = instance.get('docs').find({id: 1});
+      var doc = instance.get('docs').find({
+        id: 1
+      });
       console.log(doc);
-      expect(instance.get('docs').find({id: 1}).value().id).to.equal(1);
+      expect(instance.get('docs').find({
+        id: 1
+      }).value().id).to.equal(1);
     });
   });
 
