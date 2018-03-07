@@ -9,8 +9,24 @@ const log = Logger('application');
  * Application level middleware
  */
 module.exports = function(app) {
+  const { ENABLE_REDIS_STORE, REDIS_HOST, REDIS_DB, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
+  const setupSessionStore = () => {
+    if(ENABLE_REDIS_STORE && NODE_ENV === 'production'){
+      console.log('setupSessionStore');
+      const RedisStore = require('connect-redis')(session);
+      return new RedisStore({
+        host: REDIS_HOST,
+        post: REDIS_PORT,
+        pass: REDIS_PASSWORD,
+        db: REDIS_DB || 0
+      });
+    } else {
+      console.log('setupSessionStore', 'using in-memory store');
+      return;
+    }
+  };
 
-  const sessionOptions = {
+  var sessionOptions = {
     secret: process.env.SESSION_SECRET || 'test',
     name: process.env.COOKIE_NAME || 'test',
     maxAge: 30 * 60 * 1000, // expire token after 30 min.
@@ -18,9 +34,12 @@ module.exports = function(app) {
     resave: true,
     saveUninitialized: true,
     cookie: {
-      secure: app.get('env') === 'production'
-    }
+      secure: NODE_ENV === 'production'
+    },
+    store: setupSessionStore()
   };
+
+
 
   const setStaticAssetsCacheControl = (res, path) => {
     if (res && res.req && res.req.get('cache-control')) {

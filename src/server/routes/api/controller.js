@@ -3,8 +3,8 @@ const Database = require('../../common/database');
 const RedisAdapter = require('../../common/database-redis-adapter');
 var adapter, db;
 
-try{
-  db = new Database('db', {user: {}, docs: []}, 'file');
+try {
+  db = new Database('db', {user: {}, docs: []}, process.env.API_DATABASE_ADAPTER); 
 } catch(err){
   console.log('Falling back to in-memory data store');
   db = new Database('db', {user: {}, docs: []}, 'memory');
@@ -30,7 +30,13 @@ class ApiController {
     });
   }
 
-  all(req, res, next){
+  info(req, res, next){
+    db.info()
+      .then(resp => res.status(200).send(resp))
+      .catch(err => res.status(404).json(err));
+  }
+  
+  allDocs(req, res, next){
     db.allDocs(req.query)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).json(err));

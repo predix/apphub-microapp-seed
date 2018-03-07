@@ -4,7 +4,7 @@ const log = require('./logger')('RedisAdapter');
 class RedisAdapter extends Base {
   constructor(source, defaultValue) {
     super(source, defaultValue);
-    const { ENABLE_REDIS_STORE, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
+    const { ENABLE_REDIS_STORE, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, NODE_ENV} = process.env;
     
     this.source = source;
     this.defaultValue = defaultValue;
@@ -49,7 +49,7 @@ class RedisAdapter extends Base {
       log.debug('disconnected', e);
     });
     
-    this.client.select(0);
+    this.client.select(REDIS_DB || 0);
   }
 
   read(){

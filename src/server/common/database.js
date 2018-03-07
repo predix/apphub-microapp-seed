@@ -23,6 +23,7 @@ class Database {
     if (!defaults) {
       defaults = {
         user: {},
+        docs: [],
         nav: [{
           "label": "Microapp Seed",
           "icon": "fa-home",
@@ -31,14 +32,19 @@ class Database {
       };
     }
 
+    this.options = {
+      db_name: name,
+      instance_start_time: Date.now()
+    };
 
     if (typeof (adapter) === 'string') {
+      this.options.adapter = adapter;
       //console.log('Database', 'loading adapter', adapter);
       if (adapter === 'memory') {
-        adapter = new CustomAdapter(name, defaults);
+        this.adapter = new CustomAdapter(name, defaults);
       }
       if (adapter === 'redis') {
-        adapter = new RedisAdapter(name, defaults);
+        this.adapter = new RedisAdapter(name, defaults);
       }
       if (adapter === 'file') {
         const dbPath = path.resolve(homeOrTmp, `.${name}-db.json`);
@@ -46,18 +52,16 @@ class Database {
         try {
           fs.ensureFileSync(dbPath);
           this.dbPath = dbPath;
-          adapter = new FileSync(dbPath);
+          this.adapter = new FileSync(dbPath);
         } catch (err) {
           console.log('Error creating file store', err);
         }
       }
+    } else {
+      this.options.adapter = 'Memory';
+      this.adapter = adapter || new Memory();
     }
 
-    if (!adapter) {
-      adapter = new Memory();
-    }
-
-    this.adapter = adapter;
     db = low(this.adapter);
     try {
       db.defaults(defaults).write();
@@ -74,6 +78,11 @@ class Database {
       instance = new Database(name);
     }
     return instance;
+  }
+
+  info(){
+    this.options.doc_count = this.db.get('docs').size().value();
+    return Promise.resolve(this.options);
   }
 
   allDocs(params) {
@@ -117,6 +126,9 @@ class Database {
         if (!doc.id) {
           doc.id = `doc-${uuid()}`;
         }
+        if(!doc.created_at){
+          doc.created_at = new Date().toString();
+        }
         db.get('docs')
           .push(doc)
           .write();
@@ -139,6 +151,7 @@ class Database {
         id: doc.id
       }).value();
       if (doc) {
+        doc.updated_at = new Date().toString();
         db.get('docs')
           .find({
             id: doc.id

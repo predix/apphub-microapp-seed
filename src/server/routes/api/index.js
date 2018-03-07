@@ -20,8 +20,11 @@ module.exports = {
     get: controller.index
   },
   '/db': {
-    get: controller.all,
+    get: controller.info,
     post: controller.post
+  },
+  '/db/_all_docs': {
+    get: controller.allDocs
   },
   '/db/_bulk_docs': {
     post: controller.bulkDocs

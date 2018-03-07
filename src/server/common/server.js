@@ -3,21 +3,21 @@ const express = require('express');
 const proxy = require('express-request-proxy');
 const routesList = require('express-api-routes-list');
 const os = require('os');
-
+const cluster = require('cluster');
 const log = require('./logger')('server');
 /* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
 //const swaggerify = require('./swagger');
 var http;
 class Server {
   constructor(a, config) {
-    if(a){
+    if (a) {
       this.app = a;
     } else {
       this.app = express()
     }
   }
 
-  getExpressApp(){
+  getExpressApp() {
     return this.app;
   }
 
@@ -30,14 +30,34 @@ class Server {
     if (!port) {
       port = process.env.PORT;
     }
-    http = require('http').createServer(this.app);
-    http.listen(port, () => {
-      console.log(`Server running in ${process.env.NODE_ENV || 'development'}`);
-      console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
-      if (callback) {
-        callback(this.app);
+
+    if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE) {
+
+      // Count the machine's CPUs
+      const cpuCount = os.cpus().length;
+      
+      // Create a worker for each CPU
+      for (var i = 0; i < cpuCount; i += 1) {
+        cluster.fork();
       }
-    });
+
+      // Listen for dying workers
+      cluster.on('exit', function (worker) {
+        console.log(`Worker ${worker.process.pid} died`);
+        cluster.fork();
+      });
+    } else {
+      http = require('http').createServer(this.app);
+      http.listen(port, () => {
+        
+        console.log(`===> 🌎 Listening on port ${port}. Open up http://0.0.0.0:${port}/ in your browser.`);
+        console.log(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
+        if (callback) {
+          callback(this.app);
+        }
+      });
+    }
+
     return this;
   }
 

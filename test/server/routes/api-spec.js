@@ -34,6 +34,8 @@ describe('API Routes', function() {
         .expect(200, done);
     });
 
+    
+
     it(`POST - ${baseUrl} - 200 - responds successfully`, (done) => {
       request(app)
         .post(baseUrl)
@@ -52,6 +54,15 @@ describe('API Routes', function() {
       request(app)
         .get(`${baseUrl}?some=value`)
         .expect(200, done);
+    });
+
+    it(`GET - ${baseUrl}/_all_docs - 200 - responds success`, (done) => {
+      request(app)
+        .get(`${baseUrl}/_all_docs`)
+        .end((err, res) => {
+          console.log('All DOcs', res.body);
+          done();
+        });
     });
 
 
