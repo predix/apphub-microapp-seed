@@ -4,7 +4,7 @@ const uuid = require('uuid');
 const path = require('path');
 const homeOrTmp = require('home-or-tmp');
 const low = require('lowdb');
-
+const fs = require('fs-extra');
 
 const FileSync = require('lowdb/adapters/FileSync');
 const Memory = require('lowdb/adapters/Memory');
@@ -19,33 +19,44 @@ var instance;
  * https://github.com/typicode/lowdb#usage
  */
 class Database {
-  constructor(name, defaults, adapter){
-    if(!defaults){
-      defaults = {user: {}, nav: [{
-        "label": "Microapp Seed",
-        "icon": "fa-home",
-        "path": "/microapp1"
-      }]};
+  constructor(name, defaults, adapter) {
+    if (!defaults) {
+      defaults = {
+        user: {},
+        nav: [{
+          "label": "Microapp Seed",
+          "icon": "fa-home",
+          "path": "/microapp1"
+        }]
+      };
     }
-   
 
-    if(typeof(adapter) === 'string'){
+
+    if (typeof (adapter) === 'string') {
       //console.log('Database', 'loading adapter', adapter);
-      if(adapter === 'memory'){
+      if (adapter === 'memory') {
         adapter = new CustomAdapter(name, defaults);
-      } 
-      if(adapter === 'redis'){
+      }
+      if (adapter === 'redis') {
         adapter = new RedisAdapter(name, defaults);
-      } 
-      if(adapter === 'file') {
-        adapter = new FileSync(name || path.resolve(homeOrTmp, `.${name}-db.json`), defaults);
-      } 
+      }
+      if (adapter === 'file') {
+        const dbPath = path.resolve(homeOrTmp, `.${name}-db.json`);
+        console.log('Database', 'dbPath', dbPath);
+        try {
+          fs.ensureFileSync(dbPath);
+          this.dbPath = dbPath;
+          adapter = new FileSync(dbPath);
+        } catch (err) {
+          console.log('Error creating file store', err);
+        }
+      }
     }
 
-    if(!adapter){
+    if (!adapter) {
       adapter = new Memory();
     }
-    
+
     this.adapter = adapter;
     db = low(this.adapter);
     try {
@@ -58,17 +69,17 @@ class Database {
     this.db = db;
   }
 
-  static getInstance(name){
-    if(!instance){
+  static getInstance(name) {
+    if (!instance) {
       instance = new Database(name);
     }
     return instance;
   }
 
-  allDocs(params){
-    return new Promise((resolve, reject) =>{
+  allDocs(params) {
+    return new Promise((resolve, reject) => {
       var docs;
-      if(params){
+      if (params) {
         docs = db.get('docs').filter(params).value();
       } else {
         docs = db.get('docs').value();
@@ -77,69 +88,105 @@ class Database {
     });
   }
 
-  get(id){
+  get(id) {
     return new Promise((resolve, reject) => {
-      if(!id){
-        reject({error: `must provide id`});
+      if (!id) {
+        reject({
+          error: `must provide id`
+        });
       }
-      let doc = db.get('docs').find({id: id}).value();
-      if(!doc){
-        reject({error: `${id} not found`});
+      let doc = db.get('docs').find({
+        id: id
+      }).value();
+      if (!doc) {
+        reject({
+          error: `${id} not found`
+        });
       }
       resolve(doc);
     });
   }
 
-  post(doc){
+  post(doc) {
     return new Promise((resolve, reject) => {
-      if(!doc){
-        reject({error: `must provide doc`});
+      if (!doc) {
+        reject({
+          error: `must provide doc`
+        });
       } else {
-        if(!doc.id){
+        if (!doc.id) {
           doc.id = `doc-${uuid()}`;
         }
         db.get('docs')
           .push(doc)
           .write();
-        resolve({ok: true, doc: doc});
+        resolve({
+          ok: true,
+          doc: doc
+        });
       }
     });
   }
 
-  put(doc){
+  put(doc) {
     return new Promise((resolve, reject) => {
-      if(!doc.id){
-        reject({error: `must provide id`});
+      if (!doc.id) {
+        reject({
+          error: `must provide id`
+        });
       }
-      let existingDoc = db.get('docs').find({ id: doc.id }).value();
-      if(doc){
+      let existingDoc = db.get('docs').find({
+        id: doc.id
+      }).value();
+      if (doc) {
         db.get('docs')
-          .find({ id: doc.id })
+          .find({
+            id: doc.id
+          })
           .assign(doc)
           .write();
-        resolve({ok: true, doc: doc});
+        resolve({
+          ok: true,
+          doc: doc
+        });
       } else {
-        reject({error: `${id} not found`});
+        reject({
+          error: `${id} not found`
+        });
       }
     });
   }
 
-  remove(id){
+  remove(id) {
     return new Promise((resolve, reject) => {
       this.get(id).then((doc) => {
-        db.get('docs').remove({id: id}).write();
-        resolve({ok: true});
+        db.get('docs').remove({
+          id: id
+        }).write();
+        resolve({
+          ok: true
+        });
       }).catch(reject);
     });
   }
 
-  bulkDocs(docs){
+  bulkDocs(docs) {
     return new Promise((resolve, reject) => {
       var out = [];
-      docs.forEach((doc) => {
-        this.post(doc).then(resp => out.push(resp));
-      });
-      resolve(out);
+      for (let index = 0; index < docs.length; index++) {
+        const doc = docs[index];
+        if (doc.id) {
+          if(doc._deleted){
+            out.push(this.remove(doc.id));
+          } else {
+            out.push(this.put(doc));
+          }
+        } else {
+          out.push(this.post(doc));
+        }
+      }
+
+      Promise.all(out).then(resolve, reject);
     })
   }
 }

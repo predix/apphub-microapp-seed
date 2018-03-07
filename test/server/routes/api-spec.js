@@ -21,11 +21,12 @@ describe('API Routes', function() {
       req.t = () => {};
       next();
     });
-    app.use(baseUrl, controller(apiController));
+    
+    app.use('/api', controller(apiController));
     done();
   });
 
-  xdescribe(baseUrl, () => {
+  describe(baseUrl, () => {
 
     it(`GET - ${baseUrl} - 200 - responds success`, (done) => {
       request(app)
@@ -56,16 +57,48 @@ describe('API Routes', function() {
 
     it(`GET - ${baseUrl}/:id - 200 - responds success`, (done) => {
       request(app)
-        .get(`${baseUrl}/${mockId}`)
-        .expect(200, done);
+        .post(baseUrl)
+        .send({
+          some: 'value'
+        })
+        .expect(201)
+        .end((err, res) => {
+          mockDoc = res.body.doc;
+          mockId = mockDoc.id;
+          request(app)
+          .get(`${baseUrl}/${mockId}`)
+          .expect(200)
+          .end((err, res) => {
+            console.log(res);
+            done();
+          });
+        });
+     
     });
 
-    it(`PUT - ${baseUrl}/:id - 200 - responds success`, (done) => {
+    xit(`PUT - ${baseUrl}/:id - 200 - responds success`, (done) => {
       mockDoc.updated = Date.now();
       request(app)
         .get(`${baseUrl}/${mockId}`)
         .send(mockDoc)
         .expect(200, done);
+    });
+
+    it(`POST - ${baseUrl}/_bulk_docs - 200 - responds success`, (done) => {
+     var docs = [
+       mockDoc,
+       {name: 'doc-1'},
+       {name: 'doc-2'},
+       {name: 'doc-3'}
+     ]
+      request(app)
+        .post(`${baseUrl}/_bulk_docs`)
+        .send(docs)
+        .expect(200)
+        .end((err, res) => {
+         console.log('bulk response', res);
+          done();
+        });
     });
 
     it(`PUT - ${baseUrl}/:id - 404 - responds not found`, (done) => {
@@ -78,13 +111,25 @@ describe('API Routes', function() {
     });
 
     it(`DELETE - ${baseUrl}/:id - 404 - responds not found`, (done) => {
+      
       request(app)
         .delete(`${baseUrl}/100`)
         .expect(404, done);
     });
 
-    it(`DELETE - ${baseUrl}/:id - 200 - responds success`, (done) => {
-      request(app).delete(`${baseUrl}/${mockId}`).expect(200, done);
+    xit(`DELETE - ${baseUrl}/:id - 200 - responds success`, (done) => {
+     
+       request(app)
+         .post(`${baseUrl}`)
+         .send({name: 'delete me'})
+         .expect(201)
+         .end((err, res) => {
+          request(app)
+            .delete(`${baseUrl}/${res.body.doc.id}`)
+            .expect(200, done);
+          
+         });
+      
     });
 
   });

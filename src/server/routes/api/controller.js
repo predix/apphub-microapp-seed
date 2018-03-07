@@ -1,9 +1,15 @@
 const path = require('path');
 const Database = require('../../common/database');
 const RedisAdapter = require('../../common/database-redis-adapter');
-var adapter = null;
+var adapter, db;
 
-var db = new Database('db', {user: {}, docs: []});
+try{
+  db = new Database('db', {user: {}, docs: []}, 'file');
+} catch(err){
+  console.log('Falling back to in-memory data store');
+  db = new Database('db', {user: {}, docs: []}, 'memory');
+}
+
 
 if(process.env.ENABLE_REDIS_STORE && process.env.NODE_ENV !== 'test'){
   db = new Database('apphub-microapp-seed', {user: {}, docs: []}, 'redis');
@@ -45,6 +51,12 @@ class ApiController {
   post(req, res, next){
     db.post(req.body)
       .then(resp => res.status(201).json(resp))
+      .catch(err => res.status(400).send(err));
+  }
+
+  bulkDocs(req, res, next){
+    db.bulkDocs(req.body)
+      .then(resp => res.status(200).json(resp))
       .catch(err => res.status(400).send(err));
   }
 

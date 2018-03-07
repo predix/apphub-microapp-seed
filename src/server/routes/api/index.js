@@ -12,6 +12,9 @@ module.exports = {
     get: controller.all,
     post: controller.post
   },
+  '/db/_bulk_docs': {
+    post: controller.bulkDocs
+  },
   '/db/:id': {
     get: controller.get,
     put: controller.put,
