@@ -25,7 +25,6 @@ class MyStorage {
   }
   // Should return nothing or a Promise
   write(data) {
-    //log.debug('write', data);
     inMemory[this.source] = this.serialize(data);
     return Promise.resolve(data);
   }
