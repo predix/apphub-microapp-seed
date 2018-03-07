@@ -15,11 +15,11 @@ var RedisAdapter = requireHelper('server/common/database-redis-adapter');
  */
 
 var redis = require('redis-node');
-const low = require('lowdb');
+var low = require('lowdb');
 class RedisTestAdapter extends Base {
-  constructor(source, {defaultValue} = {}) {
-    super(source, {defaultValue});
-    console.log('CustomAdapter', source, defaultValue);
+  constructor(source, defaultValue) {
+    super(source, defaultValue);
+    console.log('RedisTestAdapter', source, defaultValue);
     this.source = source;
     this.defaultValue = defaultValue;
     this.client = redis.createClient();
@@ -39,11 +39,27 @@ class RedisTestAdapter extends Base {
   write(data){
     this.client.set(this.source, this.serialize(data));
   }
+
   close(){
     this.client.close();
   }
 }
 
+
+xdescribe('REDIS adapter', () => {
+  it('should create doc', () =>{
+    const redisdb = low(new RedisTestAdapter('test-redisdb', {}));
+    expect(redisdb).to.not.be.null;
+
+    redisdb.defaults({ posts: [] }).write();
+  
+    redisdb.get('posts')
+      .push({ title: 'lowdb' })
+      .push({ title: 'lowdb-redis-adapter' })
+      .write();
+
+  });
+});
 
 
 
@@ -54,7 +70,7 @@ describe('DB', () => {
 
   before(() => {
     //db = DB.getInstance(tempFile, {docs: [], posts: []});
-    db = new DB(tempFile, {docs: []}, 'memory');
+    db = new DB(tempFile, {docs: []});
     //db = new DB(tempFile, {docs: []}, new RedisTestAdapter('test', {docs: []}));
   });
 
@@ -175,25 +191,23 @@ describe('DB', () => {
   }
 
   describe('CRUD operations (In Memory)', () => {
-    db = new DB('test', {
-      docs: []
-    });
+    
     runCRUDTests();
   });
 
-  xdescribe('CRUD operations (Filestore)', () => {
+  describe('CRUD operations (Filestore)', () => {
     db = new DB(tempFile, {
       docs: []
     }, 'file');
-    runCRUDTests();
+    runCRUDTests(db);
   });
 
-  if (process.env.ENABLE_REDIS_STORE) {
-    xdescribe('CRUD operations (Redis)', () => {
+  if (process.env.TEST_REDIS_STORE) {
+    describe('CRUD operations (Redis)', () => {
       db = new DB('apphub-microapp-seed-db', {
         docs: []
       }, 'redis');
-      runCRUDTests();
+      runCRUDTests(db);
     });
   }
 

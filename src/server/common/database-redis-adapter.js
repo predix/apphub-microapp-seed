@@ -2,14 +2,16 @@ const Base = require('lowdb/adapters/Base');
 const redis = require('redis-node');
 const log = require('./logger')('RedisAdapter');
 class RedisAdapter extends Base {
-  constructor(source, {defaultValue} = {}) {
+  constructor(source, defaultValue) {
+    super(source, defaultValue);
     const { ENABLE_REDIS_STORE, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
-    super(source, {defaultValue});
+    
     this.source = source;
     this.defaultValue = defaultValue;
+    
     log.debug('RedisAdapter', 'constructor', source, defaultValue);
     
-    if (ENABLE_REDIS_STORE && REDIS_HOST && REDIS_PORT && REDIS_PASSWORD && NODE_ENV !== 'test'){
+    if (ENABLE_REDIS_STORE && REDIS_HOST && REDIS_PORT && REDIS_PASSWORD){
      log.debug('REDIS_HOST', REDIS_HOST);
      log.debug('REDIS_PORT', REDIS_PORT);
      log.debug('REDIS_PASSWORD', REDIS_PASSWORD);
@@ -22,7 +24,9 @@ class RedisAdapter extends Base {
     
     if(NODE_ENV === 'test'){
       this.client = require('redis-mock').createClient();
-    } else {
+    }
+    
+    if(!this.client){
       this.client = redis.createClient();
     }
 

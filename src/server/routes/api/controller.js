@@ -3,12 +3,11 @@ const Database = require('../../common/database');
 const RedisAdapter = require('../../common/database-redis-adapter');
 var adapter = null;
 
+var db = new Database('db', {user: {}, docs: []});
 
-if(process.env.REDIS_HOST){
-  adapter = RedisAdapter;
+if(process.env.ENABLE_REDIS_STORE && process.env.NODE_ENV !== 'test'){
+  db = new Database('apphub-microapp-seed', {user: {}, docs: []}, 'redis');
 }
-
-const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []}, adapter);
 
 //const log = require('../../common/logger')('controllers/api');
 /**

@@ -7,7 +7,7 @@ const low = require('lowdb');
 
 
 const FileSync = require('lowdb/adapters/FileSync');
-
+const Memory = require('lowdb/adapters/Memory');
 const RedisAdapter = require('./database-redis-adapter');
 const CustomAdapter = require('./database-custom-adapter');
 
@@ -27,18 +27,23 @@ class Database {
         "path": "/microapp1"
       }]};
     }
-    console.log(typeof(adapter))
+   
+
     if(typeof(adapter) === 'string'){
+      //console.log('Database', 'loading adapter', adapter);
       if(adapter === 'memory'){
         adapter = new CustomAdapter(name, defaults);
       } 
       if(adapter === 'redis'){
         adapter = new RedisAdapter(name, defaults);
       } 
-  
       if(adapter === 'file') {
         adapter = new FileSync(name || path.resolve(homeOrTmp, `.${name}-db.json`), defaults);
       } 
+    }
+
+    if(!adapter){
+      adapter = new Memory();
     }
     
     this.adapter = adapter;
