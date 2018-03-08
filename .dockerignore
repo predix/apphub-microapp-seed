@@ -3,3 +3,5 @@ coverage
 .idea
 .nyc_output
 bower_components
+.zip
+.tar

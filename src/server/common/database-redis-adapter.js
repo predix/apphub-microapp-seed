@@ -16,8 +16,8 @@ class RedisAdapter extends Base {
      log.debug('REDIS_PORT', REDIS_PORT);
      log.debug('REDIS_PASSWORD', REDIS_PASSWORD);
       this.client = redis.createClient({
-        host: REDIS_HOST,
-        port: REDIS_PORT,
+        host: process.env.REDIS_PORT_6379_TCP_ADDR || REDIS_HOST,
+        post: process.env.REDIS_PORT_6379_TCP_PORT || REDIS_PORT,
         password: REDIS_PASSWORD
       }); 
     } 

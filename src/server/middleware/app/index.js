@@ -12,11 +12,14 @@ module.exports = function(app) {
   const { ENABLE_REDIS_STORE, REDIS_HOST, REDIS_DB, REDIS_PORT, REDIS_PASSWORD, NODE_ENV} = process.env;
   const setupSessionStore = () => {
     if(ENABLE_REDIS_STORE && NODE_ENV === 'production'){
+      
+      
       console.log('setupSessionStore');
+      console.log(process.env.REDIS_PORT_6379_TCP_ADDR + ':' + process.env.REDIS_PORT_6379_TCP_PORT);
       const RedisStore = require('connect-redis')(session);
       return new RedisStore({
-        host: REDIS_HOST,
-        post: REDIS_PORT,
+        host: process.env.REDIS_PORT_6379_TCP_ADDR || REDIS_HOST,
+        post: process.env.REDIS_PORT_6379_TCP_PORT || REDIS_PORT,
         pass: REDIS_PASSWORD,
         db: REDIS_DB || 0
       });
