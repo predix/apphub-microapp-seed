@@ -3,10 +3,14 @@ import { Card } from 'predix-ui';
 
 export default () => (
   <div className='u-p'>
+
     <Card headerText='Home'>
       <p>This is the home page.</p>
-      <p>This is a predix-ui (react) card.</p>
+      <p>This is a card.</p>
     </Card>
+    
+    <br/>
+
     <Card headerText='About'>
       <p>This simple micro-app seed contains just enough to get you started.</p>
       <p>Some features include:</p>

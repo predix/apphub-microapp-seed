@@ -3,17 +3,8 @@ const Database = require('../../common/database');
 const RedisAdapter = require('../../common/database-redis-adapter');
 var adapter, db;
 
-try {
-  db = new Database('db', {user: {}, docs: []}, process.env.API_DATABASE_ADAPTER); 
-} catch(err){
-  console.log('Falling back to in-memory data store');
-  db = new Database('db', {user: {}, docs: []}, 'memory');
-}
+const DB_NAME = process.env.DB_NAME || 'apphub-microapp-seed';
 
-
-if(process.env.ENABLE_REDIS_STORE && process.env.NODE_ENV !== 'test'){
-  db = new Database('apphub-microapp-seed', {user: {}, docs: []}, 'redis');
-}
 
 //const log = require('../../common/logger')('controllers/api');
 /**
@@ -21,6 +12,17 @@ if(process.env.ENABLE_REDIS_STORE && process.env.NODE_ENV !== 'test'){
  */
 class ApiController {
   constructor(){
+    
+    if(process.env.ENABLE_REDIS_STORE && process.env.NODE_ENV !== 'test'){
+      db = new Database(DB_NAME, {user: {}, docs: []}, process.env.API_DATABASE_ADAPTER);
+    } else {
+      try {
+        db = new Database(DB_NAME, {user: {}, docs: []}, process.env.API_DATABASE_ADAPTER); 
+      } catch(err){
+        console.log('Falling back to in-memory data store');
+        db = new Database(DB_NAME, {user: {}, docs: []}, 'memory');
+      }
+    }
   }
 
   index(req, res){

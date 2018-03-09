@@ -6,12 +6,21 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+
+
 module.exports = () => ({
     name: 'client',
     extends: 'base',
     target: 'web',
     //context: path.resolve(__dirname, '../src'),
-    entry: ['react-hot-loader/patch', 'main.js'],
+    entry: [
+      //'webpack-hot-middleware/client',
+      'main.js',
+      hotMiddlewareScript,
+      'react-hot-loader/patch', 
+      
+    ],
     node: {
       global: true,
       process: true,
@@ -20,15 +29,19 @@ module.exports = () => ({
       __dirname: false,
       setImmediate: false
     },
+    stats: 'errors-only',
     //output: {},
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
+        
         new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+      /*
         new LiveReloadPlugin({
-        appendScriptTag: true
-      }),
+          appendScriptTag: true
+        }),
+        */
       //new webpack.optimize.OccurenceOrderPlugin(),
-      //new webpack.HotModuleReplacementPlugin(),
       //https://github.com/jantimon/html-webpack-plugin#configuration
       new HtmlWebpackPlugin({
         template: './index.ejs',
@@ -38,19 +51,5 @@ module.exports = () => ({
           collapseWhitespace: false
         }
       })
-    ],
-    devServer: {
-      port: process.env.PORT || 9000,
-      host: 'localhost',
-      hot: true,
-      compress: true,
-      publicPath: '/',
-      contentBase: [
-        //path.resolve(__dirname, './bower_components'),
-        path.resolve(__dirname, './public'),
-        path.resolve(__dirname, './src')
-      ],
-      historyApiFallback: true,
-      open: true
-    }
+    ]
 });

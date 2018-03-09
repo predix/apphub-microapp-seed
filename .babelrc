@@ -6,7 +6,7 @@
       "env",
       {
         "targets": {
-          "node": "8",
+          "node": "8.9",
           "browsers": [
             "last 2 versions",
             "safari >= 9"
@@ -16,7 +16,8 @@
     ]
   ],
 	"plugins": [
-		"transform-runtime",
+    "transform-runtime",
+    "transform-async-to-generator",
 		"transform-class-properties",
 		"transform-es2015-arrow-functions"
 	]

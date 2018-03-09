@@ -34,7 +34,7 @@ class Server {
     if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE) {
 
       // Count the machine's CPUs
-      const cpuCount = os.cpus().length;
+      const cpuCount = process.env.NUMBER_OF_WORKERS || os.cpus().length;
       
       // Create a worker for each CPU
       for (var i = 0; i < cpuCount; i += 1) {

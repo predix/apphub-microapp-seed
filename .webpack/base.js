@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractSass = new ExtractTextPlugin({filename: '[name].[contenthash].css', disable: false});
+const extractSass = new ExtractTextPlugin({filename: '[name].[contenthash].css',  disable: process.env.NODE_ENV !== 'production'});
 
 const pkg = require('../package.json');
 const config = require('../config.js');

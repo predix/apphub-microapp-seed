@@ -64,14 +64,13 @@ class Database {
 
     db = low(this.adapter);
     try {
-      db.defaults(defaults).write();
+      //db.defaults(defaults).write();
     } catch (e) {
       log.error('error writing defaults', e);
     }
-
     //lowdb instance
     this.db = db;
-  }
+  } 
 
   static getInstance(name) {
     if (!instance) {
@@ -85,27 +84,29 @@ class Database {
     return Promise.resolve(this.options);
   }
 
-  allDocs(params) {
-    return new Promise((resolve, reject) => {
+  async allDocs(params) {
+    try{
       var docs;
       if (params) {
         docs = db.get('docs').filter(params).value();
       } else {
         docs = db.get('docs').value();
       }
-      resolve(docs);
-    });
+      return docs;
+    } catch(err){
+      return err;
+    }
   }
 
   get(id) {
     return new Promise((resolve, reject) => {
       if (!id) {
         reject({
-          error: `must provide id`
+          error: `must provide _id`
         });
       }
       let doc = db.get('docs').find({
-        id: id
+        _id: _id
       }).value();
       if (!doc) {
         reject({
@@ -123,8 +124,8 @@ class Database {
           error: `must provide doc`
         });
       } else {
-        if (!doc.id) {
-          doc.id = `doc-${uuid()}`;
+        if (!doc._id) {
+          doc._id = `doc-${uuid()}`;
         }
         if(!doc.created_at){
           doc.created_at = new Date().toString();
@@ -142,19 +143,21 @@ class Database {
 
   put(doc) {
     return new Promise((resolve, reject) => {
-      if (!doc.id) {
+      if (!doc._id) {
         reject({
-          error: `must provide id`
+          error: `must provide _id`
         });
       }
+      /*
       let existingDoc = db.get('docs').find({
         id: doc.id
       }).value();
+      */
       if (doc) {
         doc.updated_at = new Date().toString();
         db.get('docs')
           .find({
-            id: doc.id
+            _id: doc._id
           })
           .assign(doc)
           .write();
@@ -173,9 +176,7 @@ class Database {
   remove(id) {
     return new Promise((resolve, reject) => {
       this.get(id).then((doc) => {
-        db.get('docs').remove({
-          id: id
-        }).write();
+        db.get('docs').remove({_id: id}).write();
         resolve({
           ok: true
         });
@@ -188,18 +189,18 @@ class Database {
       var out = [];
       for (let index = 0; index < docs.length; index++) {
         const doc = docs[index];
-        if (doc.id) {
+        if (doc._id) {
           if(doc._deleted){
-            out.push(this.remove(doc.id));
+            this.remove(doc._id).then(r => out.push(r));
           } else {
-            out.push(this.put(doc));
+            this.put(doc).then(r => out.push(r));
           }
         } else {
-          out.push(this.post(doc));
+          this.post(doc).then(r => out.push(r));
         }
       }
-
-      Promise.all(out).then(resolve, reject);
+      resolve(out);
+      //Promise.all(out).then(resolve, reject);
     })
   }
 }

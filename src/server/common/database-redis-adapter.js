@@ -58,31 +58,31 @@ class RedisAdapter extends Base {
     if(data){
       return this.deserialize(data);
     } else {
-      this.write(this.defaultValue);
+      //this.write(this.defaultValue);
       return this.defaultValue;
     }
   }
-
+  
   write(data){
     return new Promise((resolve, reject) => {
       log.debug('write', data);
       this.client.set(this.source, this.serialize(data), (err, status) => {
-        log.debug('write', err, status);
         if(err){
+          log.debug('write.error', err);
+
           reject(err);
         }
+        log.debug('write.success', status);
         resolve(status);
       });
     })
   }
 
   _serialize(o){
-    log.debug('serialize', o);
     return JSON.stringify(o);
   }
   
   _deserialize(o){
-    log.debug('deserialize', o);
     return JSON.parse(o);
   }
   
