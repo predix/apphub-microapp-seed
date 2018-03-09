@@ -220,7 +220,7 @@ describe('DB', () => {
   });
 
   if (process.env.TEST_REDIS_STORE) {
-    describe('CRUD operations (Redis)', () => {
+    xdescribe('CRUD operations (Redis)', () => {
       db = new DB('apphub-microapp-seed-db', {
         docs: []
       }, 'redis');

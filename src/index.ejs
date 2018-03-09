@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- APP_NAME: <%= htmlWebpackPlugin.options.title %> -->
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -56,26 +57,34 @@
   <!-- TODO: App gets rendered below - Class names will be changing to apphub-* -->
   <div id="root" class="pxh-view pxh-view--wide@md pxh-view--narrow@lg"></div>
 
-  <% for (key in htmlWebpackPlugin.files.chunks) { %>
-    <% if (htmlWebpackPlugin.files.jsIntegrity) { %>
-    <script
-      src="<%= htmlWebpackPlugin.files.chunks[key].entry %>"
-      type="text/javascript"
-      integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
-      crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script>
-    <% } else { %>
-    <script src="./<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="text/javascript" defer></script>
+  <% if (!htmlWebpackPlugin.options.inject) { %>
+    <% for (key in htmlWebpackPlugin.files.chunks) { %>
+      <% if (htmlWebpackPlugin.files.jsIntegrity) { %>
+      <script
+        src="<%= htmlWebpackPlugin.files.chunks[key].entry %>"
+        type="text/javascript"
+        integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
+        crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script>
+      <% } else { %>
+      <script src="./<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="text/javascript" defer></script>
+      <% } %>
     <% } %>
   <% } %>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-75468006-2"></script>
+
+  <% if (htmlWebpackPlugin.options.googleAnalytics) { %>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= htmlWebpackPlugin.options.googleAnalytics.id %>"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
-    gtag('config', 'UA-75468006-2');
+    gtag('config', '<%= htmlWebpackPlugin.options.googleAnalytics.id %>');
   </script>
+   <% } %>
+
+   <script>
+    
+    console.log('Eval <%= Date.now() %>');
+    </script>
 
 </body>
 </html>

@@ -2,8 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+const { NODE_ENV } = process.env;
+
+
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractSass = new ExtractTextPlugin({filename: '[name].[contenthash].css',  disable: process.env.NODE_ENV !== 'production'});
+const extractSass = new ExtractTextPlugin({filename: '[name].[contenthash].css',  disable: NODE_ENV !== 'production'});
 
 const pkg = require('../package.json');
 const config = require('../config.js');
@@ -18,6 +21,7 @@ const bundleAnalyzer = new BundleAnalyzerPlugin({
 });
 // File: ./.webpack/base.js
 module.exports = () => ({
+  
   //stats: true,
   context: path.join(__dirname, '../src'),
   target: 'web',
@@ -47,7 +51,16 @@ module.exports = () => ({
         exclude: [
           /(node_modules)/
         ],
-        use: ['babel-loader']
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: true,
+              cacheDirectory: true,
+              plugins: ['react-hot-loader/babel']
+            }
+          }
+        ]
       },
       //.txt
       {
@@ -101,13 +114,19 @@ module.exports = () => ({
     new webpack.NamedModulesPlugin(),
     //
     new webpack.NoEmitOnErrorsPlugin(),
+    
 
     //https://webpack.js.org/plugins/environment-plugin/#usage
     new webpack.EnvironmentPlugin({
-      'NODE_ENV': process.env.NODE_ENV,
-      'PRODUCTION': process.env.NODE_ENV === 'production'
+      'NODE_ENV': NODE_ENV,
+      'DEBUG': NODE_ENV !== 'production',
+      'PRODUCTION': NODE_ENV === 'production',
+      'BUILD_ID': process.env.BUILD_ID || Date.now(),
+      'APP_NAME': pkg.name,
+      'APP_VERSION': pkg.version
+      
     })
   ],
 
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map'
+  devtool: NODE_ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map'
 });

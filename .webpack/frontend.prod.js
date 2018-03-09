@@ -40,6 +40,9 @@ module.exports = () => ({
       title: pkg.name,
       minify: {
         collapseWhitespace: true
+      },
+      googleAnaltyics: {
+        id: 'UA-75468006-2'
       }
     }),
     new webpack.optimize.UglifyJsPlugin({

@@ -8,6 +8,11 @@ const log = require('./logger')('server');
 /* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
 //const swaggerify = require('./swagger');
 var http;
+ 
+
+/** 
+ * Server
+ */
 class Server {
   constructor(a, config) {
     if (a) {
@@ -28,36 +33,28 @@ class Server {
 
   listen(port, callback) {
     if (!port) {
-      port = process.env.PORT;
+      port = process.env.PORT || 9000;
     }
 
     if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE) {
-
-      // Count the machine's CPUs
       const cpuCount = process.env.NUMBER_OF_WORKERS || os.cpus().length;
-      
-      // Create a worker for each CPU
       for (var i = 0; i < cpuCount; i += 1) {
         cluster.fork();
       }
-
-      // Listen for dying workers
       cluster.on('exit', function (worker) {
-        console.log(`Worker ${worker.process.pid} died`);
+        log.debug(`Worker ${worker.process.pid} died`);
         cluster.fork();
       });
     } else {
       http = require('http').createServer(this.app);
       http.listen(port, () => {
-        
         console.log(`===> 🌎 Listening on port ${port}. Open up http://0.0.0.0:${port}/ in your browser.`);
-        console.log(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
+        log.debug(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
         if (callback) {
           callback(this.app);
         }
       });
     }
-
     return this;
   }
 
@@ -72,6 +69,7 @@ class Server {
       http.close(callback);
     } catch (e) {
       log.error('shutdown', e);
+      process.exit(1);
     }
 
   }

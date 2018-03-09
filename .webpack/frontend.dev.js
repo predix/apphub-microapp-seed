@@ -6,8 +6,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
-
+const Dotenv = require('dotenv-webpack');
 
 module.exports = () => ({
     name: 'client',
@@ -15,11 +14,10 @@ module.exports = () => ({
     target: 'web',
     //context: path.resolve(__dirname, '../src'),
     entry: [
-      //'webpack-hot-middleware/client',
       'main.js',
-      hotMiddlewareScript,
-      'react-hot-loader/patch', 
-      
+     // 'webpack/hot/dev-server', 
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client',
+      //'react-hot-loader/patch'
     ],
     node: {
       global: true,
@@ -36,6 +34,10 @@ module.exports = () => ({
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        //
+        new Dotenv({
+          path: path.resolve(__dirname, '../.env')
+        }),
       /*
         new LiveReloadPlugin({
           appendScriptTag: true
@@ -45,11 +47,13 @@ module.exports = () => ({
       //https://github.com/jantimon/html-webpack-plugin#configuration
       new HtmlWebpackPlugin({
         template: './index.ejs',
-        inject: false,
+        inject: 'body',
+        hash: true,
         title: pkg.name,
         minify: {
           collapseWhitespace: false
-        }
+        },
+        env: process.env
       })
     ]
 });

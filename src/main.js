@@ -29,9 +29,8 @@ if (process.env.NODE_ENV === 'development') {
   // Webpack Hot Module Replacement API
   if (module.hot) {
     console.warn('In development');
-    module.hot.accept('./containers/App', () => {
+    module.hot.accept('./containers/App/index.js', () => {
       render(App);
     });
-    
   }
 }

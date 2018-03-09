@@ -1,4 +1,4 @@
-require('./common/env');
+require('./common/env')();
 
 const port = process.env.PORT || 9000;
 
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
 
 if (require.main === module) {
   server.listen(port, () => {
-    console.log(routesList(app).toString());
+    //console.log(routesList(app).toString());
   });
 } else {
   module.exports = server;

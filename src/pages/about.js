@@ -35,6 +35,7 @@ export default class extends React.Component {
           <p>This is the next version of the microapp-seed it is fast.
             If compiles both server and client so the bundle that gets deployed is optimized.</p>
         </Card>
+        <br/>
 
         <AjaxCard/>
 

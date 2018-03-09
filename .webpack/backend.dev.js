@@ -7,11 +7,13 @@ const defaultSetup = module.exports = () => ({
     extends: 'base',
     name: 'server',
     target: 'node',
-    entry: './server/index.js',
+    entry: [
+        './server/index.js'
+    ],
     devtool: 'source-map',
     externals: [
         'predix-ui',
-    nodeExternals()
+        nodeExternals()
     ],
     plugins: [],
     output: {
