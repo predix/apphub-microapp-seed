@@ -28,8 +28,9 @@ describe('Auth Middleware', () => {
   it('GET - /user/info - responds successfully', (done) => {
     request(app)
       .get('/user/info')
-      .expect(302, done);
+      .expect(200, done);
   });
+
   it('GET - /user/verify - responds successfully', (done) => {
     request(app)
       .get('/user/verify')

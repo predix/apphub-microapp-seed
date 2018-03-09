@@ -13,7 +13,7 @@ var RedisAdapter = requireHelper('server/common/database-redis-adapter');
 
 /**
  * Custom Redist Lowdb Adapter
- */
+ 
 
 var redis = require('redis-node');
 var low = require('lowdb');
@@ -62,7 +62,7 @@ xdescribe('REDIS adapter', () => {
   });
 });
 
-
+*/
 
 //TODO - Use temp inmemory db for testing.
 

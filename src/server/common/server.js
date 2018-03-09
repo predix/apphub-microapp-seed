@@ -33,7 +33,7 @@ class Server {
 
   listen(port, callback) {
     if (!port) {
-      port = process.env.PORT || 9000;
+      port = process.env.PORT || 0;
     }
 
     if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE) {
