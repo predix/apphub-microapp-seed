@@ -20,7 +20,7 @@ class MyStorage {
        return Promise.resolve(this.deserialize(data));
     } else {
       this.write(this.defaultValue);
-       return Promise.resolve(this.defaultValue);
+      return Promise.resolve(this.defaultValue);
     }
   }
   // Should return nothing or a Promise

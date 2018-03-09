@@ -47,8 +47,8 @@ class Database {
         this.adapter = new RedisAdapter(name, defaults);
       }
       if (adapter === 'file') {
-        const dbPath = path.resolve(homeOrTmp, `.${name}-db.json`);
-        console.log('Database', 'dbPath', dbPath);
+        const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
+        log.debug('dbPath', dbPath);
         try {
           fs.ensureFileSync(dbPath);
           this.dbPath = dbPath;
@@ -64,13 +64,13 @@ class Database {
 
     db = low(this.adapter);
     try {
-      //db.defaults(defaults).write();
+      db.defaults(defaults).write();
     } catch (e) {
       log.error('error writing defaults', e);
     }
     //lowdb instance
     this.db = db;
-  } 
+  }
 
   static getInstance(name) {
     if (!instance) {
@@ -79,44 +79,50 @@ class Database {
     return instance;
   }
 
-  info(){
+  info() {
     this.options.doc_count = this.db.get('docs').size().value();
     return Promise.resolve(this.options);
   }
 
+  /**
+   * Get all documents in store.
+   * @param {Object} params Object of values to filter by.
+   */
   async allDocs(params) {
-    try{
-      var docs;
+    try {
+      let docs;
       if (params) {
         docs = db.get('docs').filter(params).value();
       } else {
         docs = db.get('docs').value();
       }
       return docs;
-    } catch(err){
+    } catch (err) {
       return err;
     }
   }
 
-  get(id) {
-    return new Promise((resolve, reject) => {
-      if (!id) {
-        reject({
-          error: `must provide _id`
-        });
-      }
-      let doc = db.get('docs').find({
-        _id: _id
-      }).value();
-      if (!doc) {
-        reject({
-          error: `${id} not found`
-        });
-      }
-      resolve(doc);
-    });
+  /**
+   * 
+   * @param {String} id The id of the document
+   */
+  async get(id) {
+    log.debug('get', id);
+    if (!id) {
+      throw new Error(`get - must provide _id`);
+    }
+    let doc = db.get('docs').find({
+      _id: id
+    }).value();
+    if (!doc) {
+      throw new Error(`get - doc with id ${id} not found`);
+    }
+    return doc;
   }
-
+  /**
+   * Add document to store
+   * @param {Object} doc The document
+   */
   post(doc) {
     return new Promise((resolve, reject) => {
       if (!doc) {
@@ -127,7 +133,7 @@ class Database {
         if (!doc._id) {
           doc._id = `doc-${uuid()}`;
         }
-        if(!doc.created_at){
+        if (!doc.created_at) {
           doc.created_at = new Date().toString();
         }
         db.get('docs')
@@ -173,15 +179,21 @@ class Database {
     });
   }
 
-  remove(id) {
-    return new Promise((resolve, reject) => {
-      this.get(id).then((doc) => {
-        db.get('docs').remove({_id: id}).write();
-        resolve({
-          ok: true
-        });
-      }).catch(reject);
-    });
+  async remove(id) {
+    if (!id) {
+      throw new Error('Must provide _id');
+    }
+    try {
+      let doc = await this.get(id);
+      db.get('docs').remove({
+        _id: id
+      }).write();
+      return {
+        ok: true
+      };
+    } catch (err) {
+      throw new Error(`Document ${id} not found`);
+    }
   }
 
   bulkDocs(docs) {
@@ -190,7 +202,7 @@ class Database {
       for (let index = 0; index < docs.length; index++) {
         const doc = docs[index];
         if (doc._id) {
-          if(doc._deleted){
+          if (doc._deleted) {
             this.remove(doc._id).then(r => out.push(r));
           } else {
             this.put(doc).then(r => out.push(r));

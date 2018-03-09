@@ -60,7 +60,7 @@ describe('API Routes', function() {
       request(app)
         .get(`${baseUrl}/_all_docs`)
         .end((err, res) => {
-          console.log('All DOcs', res.body);
+         // console.log('All DOcs', res.body);
           done();
         });
     });
@@ -80,7 +80,7 @@ describe('API Routes', function() {
           .get(`${baseUrl}/${mockId}`)
           .expect(200)
           .end((err, res) => {
-            console.log(res);
+            //console.log(res);
             done();
           });
         });
@@ -107,7 +107,7 @@ describe('API Routes', function() {
         .send(docs)
         .expect(200)
         .end((err, res) => {
-         console.log('bulk response', res);
+     
           done();
         });
     });

@@ -16,5 +16,8 @@
   "devDependencies": {
     "px-starter-kit-design": "^1.0.1",
     "px-mobile-design": "^1.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^v1.0.19"
   }
 }
