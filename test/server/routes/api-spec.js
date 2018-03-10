@@ -119,6 +119,11 @@ describe('API Routes', function() {
 
    
 
+    it(`GET - ${baseUrl}/:id - 404 - responds not found`, (done) => {
+      request(app)
+        .get(`${baseUrl}/100`)
+        .expect(404, done);
+    });
     it(`PUT - ${baseUrl}/:id - 404 - responds not found`, (done) => {
       request(app)
         .put(`${baseUrl}/100`)
