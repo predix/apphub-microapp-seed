@@ -32,11 +32,13 @@ module.exports = {
       }, req.params.time || 1000);
     },
     post: (req, res) => {
-      res.status(500).send({
-        headers: req.headers,
-        body: req.body,
-        query: req.query
-      });
+      setTimeout(function(){
+        res.status(200).send({
+          headers: req.headers,
+          body: req.body,
+          query: req.query
+        });
+      }, req.params.time || 1000);
     }
   },
   '/500': {
