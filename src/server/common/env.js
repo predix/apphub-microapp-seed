@@ -8,17 +8,22 @@ module.exports = () => {
   var envToSet = {};
   var envPath = process.env.NODE_ENV === 'production' ? path.resolve(__dirname, './.env') : path.resolve(__dirname, '../../../.env');
 
+  console.log('envPath', envPath);
+  
   if(!fs.existsSync){
-    throw new Error(`Cannot find ${envPath}`);
+    console.log('Error', `Cannot find ${envPath}`);
   }
   if (process.env.USE_ENV) {
     envPath = `${process.env.USE_ENV}`;
+    const envConfig = require('dotenv').config({path: envPath});
+  } else {
+    require('dotenv').config();
   }
   log.debug('loading', envPath);
 
   if (process.env.NODE_ENV !== 'test') {
-    const envConfig = require('dotenv').parse(fs.readFileSync(envPath));
-    log.debug('Parsed env', envConfig);
+    //const envConfig = require('dotenv').parse(fs.readFileSync(envPath));
+   // log.debug('Parsed env', envConfig);
   }
   
   const {

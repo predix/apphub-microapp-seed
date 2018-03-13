@@ -8,6 +8,7 @@ export default () => (
       <p>This is the home page.</p>
       <p>This is a card.</p>
     </Card>
+    <br/>
 
     <Card headerText='About'>
       <p>This simple micro-app seed contains just enough to get you started.</p>

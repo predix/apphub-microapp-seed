@@ -8,6 +8,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const Dotenv = require('dotenv-webpack');
 
+const envPath = path.resolve(__dirname, '../.env');
+
+console.log('envPath', envPath);
 module.exports = () => ({
     name: 'client',
     extends: 'base',
@@ -36,7 +39,7 @@ module.exports = () => ({
         new webpack.HotModuleReplacementPlugin(),
         //
         new Dotenv({
-          path: path.resolve(__dirname, '../.env')
+          path: envPath
         }),
       /*
         new LiveReloadPlugin({

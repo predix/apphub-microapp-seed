@@ -53,7 +53,7 @@ class App extends React.Component {
     const {style} = this.state;
     return (
       <Router>
-      <div style={style}>
+      <div style={style} className='full-height'>
         <AppNav title="apphub-microapp-seed" items={this.state.navItems}  onChange={(e) => this.changeRoute(e)}/>
           <Switch>
             <Route exact path="/" component={Home}/>
