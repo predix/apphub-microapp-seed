@@ -18,14 +18,14 @@ ENV SWAGGER_API_SPEC      /spec
 
 
 ENV ENABLE_CLUSTER_MODE   true
-ENV API_DATABASE_ADAPTER  file
+#ENV API_DATABASE_ADAPTER  file
 
 # Redis data store
 #ENV ENABLE_REDIS_STORE   true
 #ENV REDIS_HOST           0.0.0.0
-ENV REDIS_PORT           6379
-ENV REDIS_PASSWORD       test
-ENV REDIS_DB             0
+#ENV REDIS_PORT           6379
+#ENV REDIS_PASSWORD       test
+#ENV REDIS_DB             0
 
 
 WORKDIR                   /usr/src/app

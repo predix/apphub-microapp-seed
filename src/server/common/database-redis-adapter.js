@@ -11,45 +11,49 @@ class RedisAdapter extends Base {
     
     log.debug('RedisAdapter', 'constructor', source, defaultValue);
     
-    if (ENABLE_REDIS_STORE && REDIS_HOST && REDIS_PORT && REDIS_PASSWORD){
-     log.debug('REDIS_HOST', REDIS_HOST);
-     log.debug('REDIS_PORT', REDIS_PORT);
-     log.debug('REDIS_PASSWORD', REDIS_PASSWORD);
-      this.client = redis.createClient({
-        host: process.env.REDIS_PORT_6379_TCP_ADDR || REDIS_HOST,
-        post: process.env.REDIS_PORT_6379_TCP_PORT || REDIS_PORT,
-        password: REDIS_PASSWORD
-      }); 
-    } 
-    
-    if(NODE_ENV === 'test'){
-      this.client = require('redis-mock').createClient();
+    try{
+      if (ENABLE_REDIS_STORE === 'true' && REDIS_HOST && REDIS_PORT && REDIS_PASSWORD){
+        log.debug('REDIS_HOST', REDIS_HOST);
+        log.debug('REDIS_PORT', REDIS_PORT);
+        log.debug('REDIS_PASSWORD', REDIS_PASSWORD);
+         this.client = redis.createClient({
+           host: REDIS_HOST,
+           post: REDIS_PORT,
+           password: REDIS_PASSWORD
+         }); 
+       } 
+       
+       if(NODE_ENV === 'test'){
+         this.client = require('redis-mock').createClient();
+       }
+       
+       if(!this.client){
+         this.client = redis.createClient();
+       }
+   
+       this.client.on('connected', (e) => {
+         log.debug('connected', e);
+       });
+       this.client.on('reconnecting', (e) => {
+         log.debug('reconnecting', e);
+       });
+       this.client.on('reconnected', (e) => {
+         log.debug('reconnected', e);
+       });
+       this.client.on('noconnection', (e) => {
+         log.debug('noconnection', e);
+       });
+       this.client.on('connection error', (e) => {
+         log.debug('connection error', e);
+       });
+       this.client.on('disconnected', (e) => {
+         log.debug('disconnected', e);
+       });
+       
+       this.client.select(REDIS_DB || 0);
+    } catch(err){
+      console.log('Redis Database Error', err);
     }
-    
-    if(!this.client){
-      this.client = redis.createClient();
-    }
-
-    this.client.on('connected', (e) => {
-      log.debug('connected', e);
-    });
-    this.client.on('reconnecting', (e) => {
-      log.debug('reconnecting', e);
-    });
-    this.client.on('reconnected', (e) => {
-      log.debug('reconnected', e);
-    });
-    this.client.on('noconnection', (e) => {
-      log.debug('noconnection', e);
-    });
-    this.client.on('connection error', (e) => {
-      log.debug('connection error', e);
-    });
-    this.client.on('disconnected', (e) => {
-      log.debug('disconnected', e);
-    });
-    
-    this.client.select(REDIS_DB || 0);
   }
 
   read(){

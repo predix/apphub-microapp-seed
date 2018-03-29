@@ -64,7 +64,7 @@ module.exports = function(app) {
     app.set('trust proxy', 1);
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, './public'), staticServerConfig));
-    app.use(serveStatic(path.resolve(__dirname, '.'), staticServerConfig));
+    app.use(serveStatic(path.resolve(__dirname, './'), staticServerConfig));
   }
 
   app.use(logErrors);

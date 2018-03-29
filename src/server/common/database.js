@@ -38,28 +38,32 @@ class Database {
     };
 
     if (typeof (adapter) === 'string') {
-      this.options.adapter = adapter;
-      //console.log('Database', 'loading adapter', adapter);
-      if (adapter === 'memory') {
-        this.adapter = new CustomAdapter(name, defaults);
-      }
-      if (adapter === 'redis') {
-        this.adapter = new RedisAdapter(name, defaults);
-      }
-      if (adapter === 'file') {
-        const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
-        log.debug('dbPath', dbPath);
-        try {
-          fs.ensureFileSync(dbPath);
-          this.dbPath = dbPath;
-          this.adapter = new FileSync(dbPath);
-        } catch (err) {
-          console.log('Error creating file store', err);
+      try {
+        this.options.adapter = adapter;
+        console.log('Database - ', 'loading adapter', adapter);
+        if (adapter === 'memory') {
+          this.adapter = new CustomAdapter(name, defaults);
         }
+        if (adapter === 'redis') {
+          this.adapter = new RedisAdapter(name, defaults);
+        }
+        if (adapter === 'file') {
+          const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
+          log.debug('dbPath', dbPath);
+          try {
+            fs.ensureFileSync(dbPath);
+            this.dbPath = dbPath;
+            this.adapter = new FileSync(dbPath);
+          } catch (err) {
+            console.log('Error creating file store', err);
+          }
+        }
+      } catch(e){
+        console.log('Error with adapter', e);
       }
     } else {
       this.options.adapter = 'Memory';
-      this.adapter = adapter || new Memory();
+      this.adapter = new Memory();
     }
 
     db = low(this.adapter);

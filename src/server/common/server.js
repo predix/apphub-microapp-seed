@@ -36,7 +36,7 @@ class Server {
       port = process.env.PORT || 0;
     }
 
-    if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE) {
+    if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE === 'true') {
       const cpuCount = process.env.NUMBER_OF_WORKERS || os.cpus().length;
       for (var i = 0; i < cpuCount; i += 1) {
         cluster.fork();

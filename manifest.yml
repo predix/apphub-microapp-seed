@@ -8,10 +8,10 @@ applications:
     path: .
     command: node server
     services:
-      #- my_uaa_instance
-      - jps-test-uaa-instance
+      - js-uaa
     env:
       APP_ID: apphub-microapp-seed
+      
       LOG_LEVEL: debug
       NODE_ENV: 'production'
       DEBUG: 'apphub-microapp-seed:*'

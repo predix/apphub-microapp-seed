@@ -31,7 +31,8 @@ if (process.env.NODE_ENV === 'development') {
 
 if (require.main === module) {
   server.listen(port, () => {
-    //console.log(routesList(app).toString());
+    console.log(routesList(app).toString());
+    console.log('Running on', port);
   });
 } else {
   module.exports = server;

@@ -12,12 +12,12 @@ const DB_NAME = process.env.DB_NAME || 'apphub-microapp-seed';
  */
 class ApiController {
   constructor(){
-    
-    if(process.env.ENABLE_REDIS_STORE && process.env.NODE_ENV !== 'test'){
-      db = new Database(DB_NAME, {user: {}, docs: []}, process.env.API_DATABASE_ADAPTER);
+    const {ENABLE_REDIS_STORE, NODE_ENV, API_DATABASE_ADAPTER} = process.env;
+    if(ENABLE_REDIS_STORE === 'true' && NODE_ENV !== 'test'){
+      db = new Database(DB_NAME, {user: {}, docs: []}, 'redis');
     } else {
       try {
-        db = new Database(DB_NAME, {user: {}, docs: []}, process.env.API_DATABASE_ADAPTER); 
+        db = new Database(DB_NAME, {user: {}, docs: []}, API_DATABASE_ADAPTER); 
       } catch(err){
         console.log('Falling back to in-memory data store');
         db = new Database(DB_NAME, {user: {}, docs: []}, 'memory');

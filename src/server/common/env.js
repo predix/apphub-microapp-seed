@@ -37,6 +37,9 @@ module.exports = () => {
     var vcapServices = JSON.parse(VCAP_SERVICES);
     var uaaService = vcapServices[UAA_SERVICE_LABEL || 'predix-uaa'];
     var redisService = vcapServices[REDIS_SERVICE_LABEL || 'predix-redis'];
+    
+    log.debug('VCAP_SERVICES', JSON.stringify(vcapServices, null, 2));
+
     if (uaaService) {
       log.debug('setting UAA env from VCAP_SERVICES');
       uaaService = uaaService[0];

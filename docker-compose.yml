@@ -1,0 +1,21 @@
+version: "3.2"
+services:
+  web:
+    #build: .
+    image: predix-apphub/apphub-microapp-seed:latest
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - API_DATABASE_ADAPTER=redis
+      - DEBUG=apphub-microapp-seed:*
+      - NODE_ENV=production
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      - redis_data:/data
+volumes:
+  redis_data:
