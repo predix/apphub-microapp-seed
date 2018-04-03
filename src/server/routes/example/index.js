@@ -1,12 +1,12 @@
 const bodyParser = require('body-parser');
 
 const myFirstMiddleware = function myFirstMiddleware(req, res, next) {
-  console.log('myFirstMiddleware', req.url);
+  //console.log('myFirstMiddleware', req.url);
   next();
 };
 
 const mySecondMiddleware = function mySecondMiddleware(req, res, next) {
-  console.log('mySecondMiddleware', req.url);
+  //console.log('mySecondMiddleware', req.url);
   next();
 };
 
@@ -22,7 +22,6 @@ module.exports = {
 
   '/timeout/:time': {
     get: (req, res) => {
-      console.log('Waiting for', req.params.time);
       setTimeout(function(){
         res.status(200).send({
           headers: req.headers,

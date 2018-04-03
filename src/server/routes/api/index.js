@@ -1,6 +1,6 @@
 const controller = require('./controller');
 const log = require('../../common/logger')('controllers:api');
-
+const asyncMiddleware = require('../../middleware/async-middleware');
 /**
  * @description Example middleware
  * 

@@ -51,7 +51,7 @@ class Server {
         console.log(`===> 🌎 Listening on port ${port}. Open up http://0.0.0.0:${port}/ in your browser.`);
         log.debug(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
         if (callback) {
-          callback(this.app);
+          callback(null, this.app);
         }
       });
     }
@@ -66,9 +66,11 @@ class Server {
   shutdown(callback) {
     log.debug(`shutdown`);
     try {
-      http.close(callback);
+      http.close();
+      callback(null);
     } catch (e) {
       log.error('shutdown', e);
+      callback(e, null);
       process.exit(1);
     }
 

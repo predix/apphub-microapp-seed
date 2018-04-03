@@ -8,6 +8,7 @@ class NavController {
       .then(n => res.status(200).send(n))
       .catch(next);
   }
+  /*
   put(req, res, next){
     nav
       .update(req.body)
@@ -29,7 +30,7 @@ class NavController {
       message: 'Removed',
       headers: req.headers
     });
-  }
+  }*/
 }
 
 module.exports = new NavController();

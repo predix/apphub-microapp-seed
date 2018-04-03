@@ -33,3 +33,4 @@ stats.json
 .vscode
 .env
 .tar
+temp-db.json

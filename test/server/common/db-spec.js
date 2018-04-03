@@ -1,13 +1,17 @@
 'use strict';
- const assert = require('assert');
-var expect = require('chai').expect;
-var helpers = require('../../helpers');
-var requireHelper = helpers.require;
-var DB = requireHelper('server/common/database');
-var tempFile = require('path').resolve(__dirname, '../../.temp-db');
+const path = require('path');
+const assert = require('assert');
+const expect = require('chai').expect;
+const helpers = require('../../helpers');
+const requireHelper = helpers.require;
+const DB = requireHelper('server/common/database');
+const tempFile = require('path').resolve(__dirname, '../../.temp-db');
+const lowdb = require('lowdb');
+const Base = require('lowdb/adapters/Base');
+const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
+const MemoryAdapter = require('lowdb/adapters/Memory');
 
-var Base = require('lowdb/adapters/Base');
-var RedisAdapter = requireHelper('server/common/database-redis-adapter');
+//var RedisAdapter = requireHelper('server/common/database-redis-adapter');
 
 
 
@@ -69,10 +73,11 @@ xdescribe('REDIS adapter', () => {
 describe('DB', () => {
   var db, instance, mockDoc;
 
-  before(() => {
-    //db = DB.getInstance(tempFile, {docs: [], posts: []});
-    db = new DB(tempFile, {docs: []});
-    //db = new DB(tempFile, {docs: []}, new RedisTestAdapter('test', {docs: []}));
+  before((done) => {
+    db = DB.getInstance(tempFile, {
+      docs: []
+    }, 'memory');
+    done();
   });
 
   after((done) => {
@@ -163,7 +168,7 @@ describe('DB', () => {
     });
 
     it('get - should resolve on success', (done) => {
-      db.post(mockDoc).then((r)=>{
+      db.post(mockDoc).then((r) => {
         mockDoc = r.doc;
         db.get(mockDoc._id).then((doc) => {
           expect(doc).to.not.be.null;
@@ -172,7 +177,7 @@ describe('DB', () => {
           done();
         }).catch(done);
       });
-      
+
     });
 
     it('allDocs - should return all docs', (done) => {
@@ -191,9 +196,11 @@ describe('DB', () => {
         done();
       }).catch(done);
     });
-  
+
     it('remove - should resolve on success', (done) => {
-      db.post({name: 'remove me'}).then((resp) => {
+      db.post({
+        name: 'remove me'
+      }).then((resp) => {
         assert(resp.ok);
         assert(resp.doc, 'returns doc');
         db.remove(resp.doc._id)
@@ -203,67 +210,73 @@ describe('DB', () => {
           }).catch(done);
       }).catch(done);
     });
-  
-  
+
+
   }
 
   describe('CRUD operations (In Memory)', () => {
-    
-    runCRUDTests();
-  });
-
-  xdescribe('CRUD operations (Filestore)', () => {
-    db = new DB(tempFile, {
-      docs: []
+    before(async () => {
+      db = await DB.getInstance('test', {'posts': []}, 'memory');
+      instance = db;
+      return db;
     });
     runCRUDTests(db);
   });
 
-  if (process.env.TEST_REDIS_STORE) {
-    xdescribe('CRUD operations (Redis)', () => {
-      db = new DB('apphub-microapp-seed-db', {
-        docs: []
-      }, 'redis');
-      runCRUDTests(db);
+  describe('CRUD operations (Filestore)', () => {
+    before(async () => {
+      db = await DB.getInstance('test', {'posts': []}, 'file');
+      instance = db;
+      return db;
     });
-  }
+    runCRUDTests(db);
+  });
 
-  describe('lowdb instance', () => {
-    before(() => {
-      instance = DB.getInstance(tempFile).db;
-    });
 
-    it('should return instance', () => {
-      expect(instance).to.not.be.null;
-    });
-
-    it('should write item', function () {
-      instance.set('user.name', 'test-user').write();
-      expect(instance.get('user.name').value()).to.equal('test-user');
-    });
-
-    it('should read item', function () {
-      expect(instance.get('user.name').value()).to.equal('test-user');
-    });
-
-    xit('should push item into defaults', function () {
-      instance.get('docs')
-        .push({
-          id: 1,
-          title: 'lowdb is awesome'
-        })
-        .push({
-          id: 2,
-          title: 'lowdb is fast'
-        })
-        .write();
-      var doc = instance.get('docs').find({
-        id: 1
+  describe('lowdb', () => {
+    describe('Memory Adapter', () => {
+      before(() => {
+        instance = lowdb(new MemoryAdapter());
+        instance
+          .defaults({
+            posts: [],
+            user: {},
+            count: 0
+          })
+          .write()
       });
-      console.log(doc);
-      expect(instance.get('docs').find({
-        id: 1
-      }).value().id).to.equal(1);
+      it('should return instance', () => {
+        expect(instance).to.not.be.null;
+      });
+      it('should write item', function () {
+        instance.set('user.name', 'test-user').write();
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
+      it('should read item', function () {
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
+    });
+
+    describe('FileAsync Adapter', function(){
+      before( async () => {
+        instance = await lowdb(new FileAsyncAdapter(path.resolve(__dirname, '../../../temp-db.json')));
+        return  instance.defaults({
+          posts: [],
+          user: {},
+          count: 0
+        }).write()
+        
+      });
+      it('should return instance', () => {
+        expect(instance).to.not.be.null;
+      });
+      it('should write item', function () {
+        instance.set('user.name', 'test-user').write();
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
+      it('should read item', function () {
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
     });
   });
 

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
 //const dotenv = require('dotenv');
 const log = require('./logger')('env');
 
@@ -13,6 +14,7 @@ module.exports = () => {
   if(!fs.existsSync){
     console.log('Error', `Cannot find ${envPath}`);
   }
+
   if (process.env.USE_ENV) {
     envPath = `${process.env.USE_ENV}`;
     const envConfig = require('dotenv').config({path: envPath});
@@ -35,17 +37,17 @@ module.exports = () => {
 
   if (VCAP_SERVICES) {
     var vcapServices = JSON.parse(VCAP_SERVICES);
-    var uaaService = vcapServices[UAA_SERVICE_LABEL || 'predix-uaa'];
-    var redisService = vcapServices[REDIS_SERVICE_LABEL || 'predix-redis'];
     
     log.debug('VCAP_SERVICES', JSON.stringify(vcapServices, null, 2));
 
-    if (uaaService) {
+    if (vcapServices && UAA_SERVICE_LABEL) {
+      var uaaService = _.get(vcapServices[UAA_SERVICE_LABEL], '0', {});
       log.debug('setting UAA env from VCAP_SERVICES');
-      uaaService = uaaService[0];
       envToSet.UAA_URL = uaaService.uri;
     }
-    if (redisService) {
+
+    if (vcapServices && REDIS_SERVICE_LABEL) {
+      var redisService = vcapServices[REDIS_SERVICE_LABEL]  || {};
       redisService = redisService[0];
       log.debug('setting Redis env from VCAP_SERVICES', redisService);
       envToSet.REDIS_HOST = redisService.credentials.host;

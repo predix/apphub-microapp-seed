@@ -8,6 +8,8 @@ const locales = requireHelper('server/middleware/localize/locales');
 const bodyParser = require('body-parser');
 const express = require('express');
 const controller = require('express-controller-routing');
+
+const routes = require('../../../src/server/routes');
 const apiController = require('../../../src/server/routes/api');
 const baseUrl = '/api/db';
 
@@ -22,8 +24,10 @@ describe('API Routes', function() {
       req.t = () => {};
       next();
     });
+    routes(app);
     
-    app.use('/api', controller(apiController));
+    //app.use('/api', controller(apiController));
+
     done();
   });
 

@@ -6,14 +6,15 @@ const homeOrTmp = require('home-or-tmp');
 const low = require('lowdb');
 const fs = require('fs-extra');
 
-const FileSync = require('lowdb/adapters/FileSync');
+const FileSync = require('lowdb/adapters/FileAsync');
 const Memory = require('lowdb/adapters/Memory');
 const RedisAdapter = require('./database-redis-adapter');
 const CustomAdapter = require('./database-custom-adapter');
 
 
 var db;
-var instance;
+var instance = null;
+var initialized = false;
 /**
  * Simple mock / local file system db
  * https://github.com/typicode/lowdb#usage
@@ -23,63 +24,66 @@ class Database {
     if (!defaults) {
       defaults = {
         user: {},
-        docs: [],
-        nav: [{
-          "label": "Microapp Seed",
-          "icon": "fa-home",
-          "path": "/microapp1"
-        }]
+        docs: []
       };
     }
 
     this.options = {
+      adapter: adapter,
       db_name: name,
       instance_start_time: Date.now()
     };
+    this.name = name;
+    this.defaults = defaults;
+    this.adapter = adapter;
 
-    if (typeof (adapter) === 'string') {
-      try {
-        this.options.adapter = adapter;
-        console.log('Database - ', 'loading adapter', adapter);
-        if (adapter === 'memory') {
-          this.adapter = new CustomAdapter(name, defaults);
-        }
-        if (adapter === 'redis') {
-          this.adapter = new RedisAdapter(name, defaults);
-        }
-        if (adapter === 'file') {
-          const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
-          log.debug('dbPath', dbPath);
-          try {
-            fs.ensureFileSync(dbPath);
-            this.dbPath = dbPath;
-            this.adapter = new FileSync(dbPath);
-          } catch (err) {
-            console.log('Error creating file store', err);
-          }
-        }
-      } catch(e){
-        console.log('Error with adapter', e);
-      }
-    } else {
-      this.options.adapter = 'Memory';
-      this.adapter = new Memory();
-    }
-
-    db = low(this.adapter);
-    try {
-      db.defaults(defaults).write();
-    } catch (e) {
-      log.error('error writing defaults', e);
-    }
-    //lowdb instance
-    this.db = db;
   }
 
-  static getInstance(name) {
+  connect() {
+    return new Promise((resolve, reject) => {
+      if (typeof (this.adapter) === 'string') {
+        try {
+          console.log('Database - ', 'loading adapter', adapter);
+          if (adapter === 'redis') {
+            this.adapter = new RedisAdapter(name, defaults);
+            low(this.adapter).then(redisdb => {
+              this.db = redisdb;
+              resolve(this);
+            }).catch(reject);
+          }
+        } catch (e) {
+          console.log('Error with adapter', e);
+          reject(e);
+        }
+      }
+    });
+
+  }
+
+  static async getInstance(name, defaults, adapter) {
     if (!instance) {
-      instance = new Database(name);
+      instance = new Database(name, defaults, adapter);
+      if (adapter === 'memory') {
+        instance.adapter = new CustomAdapter(name, defaults);
+        db = await low(instance.adapter);;
+      } else if (adapter === 'file') {
+        const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
+        log.debug('dbPath', dbPath);
+        try {
+          fs.ensureFileSync(dbPath);
+          instance.dbPath = dbPath;
+          instance.adapter = new FileSync(dbPath);
+          db = await low(instance.adapter);
+          db.defaults(defaults).write();
+        } catch (err) {
+          console.log('Error creating file store', err);
+          throw err;
+        }
+      } else {
+        throw new Error('Provide an adapter. memory, file, redis');
+      }
     }
+    instance.db = db;
     return instance;
   }
 

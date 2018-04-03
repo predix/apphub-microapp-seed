@@ -1,5 +1,5 @@
 'use strict';
-
+require('dotenv').config();
 const expect = require('chai').expect;
 const request = require('supertest');
 const Server = require('../../../src/server/index');
@@ -32,6 +32,14 @@ describe('App Middleware', () => {
       .expect(404, done);
   });
 
+  it('should handle cache-control', (done) => {
+    request(Server.getExpressApp())
+      .get('/api')
+      .set('Cache-Control', '1d')
+    //  .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
+
   xit('should handle json errors', (done) => {
     request(Server.getExpressApp())
       .get('/api/something-not-found')
@@ -41,7 +49,7 @@ describe('App Middleware', () => {
   });
 
   it('boot - should start server', (done) => {
-    Server.boot(function(resp) {
+    Server.boot(function(err, resp) {
       assert(resp);
       done();
     });
