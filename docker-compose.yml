@@ -1,8 +1,8 @@
 version: "3.2"
 services:
   app:
-    build: .
-    #image: predix-apphub/apphub-microapp-seed:latest
+    #build: .
+    image: predix-apphub/apphub-microapp-seed:latest
     ports:
       - 12345:8080
     environment:
@@ -11,7 +11,7 @@ services:
       - "ENABLE_REDIS_STORE=true"
       - "REDIS_HOST=redis"
       - "REDIS_PORT=6379"
-      - "REDIS_PASSWORD=test"
+      - "REDIS_PASSWORD="
       - "NODE_ENV=production"
       - "RHOST=redis"
     networks:
