@@ -3,9 +3,18 @@
     "browser": true,
     "node": true
   },
-  rules: {
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+    }
+},
+  "rules": {
     "arrow-body-style": ["warn", "as-needed", {
-        requireReturnForObjectLiteral: false,
+      "requireReturnForObjectLiteral": false
     }],
     "class-methods-use-this": "warn",
     "import/extensions": "warn",

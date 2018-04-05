@@ -7,10 +7,11 @@ const log = require('../../common/logger')('middleware:auth');
  * @returns {*}
  */
 module.exports = function(app){
-  const { UAA_URL, UAA_CLIENT_ID, UAA_CLIENT_SECRET} = process.env;
+  const { ENABLE_AUTHENTICATION, UAA_URL, UAA_CALLBACK_URL, UAA_CLIENT_ID, UAA_CLIENT_SECRET} = process.env;
+  
   if (UAA_URL && UAA_CLIENT_ID && UAA_CLIENT_SECRET) {
     /* istanbul ignore next */
-    log.debug('setting up oauth with', process.env.UAA_URL);
+    log.debug('Setting up oauth with', process.env.UAA_URL);
 
     const passport = passportConfig.configurePassportStrategy();
     app.use(passport.initialize());
@@ -27,7 +28,7 @@ module.exports = function(app){
     	req.session.destroy();
     	req.logout();
       passportConfig.reset();
-      res.redirect(`${process.env.UAA_URL}/logout?redirect=${req.originalUrl}`);
+      res.redirect(`${UAA_URL}/logout?redirect=${req.originalUrl}`);
     });
 
     //callback route redirects to secure route after login

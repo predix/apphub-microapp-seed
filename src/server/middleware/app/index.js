@@ -4,24 +4,13 @@ const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 const session = require('express-session');
 const Logger = require('../../common/logger');
+const sessionOptions = require('../../common/session');
 const log = Logger('application');
 /**
  * Application level middleware
  */
 module.exports = function(app) {
-
-  const sessionOptions = {
-    secret: process.env.SESSION_SECRET || 'test',
-    name: process.env.COOKIE_NAME || 'test',
-    maxAge: 30 * 60 * 1000, // expire token after 30 min.
-    proxy: true,
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      secure: app.get('env') === 'production'
-    }
-  };
-
+  
   const setStaticAssetsCacheControl = (res, path) => {
     if (res && res.req && res.req.get('cache-control')) {
       res.set('cache-control', res.req.get('cache-control'));
@@ -75,7 +64,7 @@ module.exports = function(app) {
     app.set('trust proxy', 1);
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, './public'), staticServerConfig));
-    app.use(serveStatic(path.resolve(__dirname, '.'), staticServerConfig));
+    app.use(serveStatic(path.resolve(__dirname, './'), staticServerConfig));
   }
 
   app.use(logErrors);

@@ -1,7 +1,6 @@
-require('./common/env');
+require('./common/env')();
 
 const port = process.env.PORT || 9000;
-
 const express = require('express');
 const serveStatic = require('serve-static');
 const routesList = require('express-api-routes-list');
@@ -9,7 +8,6 @@ const path = require('path');
 
 const Server = require('./common/server');
 const log = require('./common/logger')('server');
-
 const routes = require('./routes');
 const middleware = require('./middleware');
 
@@ -17,7 +15,7 @@ const server = new Server().router();
 const app = server.getExpressApp();
 
 // TODO: I hate having to bring in web components and Polymer
-app.use('/bower_components', serveStatic(path.resolve(__dirname, '../../bower_components')));
+app.use('/bower_components', serveStatic(path.join(__dirname, '../../bower_components')));
 
 // TODO: 1. Load middleware
 middleware(app);
@@ -31,9 +29,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (require.main === module) {
-  console.log(routesList(app).toString());
   server.listen(port, () => {
-    console.log(`Running on port ${port}`)
+    //log.debug(routesList(app).toString());
+    log.info('running on', port);
   });
 } else {
   module.exports = server;

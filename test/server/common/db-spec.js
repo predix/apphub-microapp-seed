@@ -1,21 +1,30 @@
 'use strict';
+const path = require('path');
+const assert = require('assert');
 const expect = require('chai').expect;
 const helpers = require('../../helpers');
 const requireHelper = helpers.require;
 const DB = requireHelper('server/common/database');
-const tempFile = require('path').resolve(__dirname, '../../.temp-db.json');
+const tempFile = require('path').resolve(__dirname, '../../.temp-db');
+const lowdb = require('lowdb');
+const Base = require('lowdb/adapters/Base');
+const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
+const MemoryAdapter = require('lowdb/adapters/Memory');
+
+//var RedisAdapter = requireHelper('server/common/database-redis-adapter');
+
 
 
 /**
  * Custom Redist Lowdb Adapter
- */
-const Base = require('lowdb/adapters/Base');
-const redis = require('redis-node');
+ 
 
-class RedisAdapter extends Base {
-  constructor(source, {defaultValue} = {}) {
-    super(source, {defaultValue});
-    console.log('CustomAdapter', source, defaultValue);
+var redis = require('redis-node');
+var low = require('lowdb');
+class RedisTestAdapter extends Base {
+  constructor(source, defaultValue) {
+    super(source, defaultValue);
+    console.log('RedisTestAdapter', source, defaultValue);
     this.source = source;
     this.defaultValue = defaultValue;
     this.client = redis.createClient();
@@ -35,24 +44,40 @@ class RedisAdapter extends Base {
   write(data){
     this.client.set(this.source, this.serialize(data));
   }
+
   close(){
     this.client.close();
   }
 }
 
+
+xdescribe('REDIS adapter', () => {
+  xit('should create doc', () =>{
+    const redisdb = low(new RedisTestAdapter('test-redisdb', {}));
+    expect(redisdb).to.not.be.null;
+
+    redisdb.defaults({ posts: [] }).write();
+  
+    redisdb.get('posts')
+      .push({ title: 'lowdb' })
+      .push({ title: 'lowdb-redis-adapter' })
+      .write();
+
+  });
+});
+
+*/
+
 //TODO - Use temp inmemory db for testing.
 
-
-
-
 describe('DB', () => {
-  var db, instance;
+  var db, instance, mockDoc;
 
-  before(() =>{
-    //db = DB.getInstance(tempFile, {docs: [], posts: []});
-   // db = new DB(tempFile, {docs: []}, CustomAdapter);
-    //db = new DB(tempFile, {docs: []}, RedisAdapter);
-    db = new DB(tempFile, {docs: []});
+  before((done) => {
+    db = DB.getInstance(tempFile, {
+      docs: []
+    }, 'memory');
+    done();
   });
 
   after((done) => {
@@ -61,16 +86,24 @@ describe('DB', () => {
     done();
   });
 
-  it('be defined', ()=>{
+  it('be defined', () => {
     expect(DB).to.not.be.null;
   });
 
-  it('should return instance', ()=>{
-    expect(db).to.not.be.null;
-  });
 
-  describe('db methods', ()=> {
-    var mockDoc;
+  /**
+   * Run all crud tests
+   * @param {*} newInstance 
+   */
+  function runCRUDTests(newInstance) {
+    if (newInstance) {
+      console.log('Setting db to new instance');
+      db = newInstance;
+    }
+
+    it('should return instance', () => {
+      expect(db).to.not.be.null;
+    });
 
     it('post - should create doc and add ID', (done) => {
       db.post({
@@ -78,7 +111,7 @@ describe('DB', () => {
         type: 'comment'
       }).then((resp) => {
         expect(resp).to.not.be.null;
-        expect(resp.id).to.be.defined;
+        //expect(resp._id).to.be.defined;
         done();
       }).catch(done);
     });
@@ -90,7 +123,7 @@ describe('DB', () => {
       }).then((resp) => {
         mockDoc = resp.doc;
         expect(mockDoc).to.not.be.null;
-        expect(mockDoc.id).to.be.defined;
+        expect(mockDoc._id).to.be.defined;
         done();
       }).catch(done);
     });
@@ -115,9 +148,8 @@ describe('DB', () => {
     });
 
     it('put - should reject if doc was not found', (done) => {
-      mockDoc.updated = Date.now();
       db.put({
-        id: 'some-id'
+        _id: 'some-id'
       }).then((resp) => {
         done();
       }).catch((err) => {
@@ -125,7 +157,6 @@ describe('DB', () => {
         done();
       });
     });
-
 
     it('get - should reject if no id passed', (done) => {
       db.get().then((resp) => {
@@ -136,14 +167,17 @@ describe('DB', () => {
       });
     });
 
-    it('get - should get doc', (done) => {
-      db.get(mockDoc.id).then((doc) => {
-        mockDoc = doc;
-        expect(doc).to.not.be.null;
-        expect(doc.id).to.be.defined;
-        expect(doc.title).to.equal('Test Post');
-        done();
-      }).catch(done);
+    it('get - should resolve on success', (done) => {
+      db.post(mockDoc).then((r) => {
+        mockDoc = r.doc;
+        db.get(mockDoc._id).then((doc) => {
+          expect(doc).to.not.be.null;
+          expect(doc._id).to.be.defined;
+          expect(doc.title).to.equal('Test Post');
+          done();
+        }).catch(done);
+      });
+
     });
 
     it('allDocs - should return all docs', (done) => {
@@ -154,41 +188,95 @@ describe('DB', () => {
     });
 
     it('allDocs - should return all docs filtered', (done) => {
-      db.allDocs({type: 'comment'}).then((docs) => {
+      db.allDocs({
+        type: 'comment'
+      }).then((docs) => {
         expect(docs).to.not.be.null;
-        expect(docs[0].title).to.equal('Test Comment');
+        //expect(docs[0].title).to.equal('Test Comment');
         done();
       }).catch(done);
     });
 
+    it('remove - should resolve on success', (done) => {
+      db.post({
+        name: 'remove me'
+      }).then((resp) => {
+        assert(resp.ok);
+        assert(resp.doc, 'returns doc');
+        db.remove(resp.doc._id)
+          .then(r => {
+            assert(r.ok);
+            done();
+          }).catch(done);
+      }).catch(done);
+    });
+
+
+  }
+
+  describe('CRUD operations (In Memory)', () => {
+    before(async () => {
+      db = await DB.getInstance('test', {'posts': []}, 'memory');
+      instance = db;
+      return db;
+    });
+    runCRUDTests(db);
   });
 
-  describe('lowdb instance', ()=> {
-    before(() =>{
-      instance = DB.getInstance(tempFile).db;
+  describe('CRUD operations (Filestore)', () => {
+    before(async () => {
+      db = await DB.getInstance('test', {'posts': []}, 'file');
+      instance = db;
+      return db;
+    });
+    runCRUDTests(db);
+  });
+
+
+  describe('lowdb', () => {
+    describe('Memory Adapter', () => {
+      before(() => {
+        instance = lowdb(new MemoryAdapter());
+        instance
+          .defaults({
+            posts: [],
+            user: {},
+            count: 0
+          })
+          .write()
+      });
+      it('should return instance', () => {
+        expect(instance).to.not.be.null;
+      });
+      it('should write item', function () {
+        instance.set('user.name', 'test-user').write();
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
+      it('should read item', function () {
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
     });
 
-    it('should return instance', ()=> {
-      expect(instance).to.not.be.null;
-    });
-
-    it('should write item', function () {
-      instance.set('user.name', 'test-user').write();
-      expect(instance.get('user.name').value()).to.equal('test-user');
-    });
-
-    it('should read item', function () {
-      expect(instance.get('user.name').value()).to.equal('test-user');
-    });
-
-    xit('should push item into defaults', function () {
-      instance.get('docs')
-        .push({ id: 1, title: 'lowdb is awesome'})
-        .push({ id: 2, title: 'lowdb is fast'})
-        .write();
-      var doc = instance.get('docs').find({id: 1});
-      console.log(doc);
-      expect(instance.get('docs').find({id: 1}).value().id).to.equal(1);
+    describe('FileAsync Adapter', function(){
+      before( async () => {
+        instance = await lowdb(new FileAsyncAdapter(path.resolve(__dirname, '../../../temp-db.json')));
+        return  instance.defaults({
+          posts: [],
+          user: {},
+          count: 0
+        }).write()
+        
+      });
+      it('should return instance', () => {
+        expect(instance).to.not.be.null;
+      });
+      it('should write item', function () {
+        instance.set('user.name', 'test-user').write();
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
+      it('should read item', function () {
+        expect(instance.get('user.name').value()).to.equal('test-user');
+      });
     });
   });
 

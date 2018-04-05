@@ -139,6 +139,11 @@ $ docker exec -it <container-id> /bin/bash
 $ curl -i localhost:49160/api
 ```
 
+6. To build using `docker-compose` simply use:
+
+```
+$ docker-compose up
+```
 ---
 
 

@@ -1,0 +1,35 @@
+version: "3.2"
+services:
+  app:
+    #build: .
+    image: predix-apphub/apphub-microapp-seed:latest
+    ports:
+      - 12345:8080
+    environment:
+      - "API_DATABASE_ADAPTER=redis"
+      - "DEBUG=apphub-microapp-seed:*"
+      - "ENABLE_REDIS_STORE=true"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+      - "REDIS_PASSWORD="
+      - "NODE_ENV=production"
+      - "RHOST=redis"
+    networks:
+      - redis-net
+    depends_on:
+      - redis
+  
+  redis:
+    image: redis
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    networks:
+      - redis-net
+    volumes:
+      - redis-data:/data
+
+networks:
+  redis-net:
+
+volumes:
+  redis-data:

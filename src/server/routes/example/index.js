@@ -1,12 +1,12 @@
 const bodyParser = require('body-parser');
 
 const myFirstMiddleware = function myFirstMiddleware(req, res, next) {
-  console.log('myFirstMiddleware', req.url);
+  //console.log('myFirstMiddleware', req.url);
   next();
 };
 
 const mySecondMiddleware = function mySecondMiddleware(req, res, next) {
-  console.log('mySecondMiddleware', req.url);
+  //console.log('mySecondMiddleware', req.url);
   next();
 };
 
@@ -19,6 +19,43 @@ const mySecondMiddleware = function mySecondMiddleware(req, res, next) {
  *
  */
 module.exports = {
+
+  '/timeout/:time': {
+    get: (req, res) => {
+      setTimeout(function(){
+        res.status(200).send({
+          headers: req.headers,
+          body: req.body,
+          query: req.query
+        });
+      }, req.params.time || 1000);
+    },
+    post: (req, res) => {
+      setTimeout(function(){
+        res.status(200).send({
+          headers: req.headers,
+          body: req.body,
+          query: req.query
+        });
+      }, req.params.time || 1000);
+    }
+  },
+  '/500': {
+    get: (req, res) => {
+      res.status(500).send({
+        headers: req.headers,
+        body: req.body,
+        query: req.query
+      });
+    },
+    post: (req, res) => {
+      res.status(500).send({
+        headers: req.headers,
+        body: req.body,
+        query: req.query
+      });
+    }
+  },
   '/getCookies': {
     get: (req, res) => {
       res.status(200).send({

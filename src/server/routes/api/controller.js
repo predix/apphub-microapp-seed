@@ -1,13 +1,4 @@
 const path = require('path');
-const Database = require('../../common/database');
-const RedisAdapter = require('../../common/database-redis-adapter');
-var adapter = null;
-
-if(process.env.REDIS_HOST){
-  adapter = RedisAdapter;
-}
-
-const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []}, adapter);
 
 //const log = require('../../common/logger')('controllers/api');
 /**
@@ -15,6 +6,7 @@ const db = new Database(path.resolve(__dirname, '.db.json'), {user: {}, docs: []
  */
 class ApiController {
   constructor(){
+    
   }
 
   index(req, res){
@@ -24,32 +16,45 @@ class ApiController {
     });
   }
 
-  all(req, res, next){
-    db.allDocs(req.query)
+  info(req, res, next){
+    req.app.locals.db.info(req.query)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).json(err));
   }
+  
+  allDocs(req, res, next){
+    req.app.locals.db.allDocs(req.query)
+      .then(resp => res.status(200).send(resp))
+      .catch(err => res.status(404).json(err));
+    
+  }
 
   get(req, res, next){
-    db.get(req.params.id)
+    req.app.locals.db.get(req.params.id)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).json(err));
   }
 
   put(req, res, next){
-    db.put(req.body)
+    req.app.locals.db.put(req.body)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).send(err));
   }
 
   post(req, res, next){
-    db.post(req.body)
+    req.app.locals.db.post(req.body)
       .then(resp => res.status(201).json(resp))
       .catch(err => res.status(400).send(err));
   }
 
+  bulkDocs(req, res, next){
+    req.app.locals.db.bulkDocs(req.body)
+      .then(resp => res.status(200).json(resp))
+      .catch(err => res.status(400).send(err));
+  }
+
   delete(req, res, next){
-    db
+    req.app.locals.db
       .remove(req.params.id)
       .then(resp => res.status(200).send(resp))
       .catch(err => res.status(404).send(err));
