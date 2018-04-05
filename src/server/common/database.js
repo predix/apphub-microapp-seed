@@ -63,10 +63,20 @@ class Database {
   static async getInstance(name, defaults, adapter) {
     if (!instance) {
       instance = new Database(name, defaults, adapter);
+      
       if (adapter === 'memory') {
         instance.adapter = new CustomAdapter(name, defaults);
         db = await low(instance.adapter);;
-      } else if (adapter === 'file') {
+      } 
+
+      //Redis
+      else if(adapter === 'redis'){
+        instance.adapter = new RedisAdapter(name, defaults);
+        db = await low(instance.adapter);
+      }
+
+      //File
+      else if (adapter === 'file') {
         const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
         log.debug('dbPath', dbPath);
         try {

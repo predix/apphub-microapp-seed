@@ -17,7 +17,7 @@ ENV COOKIE_NAME           myCookie
 ENV SWAGGER_API_SPEC      /spec
 
 
-ENV ENABLE_CLUSTER_MODE   true
+#ENV ENABLE_CLUSTER_MODE   true
 #ENV API_DATABASE_ADAPTER  file
 
 # Redis data store
