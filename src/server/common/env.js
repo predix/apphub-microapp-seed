@@ -9,7 +9,7 @@ module.exports = () => {
   var envToSet = {};
   var envPath = process.env.NODE_ENV === 'production' ? path.resolve(__dirname, './.env') : path.resolve(__dirname, '../../../.env');
 
-  console.log('envPath', envPath);
+  log.debug('envPath', envPath);
   
   if(!fs.existsSync){
     console.log('Error', `Cannot find ${envPath}`);

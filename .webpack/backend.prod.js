@@ -21,12 +21,11 @@ const defaultSetup = module.exports = () => ({
     server: './server/index.js'
   },
   // in order to ignore all modules in node_modules folder
-  externals: [nodeExternals()],
+  externals: [ nodeExternals() ],
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: 'server/middleware/swagger/Api.yaml',
-        to: './'
+        from: 'server/middleware/swagger/Api.yaml'
       }
     ])]
 });

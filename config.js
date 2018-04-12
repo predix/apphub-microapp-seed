@@ -11,6 +11,7 @@ const Config = {
 		test: './test',
 		modules: [
 			path.resolve(__dirname, './src'),
+			path.resolve(__dirname, './src/server'),
 			path.resolve(__dirname, './vendor'),
 			path.resolve(__dirname, './node_modules'),
 			path.resolve(__dirname, './bower_components')

@@ -48,7 +48,7 @@ class Server {
     } else {
       http = require('http').createServer(this.app);
       http.listen(port, () => {
-        console.log(`===> 🌎 Listening on port ${port}. Open up http://0.0.0.0:${port}/ in your browser.`);
+        console.log(`===> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
         log.debug(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
         if (callback) {
           callback(null, this.app);
@@ -73,7 +73,10 @@ class Server {
       callback(e, null);
       process.exit(1);
     }
+  }
 
+  getHTTPServer(){
+    return http;
   }
 }
 module.exports = Server;

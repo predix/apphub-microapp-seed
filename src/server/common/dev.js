@@ -1,5 +1,7 @@
 const path = require('path');
 const log = require('./logger')('dev');
+const express = require('express');
+
 module.exports = function (app) {
 
   const config = require(path.join(__dirname, '../../../webpack.config.js'))();
@@ -16,13 +18,12 @@ module.exports = function (app) {
     host: 'localhost',
     publicPath: '/',
     contentBase: [
-      path.resolve(__dirname, '../../../public')
+      path.resolve(__dirname, '../../../assets')
     ]
   };
 
   log.debug('devMiddleWareOptions', devMiddlewareOptions);
- 
-  
+
   //devMiddleware.addDevServerEntrypoints(config, devMiddlewareOptions);
   app.use(webpackDevMiddleware(compiler, devMiddlewareOptions));
 
