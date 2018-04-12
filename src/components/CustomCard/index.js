@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, ProgressBar} from 'predix-ui';
+import {Button, Card, ProgressBar, Icon} from 'predix-ui';
 import classNames from 'classnames';
 import './styles.scss';
 
@@ -10,6 +10,11 @@ export default class extends React.Component {
         this.state = {
             isClosed: props.closed || false
         };
+    }
+    componentWillReceiveProps(nextProps){
+        if(this.state.isClosed !== nextProps.closed){
+            this.setState({isClosed: nextProps.closed});
+        }
     }
     open(){
         this.setState({isClosed: false});
@@ -31,12 +36,11 @@ export default class extends React.Component {
 
         return (
             <div className={classes}>
-                <header onClick={this.handleClick.bind(this)}>
+                {headerText && <header onClick={this.handleClick.bind(this)}>
+                    {icon && <Icon icon={icon}/>}
                     <span className="epsilon caps">{headerText}</span>
-                </header>
-                <section>
-                    {children}
-                </section>
+                </header>}
+                {!isClosed && <section>{children}</section>}
             </div>
         );
     }

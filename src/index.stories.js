@@ -1,6 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
+//import 'predix-ui/dist/css/components/px/Theme/px-dark-theme.css';
+//import './styles/index.scss';
+
+import 'predix-ui/src/components/px/Theme/LightTheme';
+
 const PageHeader = ({title}) => (
   <div className='page-header'>
     <h1>{title}</h1>

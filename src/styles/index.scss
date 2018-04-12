@@ -40,11 +40,10 @@ $inuit-enable-responsive-paddings--tiny: true;
 // Trumps
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
 @import "px-widths-responsive-design/_trumps.widths-responsive.scss";
+
 // Your theme goes in here
 //@import './theme.scss';
-// Your css goes in here
-@import 'predix-ui/dist/predix-ui.min.css';
-@import 'predix-ui/dist/css/components/px/Theme/px-dark-theme.css';
+
 /**
  * Global App Styles
  */
