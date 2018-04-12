@@ -1,9 +1,7 @@
 import React from 'react';
 import {Button, Card, ProgressBar} from 'predix-ui';
 import classNames from 'classnames';
-
-import './styles';
-
+import './styles.scss';
 
 export default class extends React.Component {
     constructor(props) {

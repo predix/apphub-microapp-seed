@@ -28,7 +28,9 @@
     "docker:save": "docker save -o $npm_package_name.tar predix-apphub/$npm_package_name",
     "start": "cross-env NODE_ENV=production node server",
     "pretest": "rimraf coverage",
-    "test": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
+    "test": "npm run test:server && npm run test:client",
+    "test:client": "cross-env NODE_ENV=test jest --coverage",
+    "test:server": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
     "lint": "eslint {src,test}",
     "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *"
@@ -54,8 +56,10 @@
     "babel-register": "^6.26.0",
     "bestzip": "^1.1.4",
     "bower": "^1.8.2",
+    "caniuse-lite": "^1.0.30000828",
     "cdnizer": "^1.1.6",
     "chai": "^3.5.0",
+    "chai-jest-snapshot": "^2.0.0",
     "chai-shallow-deep-equal": "^1.4.4",
     "chromedriver": "^2.35.0",
     "copy-webpack-plugin": "^4.3.1",
@@ -63,18 +67,24 @@
     "css-loader": "^0.28.9",
     "cssnano": "^3.10.0",
     "dotenv-webpack": "^1.5.5",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.3",
     "esdoc": "^1.0.3",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.16.0",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.1.0",
     "eslint-plugin-react": "^7.7.0",
+    "exports-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.6",
     "glob": "^7.1.2",
     "html-webpack-plugin": "^2.30.1",
+    "imports-loader": "^0.8.0",
     "ioredis-mock": "^3.7.1",
     "istanbul-instrumenter-loader": "^3.0.0",
+    "jest": "^22.4.3",
     "json-loader": "^0.5.7",
     "minimist": "^1.2.0",
     "mocha": "^3.1.2",
@@ -91,6 +101,7 @@
     "postcss-loader": "^2.0.10",
     "postcss-reporter": "^5.0.0",
     "promise-polyfill": "^6.0.2",
+    "raf": "^3.4.0",
     "raw-loader": "^0.5.1",
     "redis-mock": "^0.21.0",
     "replace-bundle-webpack-plugin": "^1.0.0",
@@ -125,6 +136,7 @@
     "cross-env": "^5.1.3",
     "dotenv": "^4.0.0",
     "es6-promise": "^4.2.4",
+    "es6-shim": "^0.35.3",
     "express": "^4.14.0",
     "express-api-routes-list": "^1.1.2",
     "express-controller-routing": "^1.0.0",
@@ -149,7 +161,8 @@
     "request": "^2.79.0",
     "serve-static": "^1.10.2",
     "socket.io": "^1.5.1",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "whatwg-fetch": "^2.0.4"
   },
   "nyc": {
     "check-coverage": true,
@@ -172,5 +185,35 @@
     "cache": false,
     "all": true,
     "report-dir": "./coverage"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup.js",
+    "collectCoverage": true,
+    "coverageDirectory": "<rootDir>/coverage/client",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.test.js?(x)",
+      "<rootDir>/src/**/*.test.js?(x)"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "modulePathIgnorePatterns": [
+      "__tests__",
+      "public",
+      "tools",
+      "stories",
+      "docs"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   }
 }

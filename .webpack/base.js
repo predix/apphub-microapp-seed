@@ -115,6 +115,10 @@ module.exports = () => ({
     //
     new webpack.NoEmitOnErrorsPlugin(),
     
+    new webpack.ProvidePlugin({ 
+      'Promise': 'es6-promise',
+      'fetch': 'whatwg-fetch' 
+    }), 
 
     //https://webpack.js.org/plugins/environment-plugin/#usage
     new webpack.EnvironmentPlugin({

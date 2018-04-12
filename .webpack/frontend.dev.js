@@ -15,12 +15,9 @@ module.exports = () => ({
     name: 'client',
     extends: 'base',
     target: 'web',
-    //context: path.resolve(__dirname, '../src'),
     entry: [
-      'main.js',
-     // 'webpack/hot/dev-server', 
-      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client',
-      //'react-hot-loader/patch'
+      'main.js', 
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client'
     ],
     node: {
       global: true,

@@ -1,5 +1,4 @@
-import 'promise-polyfill';
-import 'isomorphic-fetch';
+import './polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer, setConfig } from 'react-hot-loader';
