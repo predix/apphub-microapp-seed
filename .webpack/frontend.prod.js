@@ -17,6 +17,7 @@ module.exports = () => ({
   target: 'web',
   context: path.resolve(__dirname, '../src'),
   entry: {
+    //polyfills: 'polyfills.js',
     main: 'main.js'
   },
   devtool: 'source-map',

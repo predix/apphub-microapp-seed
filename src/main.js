@@ -1,7 +1,4 @@
-import 'promise-polyfill';
-import 'whatwg-fetch';
-import 'babel-polyfill';
-
+import './polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer, setConfig } from 'react-hot-loader';
