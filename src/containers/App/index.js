@@ -1,7 +1,7 @@
 import React from 'react'
 import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
-import '../../styles';
+
 //import createBrowserHistory from 'history/createBrowserHistory';
 //const history = createBrowserHistory();
 
@@ -31,7 +31,8 @@ class App extends React.Component {
       style: {
         //display: 'none',
         transition: 'all .5s',
-        opacity: 0
+        opacity: 0,
+        selectedItem: null
       },
       navItems: props.navItems || defaultNavItems
     };
@@ -47,14 +48,21 @@ class App extends React.Component {
     }, 500);
   }
   changeRoute(e){
-    window.location.hash = e.selectedItem.path;
+    if(this.props.onChange){
+      this.props.onChange(e);
+    }
+    let selectedItem = e.selectedItem || this.state.navItems[e.selected];
+    window.location.hash = selectedItem.path;
   }
   render() {
     const {style} = this.state;
     return (
       <Router>
       <div style={style} className='full-height'>
-        <AppNav title="apphub-microapp-seed" items={this.state.navItems}  onChange={(e) => this.changeRoute(e)}/>
+        <AppNav 
+          title="apphub-microapp-seed" 
+          items={this.state.navItems}  
+          onChange={(e) => this.changeRoute(e)}/>
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route path="/dashboard" component={Dashboard}/>

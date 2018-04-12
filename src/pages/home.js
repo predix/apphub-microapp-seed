@@ -3,7 +3,10 @@ import { Card, Notification } from 'predix-ui';
 
 export default () => (
   <div className='u-p'>
+  
+    <br/>
     <Notification type='info'  statusIcon='px-utl:flag' opened>Welcome back!</Notification>
+    
     <br/>
     <Card headerText='Home'>
       <p>This is the home page.</p>

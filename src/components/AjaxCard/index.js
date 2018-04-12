@@ -37,9 +37,10 @@ export default class extends React.Component {
         this.setState({ajaxEndpoint: e.target.value});
     }
     render() {
+        const {headerText = 'Ajax Card', icon} = this.props;
         const { ajaxData, ajaxEndpoint, pendingRequest } = this.state;
         return (
-            <CustomCard headerText='Ajax API Test'>
+            <CustomCard headerText={headerText} icon={icon}>
 
                 <form className='u-mb' onSubmit={this.debugRequest}>
                 <Input 

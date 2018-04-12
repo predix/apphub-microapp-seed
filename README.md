@@ -15,19 +15,23 @@ After you clone the repo.
   ```
   $ npm install
   ```
+
 - Install bower depenencies
 
   ```
   $ npm run bower
   ```
 
-1. Develop
+1. Start local dev server
 
   ```
   $ npm run dev
+  //or develop in isolation
+  $ npm run storybook
   ```
+  
 
-2. Test
+2. Test client/server
 
   ```
   $ npm test
