@@ -33,12 +33,18 @@
     "test:server": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
     "lint": "eslint {src,test}",
-    "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *"
+    "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *",
+    "storybook": "start-storybook -p 9000 -c .storybook",
+    "storybook:build": "build-storybook -c .storybook -o .out"
   },
   "keywords": [
     "predix-microapp"
   ],
   "devDependencies": {
+    "@storybook/addon-knobs": "^3.4.1",
+    "@storybook/addon-viewport": "^3.4.1",
+    "@storybook/addons": "^3.4.1",
+    "@storybook/react": "^3.4.1",
     "autoprefixer": "^7.2.5",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.24.1",
