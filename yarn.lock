@@ -4127,6 +4127,10 @@ esdoc-coverage-plugin@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/esdoc-coverage-plugin/-/esdoc-coverage-plugin-1.1.0.tgz#3869869cd7f87891f972625787695a299aece45c"
 
+esdoc-ecmascript-proposal-plugin@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/esdoc-ecmascript-proposal-plugin/-/esdoc-ecmascript-proposal-plugin-1.0.0.tgz#390dc5656ba8a2830e39dba3570d79138df2ffd9"
+
 esdoc-external-ecmascript-plugin@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/esdoc-external-ecmascript-plugin/-/esdoc-external-ecmascript-plugin-1.0.0.tgz#78f565d4a0c5185ac63152614dce1fe1a86688db"
@@ -9511,9 +9515,12 @@ predix-fast-token@^1.2.1:
     request "^2.83.0"
     request-promise "^4.2.2"
 
-predix-ui@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/predix-ui/-/predix-ui-0.0.12.tgz#054db99a660c2cd30880a47bafafca24fe33dfef"
+predix-ui@0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/predix-ui/-/predix-ui-0.0.17.tgz#0a6a98c06a5024c5e98bd8bd06f06f59ff11d6e5"
+  dependencies:
+    esdoc-ecmascript-proposal-plugin "^1.0.0"
+    symbol-tree "^3.2.2"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
