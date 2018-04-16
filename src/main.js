@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { AppContainer, setConfig } from 'react-hot-loader';
 
 //App Styles
-import '../../styles.scss';
+import './styles';
 
 //App component
 import App from './containers/App';
