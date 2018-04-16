@@ -4,7 +4,7 @@ const express = require('express');
 
 module.exports = function (app) {
 
-  const config = require(path.join(__dirname, '../../../webpack.config.js'))();
+  const config = require('../../../webpack.config')();
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackServerMiddleware = require('webpack-server-middleware');
