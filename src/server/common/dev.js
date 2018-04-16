@@ -4,7 +4,7 @@ const express = require('express');
 
 module.exports = function (app) {
 
-  const config = require('../../../webpack.config')();
+  const config = require('../../../webpack.config.js')();
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackServerMiddleware = require('webpack-server-middleware');
@@ -17,6 +17,9 @@ module.exports = function (app) {
     compress: true,
     host: 'localhost',
     publicPath: '/',
+    setup: function(app) {
+      app.use(webpackServerMiddleware(compiler));
+    },
     contentBase: [
       path.resolve(__dirname, '../../../assets')
     ]
@@ -29,12 +32,11 @@ module.exports = function (app) {
 
   // NOTE: Only the client bundle needs to be passed to `webpack-hot-middleware`.
   app.use(webpackHotMiddleware(compiler.compilers.find(compiler => compiler.name === 'client'),  {
-    log: console.log, 
-    path: '/__webpack_hmr', 
+    log: console.log,
+    path: '/__webpack_hmr',
     heartbeat: 10 * 1000
   }));
 
-  app.use(webpackServerMiddleware(compiler));
 
   /*
   app.get('*', function response(req, res) {
