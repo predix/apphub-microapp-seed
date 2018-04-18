@@ -8,11 +8,12 @@
  * under which the software has been supplied.
  */
 @import './helpers.scss';
-/*
+
 // Settings
 @import "px-colors-design/_settings.colors.scss";
 @import "px-defaults-design/_settings.defaults.scss";
 
+/*
 // Tools
 @import "px-mobile-design/sass/px-mobile-design-predix.scss";
 
@@ -29,85 +30,32 @@
 
 // Objects
 @import "px-buttons-design/_objects.buttons.scss";
-*/
 
 // Component
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";
+
+*/
 $inuit-enable-margins: true;
 $inuit-enable-responsive-margins: true;
 $inuit-enable-paddings: true;
 $inuit-enable-responsive-paddings: true;
 $inuit-enable-responsive-paddings--tiny: true;
-// Trumps
+
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
-@import "px-widths-responsive-design/_trumps.widths-responsive.scss";
 
 // Your theme goes in here
-//@import './theme.scss';
+@import './theme.scss';
 
 /**
  * Global App Styles
  */
-
-body,
-html {
+body, html {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
 }
 
-.px-card {
+.px-card{
   margin-bottom: 1rem;
-}
-
-.app {
-  height: 100%;
-  a {
-    text-decoration: none;
-  }
-  .px-card {
-    display: block;
-    width: auto;
-    background-color: var(--px-card-background-color, lightgray);
-    padding-bottom: 1rem;
-    border: 1px solid var(--px-card-border-color, gray);
-  }
-  .px-card[full-bleed] .contents {
-    padding: 0;
-  }
-  .px-card header {
-    padding: 1rem;
-    padding-top: 1.33333rem;
-    border-bottom: 1px solid var(--px-card-border-color, transparent);
-    margin-bottom: 1rem;
-    font-weight: 500;
-  }
-  .px-card header .epsilon {
-    height: 2rem;
-    line-height: 2rem;
-    color: var(--px-card-header-color, black);
-  }
-  .px-card #headericon {
-    height: 2rem;
-    width: 2rem;
-    color: var(--px-card-icon-color, black);
-    cursor: auto;
-  }
-  .px-card header i {
-    color: var(--px-card-action-icon-color, black);
-    cursor: pointer;
-  }
-  .px-card header i:hover {
-    color: var(--px-card-action-icon-color--hover, blue);
-  }
-  .px-card header i:active {
-    color: var(--px-card-action-icon-color--pressed, blue);
-  }
-  .px-card header i:not(:last-of-type) {
-    margin-right: .66666rem;
-  }
-  .px-card section {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
 }

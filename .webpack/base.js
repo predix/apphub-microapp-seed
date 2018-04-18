@@ -6,7 +6,11 @@ const { NODE_ENV } = process.env;
 
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractSass = new ExtractTextPlugin({filename: '[name].[contenthash].css',  disable: NODE_ENV !== 'production'});
+const extractSass = new ExtractTextPlugin({
+  filename: '[name].[contenthash].css',  
+  disable: false,
+  allChunks: true
+});
 
 const pkg = require('../package.json');
 const config = require('../config.js');
@@ -37,6 +41,7 @@ module.exports = () => ({
       '.js',
       '.json',
       '.scss',
+      '.css',
       '.html'
     ],
     modules: config.paths.modules,
@@ -74,16 +79,18 @@ module.exports = () => ({
       },
       //.scss
       {
-        test: /\.scss$/,
+        test: /\.s(a|c)ss$/,
         use: extractSass.extract({
           fallback: 'style-loader',
           use: [
             {
               loader: 'css-loader',
               options: {
-                sourceMap: true,
+                modules: false,
                 importLoaders: 1,
-                localIdentName: '[name]__[local]___[hash:base64:5]'
+                minimize: true,
+                sourceMap: true,
+                localIdentName: '[path]___[name]___[local]___[hash:base64:5]'
               }
             },
             //'postcss-loader',

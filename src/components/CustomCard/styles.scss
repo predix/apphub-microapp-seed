@@ -1,56 +1,5 @@
-.px-card {
-  display: block;
-  width: 100%;
-  background-color: var(--px-card-background-color, lightgray);
-  padding-bottom: 4rem;
-  border-top: 1px solid var(--px-card-border-color, gray);
-  header {
-    user-select: none;
-    cursor: pointer;
-    padding: 1rem;
-    padding-top: 1.33333rem;
-    border-bottom: 1px solid var(--px-card-border-color, transparent);
-    margin-bottom: 1rem;
-    .epsilon {
-      height: 2rem;
-      line-height: 2rem;
-      color: var(--px-card-header-color, black);
-    }
-  }
-  #headericon {
-    height: 2rem;
-    width: 2rem;
-    color: var(--px-card-icon-color, black);
-    cursor: auto;
-  }
-  header i {
-    color: var(--px-card-action-icon-color, black);
-    cursor: pointer;
-    &:hover {
-      color: var(--px-card-action-icon-color--hover, blue);
-    }
-    &:active {
-      color: var(--px-card-action-icon-color--pressed, blue);
-    }
-    &:not(:last-of-type) {
-      margin-right: .66666rem;
-    }
-  }
-  section {
-    transition: height .5s;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  &.closed {
-    padding-bottom: 0;
-    header {
-      border-bottom: none;
-      margin-bottom: 0;
-    }
-    section {
-      height: 0;
-      overflow: hidden;
-      padding-bottom: 0;
-    }
+.custom-card {
+  header{
+    
   }
 }

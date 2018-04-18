@@ -1,5 +1,6 @@
 import React from 'react';
 import {Flex, KeyValuePair, Card} from 'predix-ui';
+import AjaxCard from '../components/AjaxCard';
 
 //TODO - Fetch from backend
 const dashboardData = {
@@ -18,7 +19,7 @@ const dashboardData = {
 
 export default () => (
   <div className='u-p'>
-    <Card headerText='Right Now'>
+    <Card headerText='Right Now' className='u-mb'>
       <Flex middle spaced>
         {dashboardData.keyVals.map((item, index) => (
             <KeyValuePair
@@ -32,8 +33,12 @@ export default () => (
           ))}
       </Flex>
     </Card>
+
+    <AjaxCard/>
+
+        
     {dashboardData.cards && dashboardData.cards.map((card, index) => (
-      <Card key={card.id} headerText={card.title}>
+      <Card key={card.id} headerText={card.title} className='u-mb'>
         {card.children && card.children.map((child, index) => <div key={index}>{child}</div>)}
       </Card>
     ))}

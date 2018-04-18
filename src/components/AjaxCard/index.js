@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import CustomCard from '../CustomCard';
 import {Button, Input, Card, ProgressBar} from 'predix-ui';
-
+import './styles';
 
 export default class extends React.Component {
     constructor(props) {
@@ -40,7 +39,8 @@ export default class extends React.Component {
         const {headerText = 'Ajax Card', icon} = this.props;
         const { ajaxData, ajaxEndpoint, pendingRequest } = this.state;
         return (
-            <CustomCard headerText={headerText} icon={icon}>
+          <div className='ajax-card'>
+            <Card headerText={headerText} icon={icon}>
 
                 <form className='u-mb' onSubmit={this.debugRequest}>
                 <Input 
@@ -63,8 +63,8 @@ export default class extends React.Component {
                         <pre id='ajaxResponse'>{JSON.stringify(ajaxData.data, null, 2)}</pre>
                     </div>
                 }
-            </CustomCard>
-
+            </Card>
+          </div>
         );
     }
 }

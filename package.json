@@ -160,7 +160,7 @@
     "passport-oauth2-middleware": "^1.0.3",
     "passport-predix-oauth": "^0.1.15",
     "predix-fast-token": "^1.2.1",
-    "predix-ui": "0.0.17",
+    "predix-ui": "^0.0.17",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",

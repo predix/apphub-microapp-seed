@@ -1,33 +1,36 @@
 import React from 'react';
 import { Card, Notification } from 'predix-ui';
 
+const features = [
+  {title: 'Predix UI (react)', href: 'https://jonniespratley.github.io/predix-ui/#/'},
+  {title: 'Webpack 3.x', href: 'https://webpack.js.org/'},
+  {title: 'Babel', href: 'https://babeljs.io/'},
+  {title: 'React', href: 'https://reactjs.org/'},
+  {title: 'React Router', href: 'https://reacttraining.com/react-router/web/guides/philosophy'},
+  {title: 'Storybook.js', href: 'https://storybook.js.org/'},
+  {title: 'Express', href: 'https://expressjs.com/'},
+  {title: 'Nightwatch.js', href: 'http://nightwatchjs.org/'},
+  {title: 'Jest', href: 'https://facebook.github.io/jest/'}
+];
+
+
 export default () => (
   <div className='u-p'>
-  
-    <br/>
     <Notification type='info'  statusIcon='px-utl:flag' opened>Welcome back!</Notification>
-    
     <br/>
-    <Card headerText='Home'>
-      <p>This is the home page.</p>
-      <p>This is a card.</p>
-    </Card>
-    <br/>
-
-    <Card headerText='About'>
+   
+    <Card headerText='Features'>
       <p>This simple micro-app seed contains just enough to get you started.</p>
       <p>Some <code>development</code> features include:</p>
       <ul>
-        <li>React</li>
-        <li>Webpack (client/server)</li>
-        <li>Babel</li>
-        <li>Hot reload</li>
-        <li>Express</li>
-        
-        
-        <li>Nightwatch.js</li>
+        {features.map((f, i) => (
+          <li key={i}>
+            <a href={f.href} title={f.title} target='_blank'>
+              {f.title}
+            </a>
+          </li>
+        ))}
       </ul>
     </Card>
-
   </div>
 );

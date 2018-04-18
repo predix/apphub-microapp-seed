@@ -1,7 +1,6 @@
 import React from 'react'
 import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
-
 //import createBrowserHistory from 'history/createBrowserHistory';
 //const history = createBrowserHistory();
 
@@ -15,14 +14,12 @@ import Dashboard from '../../pages/dashboard';
 import Topics from '../../pages/topics';
 import NoMatch from '../../pages/404';
 
-
 const defaultNavItems = [
   {id : "home", path: '/', label: "Home", icon: "px-fea:home"},
   {id : "about", path: '/about', label: "About", icon: "px-fea:catalog"},
   {id : "dashboard", path: '/dashboard', label: "Dashboard", icon: "px-fea:dashboard"},
   {id : "topics", path: '/topics', label: "Topics", icon: "px-fea:log"}
 ];
-
 
 class App extends React.Component {
   constructor(props){
@@ -31,7 +28,7 @@ class App extends React.Component {
       style: {
         //display: 'none',
         transition: 'all .5s',
-        opacity: 0,
+        opacity: 1,
         selectedItem: null
       },
       navItems: props.navItems || defaultNavItems
@@ -39,7 +36,6 @@ class App extends React.Component {
   }
   componentDidMount(){
     window.location.hash = '/';
-    console.log('Component did mount');
     setTimeout(()=> {
       this.setState({style: {
         display: 'block',
@@ -52,17 +48,15 @@ class App extends React.Component {
       this.props.onChange(e);
     }
     let selectedItem = e.selectedItem || this.state.navItems[e.selected];
+    console.log('changeRoute', selectedItem);
     window.location.hash = selectedItem.path;
   }
   render() {
     const {style} = this.state;
     return (
       <Router>
-      <div style={style} className='full-height'>
-        <AppNav 
-          title="apphub-microapp-seed" 
-          items={this.state.navItems}  
-          onChange={(e) => this.changeRoute(e)}/>
+      <div style={style} className="full-height">
+        <AppNav title="apphub-microapp-seed"  items={this.state.navItems}  onChange={(e) => this.changeRoute(e)}/>
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route path="/dashboard" component={Dashboard}/>

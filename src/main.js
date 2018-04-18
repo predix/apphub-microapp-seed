@@ -5,6 +5,8 @@ import { AppContainer, setConfig } from 'react-hot-loader';
 
 //App Styles
 import './styles';
+//import 'predix-ui/dist/predix-ui.min.css';
+//import 'predix-ui/dist/css/components/px/Theme/px-theme.css';
 
 //App component
 import App from './containers/App';

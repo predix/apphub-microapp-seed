@@ -10,7 +10,6 @@ const Dotenv = require('dotenv-webpack');
 
 const envPath = path.resolve(__dirname, '../.env');
 
-console.log('envPath', envPath);
 module.exports = () => ({
     name: 'client',
     extends: 'base',
