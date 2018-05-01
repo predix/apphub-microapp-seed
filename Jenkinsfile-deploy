@@ -5,7 +5,6 @@ pipeline {
 
    environment {
       DEBUG = ''
-      CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
       ORG_NAME = 'Predix-Apphub'
       APP_NAME = 'apphub-microapp-seed'
    }
