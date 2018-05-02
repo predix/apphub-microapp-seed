@@ -8,7 +8,7 @@ pipeline {
   agent none
 	environment {
 		DEBUG = ''
-    CACHING_REPO_URL = 'https://repo.ci.build.ge.com/artifactory/api/npm/npm-virtual/'
+    CACHING_REPO_URL = 'http://nexus.marathon.l4lb.thisdcos.directory:8081/nexus/repository/npm-virtual/'
     ORG_NAME = 'Predix-Apphub'
     APP_NAME = 'apphub-microapp-seed'
 	}
@@ -16,7 +16,7 @@ pipeline {
     stage('Build & Test') {
       agent {
         docker {
-          //image 'repo.ci.build.ge.com:8443/predixci-node6.9-base'
+          //image 'registry.gear.ge.com/dig-propel/predixci-node6.9-base'
           image 'node:8'
           label 'dind'
         }
@@ -60,7 +60,7 @@ pipeline {
     stage('Publish Artifacts') {
       agent {
         docker {
-          image 'repo.ci.build.ge.com:8443/jfrog-cli-go'
+          image 'registry.gear.ge.com/dig-propel/jfrog-cli-go'
           label 'dind'
         }
       }
