@@ -34,3 +34,4 @@ stats.json
 .env
 .tar
 temp-db.json
+.eslintcache

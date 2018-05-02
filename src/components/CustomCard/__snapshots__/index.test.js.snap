@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ajax Card should match snapshot 1`] = `
+<div
+  className="px-card custom-card"
+>
+  <header
+    onClick={[Function]}
+    role="presentation"
+  >
+    <span
+      className="epsilon caps"
+    >
+      My Header
+    </span>
+  </header>
+  <section>
+    Content
+  </section>
+</div>
+`;

@@ -1,13 +1,11 @@
-module.exports = (function(){
-
+module.exports = (function () {
   const log = require('../../common/logger')('passport');
   const passport = require('passport');
   const CloudFoundryStrategy = require('passport-predix-oauth').Strategy;
   const OAuth2RefreshTokenStrategy = require('passport-oauth2-middleware').Strategy;
-  var cfStrategy;
+  let cfStrategy;
 
   function configurePassportStrategy() {
-
     const refreshStrategy = new OAuth2RefreshTokenStrategy({
       refreshWindow: 10,
       userProperty: 'currentUser',
@@ -26,17 +24,17 @@ module.exports = (function(){
   	function(accessToken, refreshToken, profile, done) {
   		token = accessToken;
   		done(null, profile);
-  	}*/);
+  	} */);
 
 
     /* istanbul ignore next */
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser(function (user, done) {
       log.debug('serializeUser', user);
       done(null, user);
     });
 
     /* istanbul ignore next */
-    passport.deserializeUser(function(obj, done) {
+    passport.deserializeUser(function (obj, done) {
       log.debug('deserializeUser');
       done(null, obj);
     });
@@ -54,7 +52,7 @@ module.exports = (function(){
   }
 
   return {
-    configurePassportStrategy: configurePassportStrategy,
-    reset: reset
-  }
+    configurePassportStrategy,
+    reset
+  };
 }());

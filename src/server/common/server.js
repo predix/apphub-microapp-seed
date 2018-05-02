@@ -6,11 +6,11 @@ const os = require('os');
 const cluster = require('cluster');
 const log = require('./logger')('server');
 /* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
-//const swaggerify = require('./swagger');
-var http;
- 
+// const swaggerify = require('./swagger');
+let http;
 
-/** 
+
+/**
  * Server
  */
 class Server {
@@ -18,7 +18,7 @@ class Server {
     if (a) {
       this.app = a;
     } else {
-      this.app = express()
+      this.app = express();
     }
   }
 
@@ -27,7 +27,7 @@ class Server {
   }
 
   router(routes) {
-    //swaggerify(this.app, routes);
+    // swaggerify(this.app, routes);
     return this;
   }
 
@@ -38,7 +38,7 @@ class Server {
 
     if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE === 'true') {
       const cpuCount = process.env.NUMBER_OF_WORKERS || os.cpus().length;
-      for (var i = 0; i < cpuCount; i += 1) {
+      for (let i = 0; i < cpuCount; i += 1) {
         cluster.fork();
       }
       cluster.on('exit', function (worker) {
@@ -59,12 +59,12 @@ class Server {
   }
 
   boot(callback) {
-    log.debug(`boot`);
+    log.debug('boot');
     return this.listen(null, callback);
   }
 
   shutdown(callback) {
-    log.debug(`shutdown`);
+    log.debug('shutdown');
     try {
       http.close();
       callback(null);
@@ -75,7 +75,7 @@ class Server {
     }
   }
 
-  getHTTPServer(){
+  getHTTPServer() {
     return http;
   }
 }

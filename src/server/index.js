@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
   require('./common/dev')(app);
 }
 
-if(module.hot){
+if (module.hot) {
   console.log('Hot module on server...');
   module.hot.accept('./common/server', () => {
     server.getHTTPServer().removeEventListener('request', currentApp);
@@ -54,4 +54,4 @@ module.exports = function serverRenderer({ clientStats, serverStats, foo }) {
     console.log(req.url);
     next();
   };
-};*/
+}; */

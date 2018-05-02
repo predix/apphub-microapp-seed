@@ -1,12 +1,12 @@
 import React from 'react';
-import {Card} from 'predix-ui';
+import { Card } from 'predix-ui';
 import { Route, Link } from 'react-router-dom';
 import Topic from './topic';
 
 export default ({ match }) => (
-  <div className='u-p'>
+  <div className="u-p">
     <h2>Topics</h2>
-		<p>The following is an example of sub-routes for a component.</p>
+    <p>The following is an example of sub-routes for a component.</p>
     <ul>
       <li>
         <Link to={`${match.url}/rendering`}>
@@ -25,11 +25,15 @@ export default ({ match }) => (
       </li>
     </ul>
 
-    <Card headerText='Selected Topic'>
-      <Route path={`${match.url}/:topicId`} component={Topic}/>
-      <Route exact path={match.url} render={() => (
-        <h3>Please select a topic.</h3>
-      )}/>
+    <Card headerText="Selected Topic">
+      <Route path={`${match.url}/:topicId`} component={Topic} />
+      <Route
+        exact
+        path={match.url}
+        render={() => (
+          <h3>Please select a topic.</h3>
+      )}
+      />
     </Card>
   </div>
 );

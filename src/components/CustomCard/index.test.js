@@ -1,18 +1,16 @@
-import { expect } from 'chai';
 import React from 'react';
-import {shallow} from 'enzyme';
-import CustomCard from './';
+import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 
-describe('Custom Card', () => {
-  test('should render', () =>{
-    const wrapper = shallow(
-      <CustomCard/>
-    );
-    console.log(wrapper.debug());
-    expect(true).to.equal(true);
+import Card from './';
+
+describe('Ajax Card', () => {
+  test('should render', () => {
+    const wrapper = shallow(<Card headerText="My Header" />);
+    expect(wrapper.find('.px-card')).toHaveLength(1);
   });
-  //expect(wrapper.find('.label')).to.have.length(1);
-  //expect(wrapper.find('.delta')).to.have.length(1);
-  //expect(wrapper.find('.alpha')).to.have.length(1);
-  //expect(wrapper.contains(<div className='label'/>)).to.equal(true);
+  test('should match snapshot', () => {
+    const tree = renderer.create(<Card headerText="My Header">Content</Card>).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });

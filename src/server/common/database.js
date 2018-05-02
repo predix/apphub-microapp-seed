@@ -12,9 +12,9 @@ const RedisAdapter = require('./database-redis-adapter');
 const CustomAdapter = require('./database-custom-adapter');
 
 
-var db;
-var instance = null;
-var initialized = false;
+let db;
+let instance = null;
+const initialized = false;
 /**
  * Simple mock / local file system db
  * https://github.com/typicode/lowdb#usage
@@ -29,14 +29,13 @@ class Database {
     }
 
     this.options = {
-      adapter: adapter,
+      adapter,
       db_name: name,
       instance_start_time: Date.now()
     };
     this.name = name;
     this.defaults = defaults;
     this.adapter = adapter;
-
   }
 
   connect() {
@@ -46,7 +45,7 @@ class Database {
           console.log('Database - ', 'loading adapter', adapter);
           if (adapter === 'redis') {
             this.adapter = new RedisAdapter(name, defaults);
-            low(this.adapter).then(redisdb => {
+            low(this.adapter).then((redisdb) => {
               this.db = redisdb;
               resolve(this);
             }).catch(reject);
@@ -57,25 +56,24 @@ class Database {
         }
       }
     });
-
   }
 
   static async getInstance(name, defaults, adapter) {
     if (!instance) {
       instance = new Database(name, defaults, adapter);
-      
+
       if (adapter === 'memory') {
         instance.adapter = new CustomAdapter(name, defaults);
-        db = await low(instance.adapter);;
-      } 
+        db = await low(instance.adapter);
+      }
 
-      //Redis
-      else if(adapter === 'redis'){
+      // Redis
+      else if (adapter === 'redis') {
         instance.adapter = new RedisAdapter(name, defaults);
         db = await low(instance.adapter);
       }
 
-      //File
+      // File
       else if (adapter === 'file') {
         const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
         log.debug('dbPath', dbPath);
@@ -121,15 +119,15 @@ class Database {
   }
 
   /**
-   * 
+   *
    * @param {String} id The id of the document
    */
   async get(id) {
     log.debug('get', id);
     if (!id) {
-      throw new Error(`get - must provide _id`);
+      throw new Error('get - must provide _id');
     }
-    let doc = db.get('docs').find({
+    const doc = db.get('docs').find({
       _id: id
     }).value();
     if (!doc) {
@@ -145,7 +143,7 @@ class Database {
     return new Promise((resolve, reject) => {
       if (!doc) {
         reject({
-          error: `must provide doc`
+          error: 'must provide doc'
         });
       } else {
         if (!doc._id) {
@@ -159,7 +157,7 @@ class Database {
           .write();
         resolve({
           ok: true,
-          doc: doc
+          doc
         });
       }
     });
@@ -169,7 +167,7 @@ class Database {
     return new Promise((resolve, reject) => {
       if (!doc._id) {
         reject({
-          error: `must provide _id`
+          error: 'must provide _id'
         });
       }
       /*
@@ -187,7 +185,7 @@ class Database {
           .write();
         resolve({
           ok: true,
-          doc: doc
+          doc
         });
       } else {
         reject({
@@ -202,7 +200,7 @@ class Database {
       throw new Error('Must provide _id');
     }
     try {
-      let doc = await this.get(id);
+      const doc = await this.get(id);
       db.get('docs').remove({
         _id: id
       }).write();
@@ -216,7 +214,7 @@ class Database {
 
   bulkDocs(docs) {
     return new Promise((resolve, reject) => {
-      var out = [];
+      const out = [];
       for (let index = 0; index < docs.length; index++) {
         const doc = docs[index];
         if (doc._id) {
@@ -230,8 +228,8 @@ class Database {
         }
       }
       resolve(out);
-      //Promise.all(out).then(resolve, reject);
-    })
+      // Promise.all(out).then(resolve, reject);
+    });
   }
 }
 module.exports = Database;

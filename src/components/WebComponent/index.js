@@ -101,13 +101,12 @@ function ReactWebComponent(CustomElement, opts, url) {
     tagName = CustomElement;
   }
   const displayName = pascalCase(tagName);
-  const {React, ReactDOM} = opts;
+  const { React, ReactDOM } = opts;
   if (!React || !ReactDOM) {
     throw new Error('React and ReactDOM must be dependencies, globally on your `window` object or passed via opts.');
   }
 
   class ReactComponent extends React.Component {
-
     constructor(props) {
       super(props);
       this.state = {
@@ -127,7 +126,7 @@ function ReactWebComponent(CustomElement, opts, url) {
         }
         // Load the component async
         Polymer.Base.importHref(url, this.componentDidImport.bind(this), (er) => {
-          throw new Error('Failed to import module:' + url);
+          throw new Error(`Failed to import module:${url}`);
         }, true);
       } else {
         this.componentDidImport();
@@ -135,7 +134,7 @@ function ReactWebComponent(CustomElement, opts, url) {
     }
 
     componentDidMount() {
-      this.setState({mounted: true});
+      this.setState({ mounted: true });
 
       // Import is already
       if (this.state.imported) {
@@ -146,7 +145,7 @@ function ReactWebComponent(CustomElement, opts, url) {
 
     componentDidImport() {
       if (this.state.mounted) {
-        this.setState({imported: true});
+        this.setState({ imported: true });
         this.componentWillReceiveProps(this.props);
       } else {
         this.state.imported = true;
@@ -163,7 +162,7 @@ function ReactWebComponent(CustomElement, opts, url) {
     componentWillReceiveProps(props) {
       const node = ReactDOM.findDOMNode(this);
       if (node) {
-        Object.keys(props).forEach(name => {
+        Object.keys(props).forEach((name) => {
           if (name === 'children' || name === 'style') {
             return;
           }
@@ -187,8 +186,7 @@ function ReactWebComponent(CustomElement, opts, url) {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-      if (!this.state.mounted && nextState.mounted)
-        return false;
+      if (!this.state.mounted && nextState.mounted) { return false; }
 
       return true;
     }
@@ -198,9 +196,9 @@ function ReactWebComponent(CustomElement, opts, url) {
       if (this.props.children && node) {
         const shadowRoot = Polymer.dom(node.root);
         const lightRoot = Polymer.dom(node);
-        Array.from(node.childNodes).filter(function(child) {
+        Array.from(node.childNodes).filter(function (child) {
           return !shadowRoot.deepContains(child);
-        }).forEach(function(newChild) {
+        }).forEach(function (newChild) {
           lightRoot.appendChild(newChild);
         });
       }
@@ -222,4 +220,4 @@ function ReactWebComponent(CustomElement, opts, url) {
 export default function ReactPolymerComponent(element, elementPath = `${BASE_PATH}/${element}`, opts) {
   const url = `${elementPath}/${element}.html`;
   return ReactWebComponent(element, opts, url);
-};
+}

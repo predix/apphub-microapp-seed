@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ajax Card should match snapshot 1`] = `
+<div
+  className="px-card ajax-card"
+>
+  <div
+    className="px-card sc-hSdWYo kBXBWb"
+  >
+    <header
+      className="px-card-header sc-eHgmQL hayqUa"
+    >
+      <span
+        className="sc-cvbbAY ccCeVj"
+      >
+        My Header
+      </span>
+    </header>
+    <section
+      className="px-card-body sc-jWBwVP OBrrS"
+    >
+      <form
+        className="u-mb"
+        onSubmit={[Function]}
+      >
+        <input
+          className="sc-csuQGl cFxhSJ"
+          disabled={null}
+          id="urlInput"
+          label={null}
+          onChange={[Function]}
+          placeholder="Enter URL..."
+          type="text"
+          value="./api/example"
+        />
+        <button
+          className="px-button sc-chPdSV KDDkz"
+          icon={null}
+          size={null}
+          type="submit"
+        >
+          Send Request
+        </button>
+      </form>
+      <br />
+    </section>
+  </div>
+</div>
+`;

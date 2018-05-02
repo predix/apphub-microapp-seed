@@ -4,8 +4,8 @@
   "repository": "https://github.build.ge.com/predix-apphub/apphub-microapp-seed",
   "private": true,
   "engines": {
-    "node": "^8.0.0",
-    "npm": "^5.0.0"
+    "node": ">=8.0.0",
+    "npm": ">=5.0.0"
   },
   "scripts": {
     "bower": "bower install --force --allow-root",
@@ -32,9 +32,9 @@
     "test:client": "cross-env NODE_ENV=test jest --coverage",
     "test:server": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
-    "lint": "eslint {src,test}",
+    "lint": "eslint ./src --cache",
     "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *",
-    "storybook": "start-storybook -p 9000 -c .storybook",
+    "storybook": "start-storybook -p 9090 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o .out"
   },
   "keywords": [
@@ -48,7 +48,7 @@
     "autoprefixer": "^7.2.5",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.24.1",
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-istanbul": "^4.1.5",
     "babel-plugin-module-resolver": "^2.7.1",
@@ -79,8 +79,10 @@
     "esdoc": "^1.0.3",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.1.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "exports-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^3.0.0",
@@ -160,7 +162,7 @@
     "passport-oauth2-middleware": "^1.0.3",
     "passport-predix-oauth": "^0.1.15",
     "predix-fast-token": "^1.2.1",
-    "predix-ui": "^0.0.17",
+    "predix-ui": "^0.0.20",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",

@@ -1,33 +1,38 @@
 {
+  "extends": "airbnb",
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
-    "node": true
+    "jest": true,
+    "es6": true
   },
   "plugins": [
     "react"
   ],
-  "parserOptions": {
-    "ecmaFeatures": {
-        "jsx": true,
-        "modules": true
-    }
-},
   "rules": {
-    "arrow-body-style": ["warn", "as-needed", {
-      "requireReturnForObjectLiteral": false
-    }],
-    "class-methods-use-this": "warn",
-    "import/extensions": "warn",
-    "no-unused-vars": "warn",
     "no-console": "warn",
-    "no-plusplus": "warn",
-    "max-len": "warn",
-    "object-shorthand": "warn",
-    "strict": "warn",
-    "no-script-url": "warn",
-    "import/no-extraneous-dependencies": "off",
-    "import/no-unresolved": "off",
-    "comma-dangle": "off",
-    "no-undef": "off"
-  }
+    "comma-dangle": ["error", "never"],
+    "jsx-a11y/href-no-hash": 0,
+    "global-require": 0,
+    "prefer-arrow-callback": 0,
+    "experimentalDecorators": 0,
+    "func-names": 0,
+    "import/no-extraneous-dependencies": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": 0,
+    "no-use-before-define": 0,
+    "react/jsx-filename-extension": 0,
+    "react/sort-comp": 0,
+    "react/no-multi-comp": 0,
+    "react/require-extension": 0
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/**/*.js",
+        "src/**/*.jsx"
+      ],
+      "excludedFiles": []
+    }
+  ]
 }

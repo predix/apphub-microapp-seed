@@ -2,9 +2,9 @@
 const Base = require('lowdb/adapters/Base');
 const log = require('./logger')('CustomAdapter');
 
-let store = {};
+const store = {};
 
-class CustomAdapter extends Base{
+class CustomAdapter extends Base {
   constructor(source = 'in-memory', defaultValue = {}) {
     super(source, defaultValue);
     this.source = source;
@@ -13,7 +13,7 @@ class CustomAdapter extends Base{
   }
   read() {
     const data = store[this.source];
-    if(data){
+    if (data) {
       Promise.resolve(this.deserialize(data));
     } else {
       return this.write(this.defaultValue);

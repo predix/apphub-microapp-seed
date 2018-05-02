@@ -5,12 +5,12 @@ const serveStatic = require('serve-static');
 const session = require('express-session');
 const Logger = require('../../common/logger');
 const sessionOptions = require('../../common/session');
+
 const log = Logger('application');
 /**
  * Application level middleware
  */
-module.exports = function(app) {
-  
+module.exports = function (app) {
   const setStaticAssetsCacheControl = (res, path) => {
     if (res && res.req && res.req.get('cache-control')) {
       res.set('cache-control', res.req.get('cache-control'));
@@ -21,28 +21,27 @@ module.exports = function(app) {
     setHeaders: setStaticAssetsCacheControl
   };
 
-  //Handle ajax errors so clients wont hang
+  // Handle ajax errors so clients wont hang
   const clientErrorHandler = (err, req, res, next) => {
     log.error('clientErrorHandler', err);
     if (req.xhr) {
-      res.status(500).json({error: 'Something failed!'});
+      res.status(500).json({ error: 'Something failed!' });
     } else {
       next(err);
     }
   };
 
-  //Handle rendering error
+  // Handle rendering error
   const errorHandler = (err, req, res, next) => {
     log.error('errorHandler', err);
-    if(req.is('application/json')){
-      res.status(500).json({error: 'Something failed!'});
+    if (req.is('application/json')) {
+      res.status(500).json({ error: 'Something failed!' });
     } else {
-      res.status(500).send({error: err});
+      res.status(500).send({ error: err });
     }
-
   };
 
-  //Handle logging error
+  // Handle logging error
   const logErrors = (err, req, res, next) => {
     console.error(err.stack);
     next(err);
@@ -55,8 +54,7 @@ module.exports = function(app) {
   app.use(session(sessionOptions));
 
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended: true}));
-
+  app.use(bodyParser.urlencoded({ extended: true }));
 
 
   /* istanbul ignore next */
@@ -72,9 +70,7 @@ module.exports = function(app) {
   app.use(errorHandler);
 
   // TODO: Add some access methods
-  app.getLogger = (name) => {
-    return Logger(name);
-  };
+  app.getLogger = name => Logger(name);
 
   app.checkAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -82,7 +78,7 @@ module.exports = function(app) {
     } else {
       res.redirect('/login');
     }
-  }
+  };
 
   return app;
 };
