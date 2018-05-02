@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, Input, Card, ProgressBar} from 'predix-ui';
-import './styles';
+import { Button, Input, Card, ProgressBar } from 'predix-ui';
 
 export default class extends React.Component {
     constructor(props) {
@@ -43,9 +42,9 @@ export default class extends React.Component {
             <Card headerText={headerText} icon={icon}>
 
                 <form className='u-mb' onSubmit={this.debugRequest}>
-                <Input 
+                <Input
                     id='urlInput'
-                    type='text' 
+                    type='text'
                     onChange={this.onChange.bind(this)}
                     value={ajaxEndpoint}
                     placeholder='Enter URL...'/>

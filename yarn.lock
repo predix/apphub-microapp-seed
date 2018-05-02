@@ -9534,7 +9534,7 @@ predix-fast-token@^1.2.1:
     request "^2.83.0"
     request-promise "^4.2.2"
 
-predix-ui@0.0.17:
+predix-ui@^0.0.17:
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/predix-ui/-/predix-ui-0.0.17.tgz#0a6a98c06a5024c5e98bd8bd06f06f59ff11d6e5"
   dependencies:
