@@ -74,14 +74,6 @@ pipeline {
                 "target": "${Snapshot}/build/${ORG_NAME}/${APP_NAME}/${BRANCH_NAME}/${BUILD_NUMBER}/"
             }]
           }"""
-          def downloadSpec = """{
-           "files": [
-            {
-                "pattern": "bazinga-repo/*.zip",
-                "target": "bazinga/"
-              }
-           ]
-          }"""
           def buildInfo = artUploadServer.upload(uploadSpec)
              artUploadServer.publishBuildInfo(buildInfo)
         }
@@ -128,7 +120,7 @@ pipeline {
 
         DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
         INSTANCES='2';
-        DISK_QUOTA='125M';
+        DISK_QUOTA='512M';
         MEMORY='1G';
         SERVICES='predix-logging';
         BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
@@ -184,7 +176,7 @@ pipeline {
 
                   DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
                   INSTANCES='2';
-                  DISK_QUOTA='125M';
+                  DISK_QUOTA='512M';
                   MEMORY='1G';
                   SERVICES='';
                   BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
@@ -240,7 +232,7 @@ pipeline {
 
                   DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
                   INSTANCES='2';
-                  DISK_QUOTA='125M';
+                  DISK_QUOTA='512M';
                   MEMORY='1G';
                   SERVICES='';
                   BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
