@@ -5,6 +5,7 @@ pipeline {
 
    environment {
       DEBUG = ''
+      CACHING_REPO_URL = 'http://nexus.marathon.l4lb.thisdcos.directory:8081/nexus/repository/npm-virtual/'
       ORG_NAME = 'Predix-Apphub'
       APP_NAME = 'apphub-microapp-seed'
    }
