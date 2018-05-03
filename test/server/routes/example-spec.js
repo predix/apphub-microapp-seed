@@ -1,14 +1,14 @@
-'use strict';
 const assert = require('assert');
 const request = require('supertest');
 const express = require('express');
 const controller = require('express-controller-routing');
 
 const exampleController = require('../../../src/server/routes/example');
+
 const baseUrl = '/api/example';
 
 describe('Example Routes', () => {
-  var app;
+  let app;
 
   before(function (done) {
     app = express();
@@ -35,7 +35,7 @@ describe('Example Routes', () => {
   it(`POST - ${baseUrl}/my/path/to/:something - responds 200`, (done) => {
     request(app)
       .post(`${baseUrl}/my/path/to/:something`)
-      .send({name: 'test'})
+      .send({ name: 'test' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, done);
@@ -52,7 +52,7 @@ describe('Example Routes', () => {
   it(`POST - ${baseUrl}/timeout/:time - responds 200`, (done) => {
     request(app)
       .post(`${baseUrl}/timeout/10`)
-      .send({name: 'test'})
+      .send({ name: 'test' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, done);
@@ -86,8 +86,9 @@ describe('Example Routes', () => {
     request(app)
       .get(`${baseUrl}/getCookies`)
       .expect(200)
-      .then(response => {
-        //console.log(response);
+      .then((response) => {
+        assert(response);
+        // console.log(response);
         done();
       });
   });
@@ -131,5 +132,4 @@ describe('Example Routes', () => {
         done();
       });
   });
-
 });

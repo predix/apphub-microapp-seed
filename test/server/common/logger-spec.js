@@ -1,27 +1,27 @@
-'use strict';
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const helpers = require('../../helpers');
 const pkg = require('../../../package.json');
+
 const requireHelper = helpers.require;
 const Logger = requireHelper('server/common/logger');
 
-describe('Logger', () =>{
-  var log;
-  before(() =>{
+describe('Logger', () => {
+  let log;
+  before(() => {
     log = new Logger('spec');
   });
 
-  it('be defined', ()=>{
+  it('be defined', () => {
     expect(Logger).to.not.be.null;
   });
 
-  it('should return instance', ()=>{
+  it('should return instance', () => {
     expect(log).to.not.be.null;
   });
 
   it('should return subject', function () {
-    let expected = `${pkg.name}:INFO:spec`;
-    let actual = log.getSubject('info');
+    const expected = `${pkg.name}:INFO:spec`;
+    const actual = log.getSubject('info');
     expect(actual).to.equal(expected);
   });
 

@@ -8,16 +8,15 @@ const log = require('./logger')('env');
 module.exports = () => {
   const envToSet = {};
   let envPath = process.env.NODE_ENV === 'production' ? path.resolve(__dirname, './.env') : path.resolve(__dirname, '../../../.env');
-
   log.debug('envPath', envPath);
 
   if (!fs.existsSync) {
-    console.log('Error', `Cannot find ${envPath}`);
+    log.error(`Cannot find ${envPath}`);
   }
 
   if (process.env.USE_ENV) {
     envPath = `${process.env.USE_ENV}`;
-    const envConfig = require('dotenv').config({ path: envPath });
+    require('dotenv').config({ path: envPath });
   } else {
     require('dotenv').config();
   }
@@ -47,8 +46,7 @@ module.exports = () => {
     }
 
     if (vcapServices && REDIS_SERVICE_LABEL) {
-      let redisService = vcapServices[REDIS_SERVICE_LABEL] || {};
-      redisService = redisService[0];
+      const redisService = _.get(vcapServices[REDIS_SERVICE_LABEL], '0', {});
       log.debug('setting Redis env from VCAP_SERVICES', redisService);
       envToSet.REDIS_HOST = redisService.credentials.host;
       envToSet.REDIS_PORT = redisService.credentials.port;
@@ -61,7 +59,7 @@ module.exports = () => {
     envToSet.UAA_CALLBACK_URL = `https://${vcapApplication.uris[0]}/callback`;
   }
 
-  Object.keys(envToSet).forEach((key, index) => {
+  Object.keys(envToSet).forEach((key) => {
     log.debug('set', key, envToSet[key]);
     process.env[key] = envToSet[key];
   });

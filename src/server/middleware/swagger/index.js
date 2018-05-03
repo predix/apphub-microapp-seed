@@ -1,6 +1,8 @@
+/* istanbul ignore file */
+/*
 const middleware = require('swagger-express-middleware');
 const path = require('path');
-/* istanbul ignore file */
+
 module.exports = function (app, routes) {
   middleware(path.join(__dirname, 'Api.yaml'), app, (err, mw) => {
     // Enable Express' case-sensitive and strict options
@@ -39,12 +41,10 @@ module.exports = function (app, routes) {
     );
 
     // Error handler to display the validation error as HTML
-    /*  app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars, no-shadow
+    app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars, no-shadow
       res.status(err.status || 500);
-      res.send(
-        `<h1>${err.status || 500} Error</h1>` +
-        `<pre>${err.message}</pre>`);
-    }); */
+      res.send(`<h1>${err.status || 500} Error</h1> <pre>${err.message}</pre>`);
+    });
 
     if (routes) {
       routes(app);
@@ -52,3 +52,4 @@ module.exports = function (app, routes) {
   });
   return this;
 };
+*/

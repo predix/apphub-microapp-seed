@@ -1,9 +1,8 @@
 const path = require('path');
 
-var helpers = {
-  require: (p) => {
-    return require(path.resolve(__dirname, '../src', p));
-  }
+
+const helpers = {
+  require: p => require(path.resolve(__dirname, '../src', p)) // eslint-disable-line
 };
 
 module.exports = helpers;

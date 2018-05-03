@@ -1,6 +1,6 @@
 module.exports = {
-  url: function(){
-    return this.api.globals.baseUrl + '/login';
+  url() {
+    return `${this.api.globals.baseUrl}/login`;
   },
   elements: {
     logout: '#logoutBtn2',

@@ -1,21 +1,22 @@
-'use strict';
+
 process.env.SESSION_SECRET = 'mySecret';
 
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const request = require('supertest');
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
 const express = require('express');
+
 const Server = require('../../../src/server/common/server');
 
 const router = new express.Router();
 const tempApp = express();
-router.get('/test', (req, res) =>{
-  res.status(200).send({message: 'test'});
-})
+
+router.get('/test', (req, res) => {
+  res.status(200).send({ message: 'test' });
+});
 
 describe('Server', () => {
-  var server, app;
+  let server;
+  let app;
 
   before(function (done) {
     server = new Server();
@@ -25,12 +26,11 @@ describe('Server', () => {
   });
 
   after(function (done) {
-    //server.shutdown(done);
+    // server.shutdown(done);
     done();
   });
-
   it('should use app if passed', (done) => {
-    var s = new Server(tempApp);
+    const s = new Server(tempApp);
     expect(s);
     done();
   });

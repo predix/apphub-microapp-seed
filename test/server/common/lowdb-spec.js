@@ -1,20 +1,18 @@
-'use strict';
-const path = require('path');
-const assert = require('assert');
-const expect = require('chai').expect;
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
-const DB = requireHelper('server/common/database');
-const CustomAdapter = requireHelper('server/common/database-custom-adapter');
-const tempFile = require('path').resolve(__dirname, '../.temp-db.json');
+const { expect } = require('chai');
 const lowdb = require('lowdb');
-const Base = require('lowdb/adapters/Base');
 const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
 const MemoryAdapter = require('lowdb/adapters/Memory');
-var instance;
 
-describe('lowdb', function() {
-  this.timeout(30000);  
+const helpers = require('../../helpers');
+
+const requireHelper = helpers.require;
+const CustomAdapter = requireHelper('server/common/database-custom-adapter');
+const tempFile = require('path').resolve(__dirname, '../.temp-db.json');
+
+let instance;
+
+describe('lowdb', function () {
+  this.timeout(30000);
   describe('Memory Adapter', () => {
     before(() => {
       instance = lowdb(new MemoryAdapter());
@@ -24,7 +22,7 @@ describe('lowdb', function() {
           user: {},
           count: 0
         })
-        .write()
+        .write();
     });
     it('should return instance', () => {
       expect(instance).to.not.be.null;
@@ -37,9 +35,9 @@ describe('lowdb', function() {
       expect(instance.get('user.name').value()).to.equal('test-user');
     });
   });
- xdescribe('FileAsync Adapter', () => {
+  xdescribe('FileAsync Adapter', () => {
     before((done) => {
-      lowdb(new FileAsyncAdapter(tempFile)).then(db => {
+      lowdb(new FileAsyncAdapter(tempFile)).then((db) => {
         instance = db;
         instance
           .defaults({
@@ -56,8 +54,9 @@ describe('lowdb', function() {
     it('should write item (as promise)', function (done) {
       instance
         .get('posts')
-        .push({ id: 1, title: 'lowdb is awesome'})
-        .set('user.name', 'test-user').write().then(() =>{
+        .push({ id: 1, title: 'lowdb is awesome' })
+        .set('user.name', 'test-user').write()
+        .then(() => {
           expect(instance.get('user.name').value()).to.equal('test-user');
           done();
         });
@@ -69,7 +68,7 @@ describe('lowdb', function() {
   });
   describe('CustomAdapter', () => {
     before((done) => {
-      lowdb(new CustomAdapter('test')).then(db => {
+      lowdb(new CustomAdapter('test')).then((db) => {
         instance = db;
         instance
           .defaults({
@@ -85,18 +84,17 @@ describe('lowdb', function() {
     });
     it('should write item (as promise)', function (done) {
       instance
-        //.get('posts')
+        // .get('posts')
         .set('user.name', 'test-user')
         .write()
-        .then(() =>{
+        .then(() => {
           expect(instance.get('user.name').value()).to.equal('test-user');
           done();
         });
     });
     it('should read item (promise)', function (done) {
-      let name = instance.get('user.name').value();
-      Promise.resolve(name).then(val => {
-        console.log('got value', val);
+      const name = instance.get('user.name').value();
+      Promise.resolve(name).then((val) => {
         expect(val === 'test-user');
         done();
       });

@@ -3,23 +3,24 @@ import { Card } from 'predix-ui';
 import { Route, Link } from 'react-router-dom';
 import Topic from './topic';
 
+/* eslint-disable-next-line */
 export default ({ match }) => (
   <div className="u-p">
     <h2>Topics</h2>
     <p>The following is an example of sub-routes for a component.</p>
     <ul>
       <li>
-        <Link to={`${match.url}/rendering`}>
+        <Link to={`${match.url}/rendering`} href="/#">
           Rendering with React
         </Link>
       </li>
       <li>
-        <Link to={`${match.url}/components`}>
+        <Link to={`${match.url}/components`} href="/#">
           Components
         </Link>
       </li>
       <li>
-        <Link to={`${match.url}/props-v-state`}>
+        <Link to={`${match.url}/props-v-state`} href="/#">
           Props v. State
         </Link>
       </li>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Flex } from 'predix-ui';
 
+/* eslint-disable-next-line */
 export default ({ location }) => (
   <Flex middle center>
     {location && <h3>No match for <code>{location.pathname}</code></h3>}

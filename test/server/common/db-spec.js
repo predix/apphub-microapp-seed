@@ -1,77 +1,18 @@
-'use strict';
 const path = require('path');
 const assert = require('assert');
-const expect = require('chai').expect;
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
-const DB = requireHelper('server/common/database');
-const tempFile = require('path').resolve(__dirname, '../../.temp-db');
 const lowdb = require('lowdb');
-const Base = require('lowdb/adapters/Base');
+const helpers = require('../../helpers');
+
+const DB = helpers.require('server/common/database');
+const tempFile = require('path').resolve(__dirname, '../../.temp-db');
+
 const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
 const MemoryAdapter = require('lowdb/adapters/Memory');
 
-//var RedisAdapter = requireHelper('server/common/database-redis-adapter');
-
-
-
-/**
- * Custom Redist Lowdb Adapter
- 
-
-var redis = require('redis-node');
-var low = require('lowdb');
-class RedisTestAdapter extends Base {
-  constructor(source, defaultValue) {
-    super(source, defaultValue);
-    console.log('RedisTestAdapter', source, defaultValue);
-    this.source = source;
-    this.defaultValue = defaultValue;
-    this.client = redis.createClient();
-    this.client.select(0);
-  }
-
-  read(){
-    const data = this.client.get(this.source);
-    if(data){
-      return this.deserialize(data);
-    } else {
-      this.client.set(this.source, this.serialize(this.defaultValue));
-      return this.defaultValue;
-    }
-  }
-
-  write(data){
-    this.client.set(this.source, this.serialize(data));
-  }
-
-  close(){
-    this.client.close();
-  }
-}
-
-
-xdescribe('REDIS adapter', () => {
-  xit('should create doc', () =>{
-    const redisdb = low(new RedisTestAdapter('test-redisdb', {}));
-    expect(redisdb).to.not.be.null;
-
-    redisdb.defaults({ posts: [] }).write();
-  
-    redisdb.get('posts')
-      .push({ title: 'lowdb' })
-      .push({ title: 'lowdb-redis-adapter' })
-      .write();
-
-  });
-});
-
-*/
-
-//TODO - Use temp inmemory db for testing.
-
 describe('DB', () => {
-  var db, instance, mockDoc;
+  let db;
+  let instance;
+  let mockDoc;
 
   before((done) => {
     db = DB.getInstance(tempFile, {
@@ -81,8 +22,8 @@ describe('DB', () => {
   });
 
   after((done) => {
-    //require('fs').unlink(tempFile, done);
-    //db.adapter.close();
+    // require('fs').unlink(tempFile, done);
+    // db.adapter.close();
     done();
   });
 
@@ -93,11 +34,10 @@ describe('DB', () => {
 
   /**
    * Run all crud tests
-   * @param {*} newInstance 
+   * @param {*} newInstance
    */
   function runCRUDTests(newInstance) {
     if (newInstance) {
-      console.log('Setting db to new instance');
       db = newInstance;
     }
 
@@ -111,7 +51,7 @@ describe('DB', () => {
         type: 'comment'
       }).then((resp) => {
         expect(resp).to.not.be.null;
-        //expect(resp._id).to.be.defined;
+        // expect(resp._id).to.be.defined;
         done();
       }).catch(done);
     });
@@ -130,6 +70,7 @@ describe('DB', () => {
 
     it('post - should reject if no doc passed', (done) => {
       db.post().then((resp) => {
+        expect(!resp);
         done();
       }).catch((err) => {
         expect(err).to.not.be.null;
@@ -151,6 +92,7 @@ describe('DB', () => {
       db.put({
         _id: 'some-id'
       }).then((resp) => {
+        expect(!resp);
         done();
       }).catch((err) => {
         expect(err).to.not.be.null;
@@ -160,6 +102,7 @@ describe('DB', () => {
 
     it('get - should reject if no id passed', (done) => {
       db.get().then((resp) => {
+        expect(!resp);
         done();
       }).catch((err) => {
         expect(err).to.not.be.null;
@@ -177,7 +120,6 @@ describe('DB', () => {
           done();
         }).catch(done);
       });
-
     });
 
     it('allDocs - should return all docs', (done) => {
@@ -192,7 +134,7 @@ describe('DB', () => {
         type: 'comment'
       }).then((docs) => {
         expect(docs).to.not.be.null;
-        //expect(docs[0].title).to.equal('Test Comment');
+        // expect(docs[0].title).to.equal('Test Comment');
         done();
       }).catch(done);
     });
@@ -204,19 +146,17 @@ describe('DB', () => {
         assert(resp.ok);
         assert(resp.doc, 'returns doc');
         db.remove(resp.doc._id)
-          .then(r => {
+          .then((r) => {
             assert(r.ok);
             done();
           }).catch(done);
       }).catch(done);
     });
-
-
   }
 
   describe('CRUD operations (In Memory)', () => {
     before(async () => {
-      db = await DB.getInstance('test', {'posts': []}, 'memory');
+      db = await DB.getInstance('test', { posts: [] }, 'memory');
       instance = db;
       return db;
     });
@@ -225,7 +165,7 @@ describe('DB', () => {
 
   describe('CRUD operations (Filestore)', () => {
     before(async () => {
-      db = await DB.getInstance('test', {'posts': []}, 'file');
+      db = await DB.getInstance('test', { posts: [] }, 'file');
       instance = db;
       return db;
     });
@@ -243,7 +183,7 @@ describe('DB', () => {
             user: {},
             count: 0
           })
-          .write()
+          .write();
       });
       it('should return instance', () => {
         expect(instance).to.not.be.null;
@@ -257,15 +197,14 @@ describe('DB', () => {
       });
     });
 
-    describe('FileAsync Adapter', function(){
-      before( async () => {
+    describe('FileAsync Adapter', function () {
+      before(async () => {
         instance = await lowdb(new FileAsyncAdapter(path.resolve(__dirname, '../../../temp-db.json')));
-        return  instance.defaults({
+        return instance.defaults({
           posts: [],
           user: {},
           count: 0
-        }).write()
-        
+        }).write();
       });
       it('should return instance', () => {
         expect(instance).to.not.be.null;
@@ -279,5 +218,4 @@ describe('DB', () => {
       });
     });
   });
-
 });

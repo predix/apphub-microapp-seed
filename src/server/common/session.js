@@ -25,18 +25,21 @@ const setupSessionStore = () => {
     });
   }
   log.debug('setupSessionStore', 'using memory store');
+  return null;
 };
 
 const sessionOptions = {
   store: setupSessionStore(),
   secret: SESSION_SECRET || 'test',
-  name: COOKIE_NAME || 'test',
+
   maxAge: SESSION_MAX_AGE || 30 * 60 * 1000,
   proxy: true,
   resave: true,
   saveUninitialized: false,
   cookie: {
+    name: COOKIE_NAME || 'apphub-microapp-seed.cookie',
     secure: NODE_ENV === 'production'
   }
 };
+
 module.exports = sessionOptions;

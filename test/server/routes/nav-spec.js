@@ -1,13 +1,14 @@
-'use strict';
+
 const request = require('supertest');
 const express = require('express');
 const controller = require('express-controller-routing');
 
 const ctrl = require('../../../src/server/routes/nav');
+
 const baseUrl = '/api/nav';
 
 describe('Nav Routes', () => {
-  var app;
+  let app;
 
   before(function (done) {
     app = express();
@@ -20,5 +21,4 @@ describe('Nav Routes', () => {
       .get(baseUrl)
       .expect(200, done);
   });
-
 });
