@@ -85,8 +85,8 @@ describe('Env', () => {
   describe('VCAP_SERVICES - UAA', () => {
     it('should parse VCAP_APPLICATION and set UAA callback information', () => {
       expect(env).to.not.be.null;
-      expect(process.env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
-      // expect(env.UAA_CALLBACK_URL).to.equal('http://localhost:9000/oauth/callback');
+      // expect(process.env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
+      expect(env.UAA_CALLBACK_URL).to.equal('http://localhost:9000/oauth/callback');
     });
 
     it('should set UAA_URL', () => {

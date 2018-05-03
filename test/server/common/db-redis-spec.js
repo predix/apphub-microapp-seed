@@ -1,5 +1,6 @@
 const low = require('lowdb');
 const helpers = require('../../helpers');
+const { expect } = require('chai');
 
 const RedisAdapter = helpers.require('server/common/database-redis-adapter');
 

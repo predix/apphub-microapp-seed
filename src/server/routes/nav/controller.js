@@ -1,11 +1,10 @@
 const NavModel = require('./model');
 
-class NavController {
-  constructor() {
-    this.model = new NavModel();
-  }
+const model = new NavModel();
+
+module.exports = {
   get(req, res, next) {
-    this.model.read()
+    model.read()
       .then(n => res.status(200).send(n))
       .catch(next);
   }
@@ -32,6 +31,4 @@ class NavController {
       headers: req.headers
     });
   } */
-}
-
-module.exports = new NavController();
+};

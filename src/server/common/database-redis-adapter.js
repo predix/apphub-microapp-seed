@@ -2,7 +2,7 @@ const Base = require('lowdb/adapters/Base');
 const log = require('./logger')('RedisAdapter');
 
 const {
-  ENABLE_REDIS_STORE, REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, NODE_ENV
+  REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, NODE_ENV
 } = process.env;
 
 const Redis = NODE_ENV === 'test' ? require('ioredis-mock') : require('ioredis');
@@ -20,9 +20,6 @@ class RedisAdapter extends Base {
     log.debug('RedisAdapter', source, defaultValue);
 
     try {
-      if (!ENABLE_REDIS_STORE) {
-        return;
-      }
       redisClient = new Redis(
         REDIS_PORT || 6379,
         REDIS_HOST || 'localhost', {

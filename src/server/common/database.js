@@ -88,7 +88,7 @@ class Database {
   }
 
   async allDocs(params) {
-    this.log('allDocs', params);
+    this.log.debug('allDocs', params);
     try {
       let docs;
       if (params) {
@@ -143,11 +143,11 @@ class Database {
 
   put(doc) {
     return new Promise((resolve, reject) => {
-      if (!doc._id) {
-        reject(new Error('Must provide an ._id property!'));
+      if (!doc._id || doc.id) {
+        reject(new Error('Must provide an id property!'));
       }
       const _doc = doc;
-      const id = doc._id;
+      const id = doc._id || doc.id;
       _doc.updated_at = new Date().toString();
       this.log.debug('put', _doc);
       /*

@@ -33,9 +33,9 @@ module.exports = function (app) {
   const errorHandler = (err, req, res) => {
     log.error('errorHandler', err);
     if (req.is('application/json')) {
-      return res.status(500).json({ error: 'Something failed!' });
+      return res.status(404).json({ error: 'Something failed!' });
     }
-    return res.status(500).send({ error: err });
+    return res.status(404).send({ error: err });
   };
 
   // Handle logging error

@@ -3,6 +3,7 @@ const request = require('supertest');
 const bodyParser = require('body-parser');
 const express = require('express');
 
+// const middleware = require('../../../src/server/middleware');
 const routes = require('../../../src/server/routes');
 
 // const controller = require('express-controller-routing');
@@ -23,6 +24,8 @@ describe('API Routes', function () {
       req.t = () => {};
       next();
     });
+
+    // middleware(app);
     routes(app);
     // app.use('/api', controller(apiController));
     done();
@@ -85,10 +88,11 @@ describe('API Routes', function () {
         });
     });
 
-    it(`GET - ${baseUrl}/:id - 200 - responds success`, (done) => {
+    it(`POST/GET - ${baseUrl}/:id - 200 - responds success`, (done) => {
       request(app)
         .post(baseUrl)
         .send({
+          _id: 'test',
           some: 'value'
         })
         .expect(201)
@@ -105,7 +109,7 @@ describe('API Routes', function () {
         });
     });
 
-    xit(`PUT - ${baseUrl}/:id - 200 - responds success`, (done) => {
+    it(`PUT - ${baseUrl}/:id - 200 - responds success`, (done) => {
       mockDoc.updated = Date.now();
       request(app)
         .get(`${baseUrl}/${mockId}`)

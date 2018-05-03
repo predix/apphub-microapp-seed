@@ -2,6 +2,7 @@ const path = require('path');
 const assert = require('assert');
 const lowdb = require('lowdb');
 const helpers = require('../../helpers');
+const { expect } = require('chai');
 
 const DB = helpers.require('server/common/database');
 const tempFile = require('path').resolve(__dirname, '../../.temp-db');
