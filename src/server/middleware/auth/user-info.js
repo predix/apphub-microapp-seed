@@ -1,5 +1,5 @@
 const request = require('request');
-const log = require('../../common/logger')('user-info');
+const log = require('../../common/logger')('auth/user-info');
 
 const getUserInfo = (accessToken, uaaURL, callback) => {
   /* istanbul ignore next */
@@ -18,8 +18,7 @@ const getUserInfo = (accessToken, uaaURL, callback) => {
       const userDetails = JSON.parse(body);
       callback(userDetails);
     } else {
-      console.error(response.statusCode);
-      console.error(`ERROR fetching client token: ${err}`);
+      log.error('ERROR fetching client token:', err, response);
     }
   });
 };
@@ -28,7 +27,7 @@ module.exports = uaaURL => (req, res, next) => {
   log.debug('getUserInfo', req.session);
   if (req.user && !req.user.details) {
     getUserInfo(req.session.passport.user.currentUser.access_token, uaaURL, function (userDetails) {
-      console.log(userDetails);
+      log.debug('getUserInfo', userDetails);
       req.user.details = userDetails;
       next();
     });

@@ -176,14 +176,13 @@
   "nyc": {
     "check-coverage": true,
     "per-file": false,
-    "lines": 10,
-    "statements": 10,
-    "functions": 0,
+    "lines": 50,
+    "statements": 50,
+    "functions": 50,
     "include": [
       "src/server/**/*.js"
     ],
     "exclude": [
-      "src/server/**/*.spec.js",
       "test/server/**/*-spec.js",
       "test/server/**/*.spec.js"
     ],
@@ -191,7 +190,7 @@
       "lcov",
       "text-summary"
     ],
-    "cache": false,
+    "cache": true,
     "all": true,
     "report-dir": "./coverage"
   },
@@ -204,7 +203,9 @@
     ],
     "testMatch": [
       "<rootDir>/__tests__/**/*.test.js?(x)",
-      "<rootDir>/src/**/*.test.js?(x)"
+      "<rootDir>/src/components/**/*.test.js?(x)",
+      "<rootDir>/src/containers/**/*.test.js?(x)",
+      "<rootDir>/src/pages/**/*.test.js?(x)"
     ],
     "moduleFileExtensions": [
       "js",

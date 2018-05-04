@@ -21,16 +21,16 @@ module.exports = {
       .catch(next);
   },
 
-  get(req, res, next) {
+  get(req, res) {
     req.app.locals.db.get(req.params.id)
       .then(resp => res.status(200).send(resp))
-      .catch(next);
+      .catch(err => res.status(404).send(err));
   },
 
-  put(req, res, next) {
+  put(req, res) {
     req.app.locals.db.put(req.body)
       .then(resp => res.status(200).send(resp))
-      .catch(next);
+      .catch(err => res.status(404).send(err));
   },
 
   post(req, res, next) {
@@ -45,10 +45,10 @@ module.exports = {
       .catch(next);
   },
 
-  delete(req, res, next) {
+  delete(req, res) {
     req.app.locals.db
       .remove(req.params.id)
       .then(resp => res.status(200).send(resp))
-      .catch(next);
+      .catch(err => res.status(404).send(err));
   }
 };

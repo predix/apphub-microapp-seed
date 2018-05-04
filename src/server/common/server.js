@@ -31,7 +31,7 @@ class Server {
     return this;
   }
 
-  listen(port = process.env.PORT || 0, callback) {
+  listen(port, callback) {
     if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE === 'true') {
       const cpuCount = process.env.NUMBER_OF_WORKERS || os.cpus().length;
       for (let i = 0; i < cpuCount; i += 1) {
@@ -43,9 +43,10 @@ class Server {
       });
     } else {
       http = require('http').createServer(this.app);
-      http.listen(port, () => {
-        console.log(`===> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
-        this.log.debug(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
+      http.listen(port, process.env.HOST || 'localhost');
+      http.on('listening', () => {
+        console.log(`🌎 Running on port ${http.address().port}. Open up http://${http.address().address}:${http.address().port} in your browser.`);
+        this.log.debug(`💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
         if (callback) {
           callback(null, this.app);
         }

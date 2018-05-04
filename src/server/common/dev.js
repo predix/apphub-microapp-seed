@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const path = require('path');
 const log = require('./logger')('dev');
 

@@ -1,6 +1,7 @@
 
 process.env.SESSION_SECRET = 'mySecret';
 
+const sinon = require('sinon');
 const { expect } = require('chai');
 const request = require('supertest');
 const express = require('express');
@@ -35,14 +36,34 @@ describe('Server', () => {
     done();
   });
 
-  xit('should have boot method', (done) => {
-    expect(server.boot);
-    server.boot(done);
+  it('boot - should have method', () => {
+    expect(server.boot).to.not.be.null;
+    // server.boot(done);
   });
 
-  xit('should have shutdown method', (done) => {
-    expect(server.shutdown);
-    server.shutdown(done);
+  it('listen - should have method', () => {
+    expect(server.listen).to.not.be.null;
+    // server.boot(done);
+  });
+
+  it('shutdown - should have method', () => {
+    expect(server.shutdown).to.not.be.null;
+    // server.shutdown(done);
+  });
+
+  it('getHTTPServer - should return http instance', () => {
+    expect(server.getHTTPServer).to.not.be.null;
+  });
+
+  it('listen - should launch server on port', (done) => {
+    const newServer = new Server(tempApp);
+    const spy = sinon.spy();
+    newServer.listen(0, (err, a) => {
+      spy(a);
+      expect(!err);
+      expect(spy.called).to.be.true;
+      done();
+    });
   });
 
   it('GET - /test - responds successfully', (done) => {

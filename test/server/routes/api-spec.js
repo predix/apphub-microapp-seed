@@ -47,7 +47,7 @@ describe('API Routes', function () {
         .expect(201)
         .end((err, res) => {
           mockDoc = res.body.doc;
-          mockId = mockDoc.id;
+          mockId = mockDoc._id;
           done();
         });
     });
@@ -98,12 +98,14 @@ describe('API Routes', function () {
         .expect(201)
         .end((err, res) => {
           mockDoc = res.body.doc;
-          mockId = mockDoc.id;
+          assert(mockDoc._id, 'returns object with create _id');
+          mockId = mockDoc._id;
           request(app)
             .get(`${baseUrl}/${mockId}`)
             .expect(200)
-            .end(() => {
-            // console.log(res);
+            .end((er, r) => {
+              assert(!er, 'does not have error');
+              assert(r.body._id === mockId, 'returned _id matches');
               done();
             });
         });
@@ -112,7 +114,7 @@ describe('API Routes', function () {
     it(`PUT - ${baseUrl}/:id - 200 - responds success`, (done) => {
       mockDoc.updated = Date.now();
       request(app)
-        .get(`${baseUrl}/${mockId}`)
+        .get(`${baseUrl}/${mockDoc._id}`)
         .send(mockDoc)
         .expect(200, done);
     });

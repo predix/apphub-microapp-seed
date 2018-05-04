@@ -59,11 +59,14 @@ module.exports = function (app) {
     log.debug('Setting production only settings.');
     app.use(serveStatic(path.resolve(__dirname, './public'), staticServerConfig));
     app.use(serveStatic(path.resolve(__dirname, './'), staticServerConfig));
+
+
+    app.use(clientErrorHandler);
+    app.use(errorHandler);
   }
 
   app.use(logErrors);
-  app.use(clientErrorHandler);
-  app.use(errorHandler);
+
 
   return app;
 };
