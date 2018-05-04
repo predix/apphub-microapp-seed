@@ -1,10 +1,10 @@
 const NavModel = require('./model');
-const nav = new NavModel();
-class NavController {
-  constructor(){
-  }
-  get(req, res, next){
-    nav.read()
+
+const model = new NavModel();
+
+module.exports = {
+  get(req, res, next) {
+    model.read()
       .then(n => res.status(200).send(n))
       .catch(next);
   }
@@ -30,7 +30,5 @@ class NavController {
       message: 'Removed',
       headers: req.headers
     });
-  }*/
-}
-
-module.exports = new NavController();
+  } */
+};

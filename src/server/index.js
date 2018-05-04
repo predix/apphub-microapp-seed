@@ -3,7 +3,6 @@ require('./common/env')();
 const port = process.env.PORT || 9000;
 const express = require('express');
 const serveStatic = require('serve-static');
-const routesList = require('express-api-routes-list');
 const path = require('path');
 
 const Server = require('./common/server');
@@ -31,8 +30,8 @@ if (process.env.NODE_ENV === 'development') {
   require('./common/dev')(app);
 }
 
-if(module.hot){
-  console.log('Hot module on server...');
+if (module.hot) {
+  log.debug('Hot module on server...');
   module.hot.accept('./common/server', () => {
     server.getHTTPServer().removeEventListener('request', currentApp);
     server.getHTTPServer().on('request', app);
@@ -49,9 +48,10 @@ if (require.main === module) {
 }
 
 /*
+TODO - Check if using flag to enable server rendering.
 module.exports = function serverRenderer({ clientStats, serverStats, foo }) {
   return (req, res, next) => {
     console.log(req.url);
     next();
   };
-};*/
+}; */

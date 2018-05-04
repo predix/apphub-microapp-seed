@@ -4,8 +4,8 @@
   "repository": "https://github.build.ge.com/predix-apphub/apphub-microapp-seed",
   "private": true,
   "engines": {
-    "node": "^8.0.0",
-    "npm": "^5.0.0"
+    "node": ">=8.0.0",
+    "npm": ">=5.0.0"
   },
   "scripts": {
     "bower": "bower install --force --allow-root",
@@ -15,7 +15,7 @@
     "build:frontend": "cross-env NODE_ENV=production BABEL_ENV=client webpack --progress",
     "build:backend": "cross-env NODE_ENV=production BUILD_TARGET=backend BABEL_ENV=server webpack --progress",
     "build:backend:lib": "cross-env NODE_ENV=production BUILD_AS_LIB=true BUILD_TARGET=backend webpack -p",
-    "copy": "cpy 'Dockerfile' 'procfile.js' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
+    "copy": "cpy 'Dockerfile' 'package.json' 'manifest.yml' 'config.js' '*.md' 'public/**/*.*' ./dist --parents",
     "clean": "rimraf coverage dist .nyc_output build",
     "docs": "esdoc",
     "predeploy": "npm test",
@@ -27,14 +27,14 @@
     "docker:run": "docker run -p 49161:8080 -d predix-apphub/$npm_package_name",
     "docker:save": "docker save -o $npm_package_name.tar predix-apphub/$npm_package_name",
     "start": "cross-env NODE_ENV=production node server",
-    "pretest": "rimraf coverage",
+    "pretest": "rimraf coverage && npm run lint",
     "test": "npm run test:server && npm run test:client",
     "test:client": "cross-env NODE_ENV=test jest --coverage",
     "test:server": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
-    "lint": "eslint {src,test}",
+    "lint": "eslint ./src ./test --cache",
     "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *",
-    "storybook": "start-storybook -p 9000 -c .storybook",
+    "storybook": "start-storybook -p 9090 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o .out"
   },
   "keywords": [
@@ -48,7 +48,7 @@
     "autoprefixer": "^7.2.5",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.24.1",
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-istanbul": "^4.1.5",
     "babel-plugin-module-resolver": "^2.7.1",
@@ -79,8 +79,10 @@
     "esdoc": "^1.0.3",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.1.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "exports-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^3.0.0",
@@ -160,7 +162,7 @@
     "passport-oauth2-middleware": "^1.0.3",
     "passport-predix-oauth": "^0.1.15",
     "predix-fast-token": "^1.2.1",
-    "predix-ui": "^0.0.17",
+    "predix-ui": "^0.0.20",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",
@@ -174,14 +176,13 @@
   "nyc": {
     "check-coverage": true,
     "per-file": false,
-    "lines": 10,
-    "statements": 10,
-    "functions": 0,
+    "lines": 50,
+    "statements": 50,
+    "functions": 50,
     "include": [
       "src/server/**/*.js"
     ],
     "exclude": [
-      "src/server/**/*.spec.js",
       "test/server/**/*-spec.js",
       "test/server/**/*.spec.js"
     ],
@@ -189,7 +190,7 @@
       "lcov",
       "text-summary"
     ],
-    "cache": false,
+    "cache": true,
     "all": true,
     "report-dir": "./coverage"
   },
@@ -202,7 +203,9 @@
     ],
     "testMatch": [
       "<rootDir>/__tests__/**/*.test.js?(x)",
-      "<rootDir>/src/**/*.test.js?(x)"
+      "<rootDir>/src/components/**/*.test.js?(x)",
+      "<rootDir>/src/containers/**/*.test.js?(x)",
+      "<rootDir>/src/pages/**/*.test.js?(x)"
     ],
     "moduleFileExtensions": [
       "js",

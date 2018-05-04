@@ -1,19 +1,18 @@
-'use strict';
+
 require('dotenv').config();
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const request = require('supertest');
 const Server = require('../../../src/server/index');
 const assert = require('assert');
 const locales = require('../../../src/server/middleware/localize/locales');
 
 describe('App Middleware', () => {
-  var app, instance;
   before(function (done) {
     done();
   });
 
   after(function () {
-    //app.shutdown();
+    // app.shutdown();
   });
 
   it('listen - should start server', (done) => {
@@ -49,7 +48,7 @@ describe('App Middleware', () => {
   });
 
   it('boot - should start server', (done) => {
-    Server.boot(function(err, resp) {
+    Server.boot(function (err, resp) {
       assert(resp);
       done();
     });
@@ -59,9 +58,7 @@ describe('App Middleware', () => {
     Server.shutdown(done);
   });
 
-
   describe('i18 locales', () => {
-
     ['ar', 'de', 'en', 'es', 'hi', 'zh'].forEach((locale) => {
       it(`GET - /api - responds successfully when locale is [${locale}]`, (done) => {
         request(Server.getExpressApp())
@@ -69,15 +66,10 @@ describe('App Middleware', () => {
           .set('Accept-Language', locale)
           .expect(200)
           .expect(function (res) {
-            expect(res.body.name).to.equal(locales[locale].translation['APPLICATION_NAME']);
+            expect(res.body.name).to.equal(locales[locale].translation.APPLICATION_NAME);
           })
           .end(done);
       });
     });
-
   });
-
-
-
-
 });

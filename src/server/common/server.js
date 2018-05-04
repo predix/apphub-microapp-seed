@@ -1,24 +1,23 @@
-const path = require('path');
 const express = require('express');
-const proxy = require('express-request-proxy');
-const routesList = require('express-api-routes-list');
 const os = require('os');
 const cluster = require('cluster');
 const log = require('./logger')('server');
 /* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
-//const swaggerify = require('./swagger');
-var http;
- 
+// const swaggerify = require('./swagger');
+let http;
 
-/** 
- * Server
+/**
+ * @class Server
+ * @description Common server that handles launching http server.
  */
 class Server {
   constructor(a, config) {
+    this.log = log;
+    this.config = config;
     if (a) {
       this.app = a;
     } else {
-      this.app = express()
+      this.app = express();
     }
   }
 
@@ -27,29 +26,27 @@ class Server {
   }
 
   router(routes) {
-    //swaggerify(this.app, routes);
+    this.routes = routes;
+    // swaggerify(this.app, routes);
     return this;
   }
 
   listen(port, callback) {
-    if (!port) {
-      port = process.env.PORT || 0;
-    }
-
     if (cluster.isMaster && process.env.ENABLE_CLUSTER_MODE === 'true') {
       const cpuCount = process.env.NUMBER_OF_WORKERS || os.cpus().length;
-      for (var i = 0; i < cpuCount; i += 1) {
+      for (let i = 0; i < cpuCount; i += 1) {
         cluster.fork();
       }
-      cluster.on('exit', function (worker) {
-        log.debug(`Worker ${worker.process.pid} died`);
+      cluster.on('exit', (worker) => {
+        this.log.debug(`Worker ${worker.process.pid} died`);
         cluster.fork();
       });
     } else {
       http = require('http').createServer(this.app);
-      http.listen(port, () => {
-        console.log(`===> 🌎 Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
-        log.debug(`===> 💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
+      http.listen(port, process.env.HOST || 'localhost');
+      http.on('listening', () => {
+        console.log(`🌎 Running on port ${http.address().port}. Open up http://${http.address().address}:${http.address().port} in your browser.`);
+        this.log.debug(`💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
         if (callback) {
           callback(null, this.app);
         }
@@ -59,12 +56,12 @@ class Server {
   }
 
   boot(callback) {
-    log.debug(`boot`);
+    this.log.debug('boot');
     return this.listen(null, callback);
   }
 
   shutdown(callback) {
-    log.debug(`shutdown`);
+    this.log.debug('shutdown');
     try {
       http.close();
       callback(null);
@@ -75,7 +72,8 @@ class Server {
     }
   }
 
-  getHTTPServer(){
+  getHTTPServer() {
+    this.log.debug('getHTTPServer');
     return http;
   }
 }

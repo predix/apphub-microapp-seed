@@ -1,15 +1,14 @@
 const bodyParser = require('body-parser');
 
 const myFirstMiddleware = function myFirstMiddleware(req, res, next) {
-  //console.log('myFirstMiddleware', req.url);
+  // console.log('myFirstMiddleware', req.url);
   next();
 };
 
 const mySecondMiddleware = function mySecondMiddleware(req, res, next) {
-  //console.log('mySecondMiddleware', req.url);
+  // console.log('mySecondMiddleware', req.url);
   next();
 };
-
 
 /**
  * Example Router/Controller
@@ -22,7 +21,7 @@ module.exports = {
 
   '/timeout/:time': {
     get: (req, res) => {
-      setTimeout(function(){
+      setTimeout(function () {
         res.status(200).send({
           headers: req.headers,
           body: req.body,
@@ -31,7 +30,7 @@ module.exports = {
       }, req.params.time || 1000);
     },
     post: (req, res) => {
-      setTimeout(function(){
+      setTimeout(function () {
         res.status(200).send({
           headers: req.headers,
           body: req.body,
@@ -65,10 +64,10 @@ module.exports = {
   },
   '/setCookie/:cName/:cValue': {
     get: (req, res) => {
-      const customCookie =`${req.params.cName}=${req.params.cValue};Path=/`;
+      const customCookie = `${req.params.cName}=${req.params.cValue};Path=/`;
       res.set({
-          'Set-Cookie': customCookie
-        })
+        'Set-Cookie': customCookie
+      })
         .status(200)
         .send({
           cookies: req.headers.cookie
@@ -96,15 +95,15 @@ module.exports = {
     }]
   },
   '/my/path/to/:something': {
-    get: function getSomething(req, res, next) {
+    get: function getSomething(req, res) {
       res.status(200).send({
         params: req.params
       });
     },
 
     // you can also use an array if you need to use middlewares
-    post: [myFirstMiddleware, mySecondMiddleware, function createSomethingElse(req, res, next) {
-      res.status(200).send({data: req.body});
+    post: [myFirstMiddleware, mySecondMiddleware, function createSomethingElse(req, res) {
+      res.status(200).send({ data: req.body });
     }]
   }
 };

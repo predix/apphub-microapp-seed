@@ -1,9 +1,8 @@
+/* istanbul ignore file */
 const path = require('path');
 const log = require('./logger')('dev');
-const express = require('express');
 
 module.exports = function (app) {
-
   const config = require('../../../webpack.config.js')();
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -17,8 +16,8 @@ module.exports = function (app) {
     compress: true,
     host: 'localhost',
     publicPath: '/',
-    setup: function(app) {
-      app.use(webpackServerMiddleware(compiler));
+    setup(instance) {
+      instance.use(webpackServerMiddleware(compiler));
     },
     contentBase: [
       path.resolve(__dirname, '../../../assets')
@@ -26,12 +25,11 @@ module.exports = function (app) {
   };
 
   log.debug('devMiddleWareOptions', devMiddlewareOptions);
-
-  //devMiddleware.addDevServerEntrypoints(config, devMiddlewareOptions);
+  // devMiddleware.addDevServerEntrypoints(config, devMiddlewareOptions);
   app.use(webpackDevMiddleware(compiler, devMiddlewareOptions));
 
   // NOTE: Only the client bundle needs to be passed to `webpack-hot-middleware`.
-  app.use(webpackHotMiddleware(compiler.compilers.find(compiler => compiler.name === 'client'),  {
+  app.use(webpackHotMiddleware(compiler.compilers.find(c => c.name === 'client'), {
     log: console.log,
     path: '/__webpack_hmr',
     heartbeat: 10 * 1000
@@ -40,7 +38,9 @@ module.exports = function (app) {
 
   /*
   app.get('*', function response(req, res) {
-    res.write(devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html')));
+    res.write(
+      devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html'))
+    );
     res.end();
   });
   */

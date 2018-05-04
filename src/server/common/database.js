@@ -1,4 +1,3 @@
-const pkg = require('../../../package.json');
 const log = require('./logger')('database');
 const uuid = require('uuid');
 const path = require('path');
@@ -7,76 +6,62 @@ const low = require('lowdb');
 const fs = require('fs-extra');
 
 const FileSync = require('lowdb/adapters/FileAsync');
-const Memory = require('lowdb/adapters/Memory');
 const RedisAdapter = require('./database-redis-adapter');
 const CustomAdapter = require('./database-custom-adapter');
 
-
-var db;
-var instance = null;
-var initialized = false;
+let db;
+let instance = null;
 /**
  * Simple mock / local file system db
  * https://github.com/typicode/lowdb#usage
  */
 class Database {
-  constructor(name, defaults, adapter) {
-    if (!defaults) {
-      defaults = {
-        user: {},
-        docs: []
-      };
-    }
-
+  constructor(name, defaults = {
+    user: {},
+    docs: []
+  }, adapter) {
     this.options = {
-      adapter: adapter,
+      adapter,
       db_name: name,
       instance_start_time: Date.now()
     };
     this.name = name;
     this.defaults = defaults;
     this.adapter = adapter;
-
+    this.log = log;
   }
 
   connect() {
     return new Promise((resolve, reject) => {
       if (typeof (this.adapter) === 'string') {
         try {
-          console.log('Database - ', 'loading adapter', adapter);
-          if (adapter === 'redis') {
-            this.adapter = new RedisAdapter(name, defaults);
-            low(this.adapter).then(redisdb => {
+          log.debug('Database - ', 'loading adapter', this.adapter);
+          if (this.adapter === 'redis') {
+            this.adapter = new RedisAdapter(this.name, this.defaults);
+            low(this.adapter).then((redisdb) => {
               this.db = redisdb;
               resolve(this);
             }).catch(reject);
           }
         } catch (e) {
-          console.log('Error with adapter', e);
+          log.error('Error with adapter', e);
           reject(e);
         }
       }
     });
-
   }
 
   static async getInstance(name, defaults, adapter) {
     if (!instance) {
       instance = new Database(name, defaults, adapter);
-      
+
       if (adapter === 'memory') {
         instance.adapter = new CustomAdapter(name, defaults);
-        db = await low(instance.adapter);;
-      } 
-
-      //Redis
-      else if(adapter === 'redis'){
+        db = await low(instance.adapter);
+      } else if (adapter === 'redis') {
         instance.adapter = new RedisAdapter(name, defaults);
         db = await low(instance.adapter);
-      }
-
-      //File
-      else if (adapter === 'file') {
+      } else if (adapter === 'file') {
         const dbPath = path.resolve(homeOrTmp, `.${name}.json`);
         log.debug('dbPath', dbPath);
         try {
@@ -86,7 +71,7 @@ class Database {
           db = await low(instance.adapter);
           db.defaults(defaults).write();
         } catch (err) {
-          console.log('Error creating file store', err);
+          this.log.error('Error creating file store', err);
           throw err;
         }
       } else {
@@ -102,11 +87,8 @@ class Database {
     return Promise.resolve(this.options);
   }
 
-  /**
-   * Get all documents in store.
-   * @param {Object} params Object of values to filter by.
-   */
   async allDocs(params) {
+    this.log.debug('allDocs', params);
     try {
       let docs;
       if (params) {
@@ -120,16 +102,12 @@ class Database {
     }
   }
 
-  /**
-   * 
-   * @param {String} id The id of the document
-   */
   async get(id) {
-    log.debug('get', id);
+    this.log.debug('get', id);
     if (!id) {
-      throw new Error(`get - must provide _id`);
+      throw new Error('get - must provide _id');
     }
-    let doc = db.get('docs').find({
+    const doc = db.get('docs').find({
       _id: id
     }).value();
     if (!doc) {
@@ -144,22 +122,20 @@ class Database {
   post(doc) {
     return new Promise((resolve, reject) => {
       if (!doc) {
-        reject({
-          error: `must provide doc`
-        });
+        reject(new Error('Must provide a doc object!'));
       } else {
+        const _doc = doc;
+        this.log.debug('post', _doc);
         if (!doc._id) {
-          doc._id = `doc-${uuid()}`;
+          _doc._id = `doc-${uuid()}`;
         }
         if (!doc.created_at) {
-          doc.created_at = new Date().toString();
+          _doc.created_at = new Date().toString();
         }
-        db.get('docs')
-          .push(doc)
-          .write();
+        db.get('docs').push(_doc).write();
         resolve({
           ok: true,
-          doc: doc
+          doc: _doc
         });
       }
     });
@@ -167,32 +143,31 @@ class Database {
 
   put(doc) {
     return new Promise((resolve, reject) => {
-      if (!doc._id) {
-        reject({
-          error: `must provide _id`
-        });
+      if (!doc._id || doc.id) {
+        reject(new Error('Must provide an id property!'));
       }
+      const _doc = doc;
+      const id = doc._id || doc.id;
+      _doc.updated_at = new Date().toString();
+      this.log.debug('put', _doc);
       /*
       let existingDoc = db.get('docs').find({
         id: doc.id
       }).value();
       */
       if (doc) {
-        doc.updated_at = new Date().toString();
         db.get('docs')
           .find({
-            _id: doc._id
+            _id: id
           })
           .assign(doc)
           .write();
         resolve({
           ok: true,
-          doc: doc
+          doc
         });
       } else {
-        reject({
-          error: `${id} not found`
-        });
+        reject(new Error(`${id} not found`));
       }
     });
   }
@@ -202,7 +177,8 @@ class Database {
       throw new Error('Must provide _id');
     }
     try {
-      let doc = await this.get(id);
+      const doc = await this.get(id);
+      this.log.debug('remove', id, doc);
       db.get('docs').remove({
         _id: id
       }).write();
@@ -216,22 +192,27 @@ class Database {
 
   bulkDocs(docs) {
     return new Promise((resolve, reject) => {
-      var out = [];
-      for (let index = 0; index < docs.length; index++) {
-        const doc = docs[index];
-        if (doc._id) {
-          if (doc._deleted) {
-            this.remove(doc._id).then(r => out.push(r));
+      const out = [];
+      try {
+        let index = 0;
+
+        for (; index < docs.length; index++) {
+          const doc = docs[index];
+          if (doc._id) {
+            if (doc._deleted) {
+              this.remove(doc._id).then(r => out.push(r));
+            } else {
+              this.put(doc).then(r => out.push(r));
+            }
           } else {
-            this.put(doc).then(r => out.push(r));
+            this.post(doc).then(r => out.push(r));
           }
-        } else {
-          this.post(doc).then(r => out.push(r));
         }
+        resolve(out);
+      } catch (err) {
+        reject(err);
       }
-      resolve(out);
-      //Promise.all(out).then(resolve, reject);
-    })
+    });
   }
 }
 module.exports = Database;

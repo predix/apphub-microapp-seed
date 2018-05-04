@@ -1,21 +1,19 @@
-'use strict';
-const path = require('path');
 
 module.exports = {
   '@tags': [
     'app', 'sanity'
   ],
-  before: function(browser) {
+  before(browser) {
     console.log('Globals', browser.globals);
     browser
       .url(`${browser.globals.baseUrl}/login`)
       .waitForElementVisible('body', browser.globals.timeout)
       .loginUser();
   },
-  after: function(browser) {
+  after(browser) {
     browser.end();
   },
-  'should load app and have title': function(browser) {
+  'should load app and have title': function (browser) {
     const app = browser.page.app();
     app
       .navigate()

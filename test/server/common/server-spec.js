@@ -1,21 +1,23 @@
-'use strict';
+
 process.env.SESSION_SECRET = 'mySecret';
 
-const expect = require('chai').expect;
+const sinon = require('sinon');
+const { expect } = require('chai');
 const request = require('supertest');
-const helpers = require('../../helpers');
-const requireHelper = helpers.require;
 const express = require('express');
+
 const Server = require('../../../src/server/common/server');
 
 const router = new express.Router();
 const tempApp = express();
-router.get('/test', (req, res) =>{
-  res.status(200).send({message: 'test'});
-})
+
+router.get('/test', (req, res) => {
+  res.status(200).send({ message: 'test' });
+});
 
 describe('Server', () => {
-  var server, app;
+  let server;
+  let app;
 
   before(function (done) {
     server = new Server();
@@ -25,24 +27,43 @@ describe('Server', () => {
   });
 
   after(function (done) {
-    //server.shutdown(done);
+    // server.shutdown(done);
     done();
   });
-
   it('should use app if passed', (done) => {
-    var s = new Server(tempApp);
+    const s = new Server(tempApp);
     expect(s);
     done();
   });
 
-  xit('should have boot method', (done) => {
-    expect(server.boot);
-    server.boot(done);
+  it('boot - should have method', () => {
+    expect(server.boot).to.not.be.null;
+    // server.boot(done);
   });
 
-  xit('should have shutdown method', (done) => {
-    expect(server.shutdown);
-    server.shutdown(done);
+  it('listen - should have method', () => {
+    expect(server.listen).to.not.be.null;
+    // server.boot(done);
+  });
+
+  it('shutdown - should have method', () => {
+    expect(server.shutdown).to.not.be.null;
+    // server.shutdown(done);
+  });
+
+  it('getHTTPServer - should return http instance', () => {
+    expect(server.getHTTPServer).to.not.be.null;
+  });
+
+  it('listen - should launch server on port', (done) => {
+    const newServer = new Server(tempApp);
+    const spy = sinon.spy();
+    newServer.listen(0, (err, a) => {
+      spy(a);
+      expect(!err);
+      expect(spy.called).to.be.true;
+      done();
+    });
   });
 
   it('GET - /test - responds successfully', (done) => {

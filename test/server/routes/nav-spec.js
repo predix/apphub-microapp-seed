@@ -1,13 +1,15 @@
-'use strict';
+const assert = require('assert');
 const request = require('supertest');
 const express = require('express');
 const controller = require('express-controller-routing');
 
 const ctrl = require('../../../src/server/routes/nav');
+const Model = require('../../../src/server/routes/nav/model');
+
 const baseUrl = '/api/nav';
 
 describe('Nav Routes', () => {
-  var app;
+  let app;
 
   before(function (done) {
     app = express();
@@ -20,5 +22,34 @@ describe('Nav Routes', () => {
       .get(baseUrl)
       .expect(200, done);
   });
+});
 
+describe('Nav Model', () => {
+  let myModel;
+
+  before(() => {
+    myModel = new Model();
+  });
+
+  it('get - returns nav', async () => {
+    const nav = await myModel.get();
+    assert(nav, 'returns items');
+    return nav;
+  });
+
+  it('read - returns nav', async () => {
+    const nav = await myModel.read();
+    assert(nav, 'returns items');
+    return nav;
+  });
+
+  it('update - updates nave', async () => {
+    const updatedItem = await myModel.update({
+      path: '/new-path',
+      label: 'New Item'
+    });
+    assert(updatedItem.length, 'returns array');
+    assert(updatedItem.filter(obj => obj.path === '/new-path'));
+    return updatedItem;
+  });
 });

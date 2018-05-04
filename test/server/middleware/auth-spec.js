@@ -1,8 +1,8 @@
-'use strict';
+
 const request = require('supertest');
 
 describe('Auth Middleware', () => {
-  var app;
+  let app;
 
   before(function (done) {
     app = require('../../../src/server/index').getExpressApp();
@@ -10,7 +10,7 @@ describe('Auth Middleware', () => {
   });
 
   after(function () {
-    //app.shutdown();
+    // app.shutdown();
   });
 
   it('GET - /login responds successfully', (done) => {
@@ -30,11 +30,10 @@ describe('Auth Middleware', () => {
       .get('/user/info')
       .expect(302, done);
   });
-  
+
   it('GET - /user/verify - responds successfully', (done) => {
     request(app)
       .get('/user/verify')
       .expect(302, done);
   });
-
 });

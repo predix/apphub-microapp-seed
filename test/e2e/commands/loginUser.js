@@ -1,21 +1,22 @@
-'use strict';
-exports.command = function(username, password){
 
+exports.command = function (username, password) {
   const TIMEOUT = 20000;
-  if(!username){
-    username = this.globals.username;
-  }
-  if(!password){
-    password = this.globals.password;
-  }
-  console.log('login', username, password);
-  //this.url(this.globals.baseUrl + '/login');
+  let u = username;
+  let p = password;
 
+  if (!username) {
+    u = this.globals.username;
+  }
+  if (!password) {
+    p = this.globals.password;
+  }
+  console.log('login', u, p);
+  // this.url(this.globals.baseUrl + '/login')
   return this.waitForElementVisible('form', TIMEOUT)
     .waitForElementVisible('form [name="username"]', TIMEOUT)
-    .setValue('form [name="username"]', username)
+    .setValue('form [name="username"]', u)
     .waitForElementVisible('form [name="password"]', TIMEOUT)
-    .setValue('form [name="password"]', password)
+    .setValue('form [name="password"]', p)
     .waitForElementVisible('.island-button', TIMEOUT)
     .click('.island-button');
 };

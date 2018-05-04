@@ -1,20 +1,19 @@
-const path = require('path');
-const log = require('../../common/logger')('nav');
 const nav = require('./nav');
 
 class NavModel {
-  constructor(newNav){
+  constructor(newNav) {
     this.nav = newNav || nav;
   }
-  read(){
+  read() {
     return Promise.resolve(this.nav);
   }
-  update(item){
+  update(item) {
     this.nav[item.path] = item;
     return Promise.resolve(this.nav);
   }
-  get(){
+  get() {
     return this.read();
   }
 }
+
 module.exports = NavModel;
