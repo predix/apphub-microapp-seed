@@ -32,9 +32,6 @@ module.exports = function (app) {
   // Handle rendering error
   const errorHandler = (err, req, res) => {
     log.error('errorHandler', err);
-    if (req.is('application/json')) {
-      return res.status(404).json({ error: 'Something failed!' });
-    }
     return res.status(404).send({ error: err });
   };
 

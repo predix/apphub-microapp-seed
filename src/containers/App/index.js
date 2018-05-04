@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { AppNav } from 'predix-ui';
 
+
 // Pages
 import About from '../../pages/about';
 import Home from '../../pages/home';
@@ -15,9 +16,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       style: {
-        transition: 'all .5s',
-        opacity: 1,
-        selectedItem: null
+        transition: 'all .5s'
       },
       navItems: props.navItems
     };
@@ -25,15 +24,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.location.hash = '/';
-    setTimeout(() => {
-      this.setState({
-        style: {
-          display: 'block',
-          opacity: 1
-        }
-      });
-    }, 500);
+    // window.location.hash = '/';
   }
 
   changeRoute(e) {

@@ -13,7 +13,7 @@ const dashboardData = {
 };
 
 export default () => (
-  <div className="u-p">
+  <div className="u-ph">
     <Card headerText="Right Now" className="u-mb">
       <Flex middle spaced>
         {dashboardData.keyVals.map(item => (

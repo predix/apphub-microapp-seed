@@ -14,7 +14,7 @@ const features = [
 ];
 
 export default () => (
-  <div className="home-page">
+  <div className="home-page u-ph">
     <Notification type="info" statusIcon="px-utl:flag" opened>Welcome back!</Notification>
     <br />
     <Card headerText="Features">
