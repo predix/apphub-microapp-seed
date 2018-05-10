@@ -1,6 +1,7 @@
 /**
  * Development front-end webpack configuration
  */
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 
@@ -13,8 +14,10 @@ const developmentConfig = merge([{
     extends: 'base',
     target: 'web',
     entry: [
-      'main.js',
-      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client'
+
+
+      'main'
+
     ],
     node: {
       global: true,
@@ -47,7 +50,8 @@ const developmentConfig = merge([{
   }),
   parts.loadImages(),
   parts.generateSourceMaps(),
-  parts.loadHtml()
+  parts.loadHtml(),
+  parts.setHotModuleReplacement()
 ]);
 
 module.exports = () => developmentConfig;

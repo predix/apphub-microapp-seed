@@ -168,7 +168,7 @@ exports.loadProdCss = ({
         {
           loader: 'sass-loader',
           options: {
-            sourceMap: true,
+            //sourceMap: true,
             importer: require('node-sass-import-once'),
             importOnce: {
               index: true,
@@ -203,12 +203,13 @@ exports.loadDevCss = ({
         'style-loader',
         {
           loader: 'css-loader',
-          options
+          options: Object.assign({
+            sourceMap: true
+          }, options)
         },
         {
           loader: 'sass-loader',
           options: {
-            sourceMap: true,
             importer: require('node-sass-import-once'),
             importOnce: {
               index: true,
@@ -461,9 +462,7 @@ exports.setDefaults = () => {
       }
     },
     plugins: [
-      new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.NamedModulesPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
       new webpack.ProvidePlugin({
         'Promise': 'es6-promise',
         'fetch': 'whatwg-fetch'
@@ -475,6 +474,22 @@ exports.setDefaults = () => {
   }
 };
 
+exports.setHotModuleReplacement = () => {
+
+  return {
+    entry: [
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client',
+      //'webpack-dev-server/client?path=/__webpack_hmr',
+      //'webpack/hot/only-dev-server',
+      //'react-hot-loader/patch',
+    ],
+    plugins: [
+      new webpack.optimize.OccurrenceOrderPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin()
+    ]
+  };
+};
 exports.setFreeVariable = (key, value) => {
   const env = {};
   env[key] = JSON.stringify(value);

@@ -8,15 +8,12 @@ module.exports = function (app) {
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackServerMiddleware = require('webpack-server-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
-
-  console.log('webpack config');
   const compiler = webpack(config);
 
   const devMiddlewareOptions = {
     hot: true,
-    compress: true,
     logTime: true,
-    host: 'localhost',
+    host: process.env.HOST || 'localhost',
     publicPath: '/',
     contentBase: [
       path.resolve(__dirname, '../../../assets'),
@@ -38,13 +35,12 @@ module.exports = function (app) {
     heartbeat: 10 * 1000
   }));
 
-
   /*
-
-
   console.log('webpackDevMiddleware', webpackDevMiddleware);
   app.get('*', function response(req, res) {
-    res.write(webpackDevMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html')));
+    res.write(
+      webpackDevMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html'))
+    );
     res.end();
   }); */
 };

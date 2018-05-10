@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.NODE_ENV === 'development') {
   setConfig({ logLevel: 'debug' });
   if (module.hot) {
-    module.hot.accept('./containers/App/index.js', () => {
+    module.hot.accept(() => {
       render(App);
     });
   }

@@ -1,5 +1,5 @@
 {
-	"sourceMaps": true,
+  "sourceMaps": true,
   "presets": [
     ["react"],
     [
@@ -14,23 +14,28 @@
       }
     ]
   ],
-	"plugins": [
+  "plugins": [
     "transform-runtime",
     "transform-async-to-generator",
-		"transform-class-properties",
+    "transform-class-properties",
     "transform-es2015-arrow-functions",
     "react-hot-loader/babel"
   ],
   "env": {
     "ddevelopment": {
       "presets": ["react-hmre"],
-      "plugins": [["react-transform", {
-        "transforms": [{
-          "transform": "react-transform-hmr",
-          "imports": ["react"],
-          "locals": ["module"]
+      "plugins": [
+        ["react-transform", {
+          "transforms": [{
+            "transform": "react-transform-hmr",
+            "imports": ["react"],
+            "locals": ["module"]
+          }]
         }]
-      }]]
+      ]
+    },
+    "development": {
+      "plugins": ["react-hot-loader/babel"]
     },
     "test": {
       "presets": ["env"]

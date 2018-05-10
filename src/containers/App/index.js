@@ -15,19 +15,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      style: {
-        transition: 'all .5s'
-      },
       navItems: props.navItems
     };
-    this.changeRoute = this.changeRoute.bind(this);
   }
 
   componentDidMount() {
     // window.location.hash = '/';
   }
 
-  changeRoute(e) {
+  changeRoute = (e) => {
     if (this.props.onChange) {
       this.props.onChange(e);
     }
@@ -36,11 +32,11 @@ class App extends React.Component {
   }
 
   render() {
-    const { style } = this.state;
+    const { navItems } = this.state;
     return (
       <Router>
-        <div style={style} className="full-height">
-          <AppNav title="apphub-microapp-seed" items={this.state.navItems} onChange={this.changeRoute} />
+        <div className="full-height">
+          <AppNav title="apphub-microapp-seed" items={navItems} onChange={this.changeRoute} />
           <br />
           <Switch>
             <Route exact path="/" component={Home} />
