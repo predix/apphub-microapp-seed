@@ -1,21 +1,18 @@
 /**
  * Development front-end webpack configuration
  */
-const pkg = require('../package.json');
-const webpack = require('webpack');
+const merge = require('webpack-merge');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-const Dotenv = require('dotenv-webpack');
 
+const pkg = require('../package.json');
+const parts = require('./webpack.parts');
 const envPath = path.resolve(__dirname, '../.env');
-
-module.exports = () => ({
+const developmentConfig = merge([{
     name: 'client',
     extends: 'base',
     target: 'web',
     entry: [
-      'main.js', 
+      'main.js',
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client'
     ],
     node: {
@@ -25,34 +22,30 @@ module.exports = () => ({
       __filename: false,
       __dirname: false,
       setImmediate: false
-    },
-    stats: 'errors-only',
-    //output: {},
-    plugins: [
-        
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        //
-        new Dotenv({
-          path: envPath
-        }),
-      /*
-        new LiveReloadPlugin({
-          appendScriptTag: true
-        }),
-        */
-      //new webpack.optimize.OccurenceOrderPlugin(),
-      //https://github.com/jantimon/html-webpack-plugin#configuration
-      new HtmlWebpackPlugin({
-        template: './index.ejs',
-        inject: 'body',
-        hash: true,
-        title: pkg.name,
-        minify: {
-          collapseWhitespace: false
-        },
-        env: process.env
-      })
+    }
+  },
+  parts.loadJavaScript({
+    include: path.join(__dirname, '../src'),
+    exclude: /node_modules/
+  }),
+  parts.devServer({
+    host: process.env.HOST,
+    port: process.env.PORT || 9001,
+    contentBase: [
+      path.join(__dirname, '../src'),
+      path.join(__dirname, '../public'),
+      path.join(__dirname, '../dist'),
     ]
-});
+  }),
+  parts.loadDevCss({
+    exclude: /typography/,
+    options: {
+      sourceMap: true,
+      minimize: true
+    }
+  }),
+  parts.loadImages(),
+  parts.generateSourceMaps()
+]);
+
+module.exports = () => developmentConfig;

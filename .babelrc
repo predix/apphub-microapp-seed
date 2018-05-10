@@ -6,7 +6,6 @@
       "env",
       {
         "targets": {
-          "node": "8",
           "browsers": [
             "last 2 versions",
             "safari >= 9"
@@ -19,7 +18,8 @@
     "transform-runtime",
     "transform-async-to-generator",
 		"transform-class-properties",
-		"transform-es2015-arrow-functions"
+    "transform-es2015-arrow-functions",
+    "react-hot-loader/babel"
   ],
   "env": {
     "development": {

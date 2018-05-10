@@ -1,5 +1,4 @@
 // File: ./webpack.config.js
-
 const path = require('path');
 const config = require('./config');
 const webpack = require('webpack');
@@ -22,20 +21,21 @@ const createHash = type === 'prod';
 
 // Define some parameters you would need access on your configurations
 const params = {
-  //HTMLTitle: 'Hello world!',
-  //outputDir: './dist/'
+  // HTMLTitle: 'Hello world!',
+  // outputDir: './dist/'
 };
 
 // Finally, get and export the configuration
-//module.exports = webpackNodeUtils.config(directory, target, type, createHash, params, variation);
+// module.exports = webpackNodeUtils.config(directory, target, type, createHash, params, variation);
 
 
 module.exports = () => {
   const frontendConfig = webpackNodeUtils.config(directory, 'frontend', type, createHash, params, variation);
   const backendConfig = webpackNodeUtils.config(directory, 'backend', type, createHash, params, variation);
+
+
   return [
     frontendConfig,
     backendConfig
   ];
-
 };

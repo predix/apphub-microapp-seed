@@ -7,9 +7,6 @@ import './styles/index.scss';
 
 import App from './containers/App';
 
-if (process.env.NODE_ENV === 'production') {
-  require('./pwa');
-}
 
 const render = (Component) => {
   ReactDOM.render(
@@ -22,6 +19,9 @@ const render = (Component) => {
 
 render(App);
 
+if (process.env.NODE_ENV === 'production') {
+  require('./pwa');
+}
 if (process.env.NODE_ENV === 'development') {
   setConfig({ logLevel: 'debug' });
   if (module.hot) {

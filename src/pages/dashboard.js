@@ -2,7 +2,8 @@ import React from 'react';
 import { Flex, KeyValuePair, Card } from 'predix-ui';
 import AjaxCard from '../components/AjaxCard';
 
-// TODO - Fetch from backend
+// const AjaxCard = import(/* webpackPrefetch: true */'../components/AjaxCard');
+
 const dashboardData = {
   keyVals: [
     { label: 'New Alerts', value: 21 },
