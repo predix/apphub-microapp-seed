@@ -22,8 +22,15 @@
     "react-hot-loader/babel"
   ],
   "env": {
-    "development": {
-      "presets": ["react-hmre"]
+    "ddevelopment": {
+      "presets": ["react-hmre"],
+      "plugins": [["react-transform", {
+        "transforms": [{
+          "transform": "react-transform-hmr",
+          "imports": ["react"],
+          "locals": ["module"]
+        }]
+      }]]
     },
     "test": {
       "presets": ["env"]

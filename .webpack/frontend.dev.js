@@ -8,6 +8,7 @@ const pkg = require('../package.json');
 const parts = require('./webpack.parts');
 const envPath = path.resolve(__dirname, '../.env');
 const developmentConfig = merge([{
+    mode: 'development',
     name: 'client',
     extends: 'base',
     target: 'web',
@@ -45,7 +46,8 @@ const developmentConfig = merge([{
     }
   }),
   parts.loadImages(),
-  parts.generateSourceMaps()
+  parts.generateSourceMaps(),
+  parts.loadHtml()
 ]);
 
 module.exports = () => developmentConfig;

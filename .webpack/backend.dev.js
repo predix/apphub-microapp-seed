@@ -4,6 +4,7 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const defaultSetup = module.exports = () => ({
+  mode: 'development',
   extends: 'base',
   name: 'server',
   target: 'node',

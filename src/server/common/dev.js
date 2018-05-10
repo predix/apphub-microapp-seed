@@ -8,20 +8,23 @@ module.exports = function (app) {
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackServerMiddleware = require('webpack-server-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
+
+  console.log('webpack config');
   const compiler = webpack(config);
 
   const devMiddlewareOptions = {
-    stats: 'errors-only',
     hot: true,
     compress: true,
+    logTime: true,
     host: 'localhost',
     publicPath: '/',
+    contentBase: [
+      path.resolve(__dirname, '../../../assets'),
+      path.resolve(__dirname, '../../')
+    ],
     setup(instance) {
       instance.use(webpackServerMiddleware(compiler));
-    },
-    contentBase: [
-      path.resolve(__dirname, '../../../assets')
-    ]
+    }
   };
 
   log.debug('devMiddleWareOptions', devMiddlewareOptions);
@@ -37,11 +40,11 @@ module.exports = function (app) {
 
 
   /*
+
+
+  console.log('webpackDevMiddleware', webpackDevMiddleware);
   app.get('*', function response(req, res) {
-    res.write(
-      devMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html'))
-    );
+    res.write(webpackDevMiddleware.fileSystem.readFileSync(path.join(__dirname, '../../../dist/index.html')));
     res.end();
-  });
-  */
+  }); */
 };

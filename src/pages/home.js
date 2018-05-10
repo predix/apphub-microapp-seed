@@ -13,11 +13,13 @@ const features = [
   { title: 'Jest', href: 'https://facebook.github.io/jest/' }
 ];
 
+
 export default () => (
   <div className="home-page u-ph">
     <Notification type="info" statusIcon="px-utl:flag" opened>Welcome back!</Notification>
     <br />
     <Card headerText="Features">
+
       <p>This simple micro-app seed contains just enough to get you started.</p>
       <p>Some <code>development</code> features include:</p>
       <ul>
