@@ -3,13 +3,19 @@ import PropTypes from 'prop-types';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { AppNav } from 'predix-ui';
 
+import Loadable from 'react-loadable';
+import Loading from '../../components/Loading';
 
 // Pages
 import About from '../../pages/about';
 import Home from '../../pages/home';
-import Dashboard from '../../pages/dashboard';
 import Topics from '../../pages/topics';
 import NoMatch from '../../pages/404';
+
+const Dashboard = Loadable({
+  loader: () => import('../../pages/dashboard'),
+  loading: Loading
+});
 
 class App extends React.Component {
   constructor(props) {

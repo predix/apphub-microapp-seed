@@ -1,5 +1,13 @@
 import React from 'react';
 import { Card, Notification } from 'predix-ui';
+import Loadable from 'react-loadable';
+import Loading from '../components/Loading';
+
+
+const LoadableExample = Loadable({
+  loader: () => import('../components/Example'),
+  loading: Loading
+});
 
 const features = [
   { title: 'Predix UI (react)', href: 'https://jonniespratley.github.io/predix-ui/#/' },
@@ -30,5 +38,8 @@ export default () => (
         ))}
       </ul>
     </Card>
+
+    <LoadableExample />
+
   </div>
 );

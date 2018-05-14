@@ -48,14 +48,20 @@ module.exports = function (app) {
 
   /* istanbul ignore next */
   if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', 1);
     log.debug('Setting production only settings.');
-    app.use(serveStatic(path.join(__dirname, './public'), staticServerConfig));
-    app.use(serveStatic(path.join(__dirname, './'), staticServerConfig));
+    app.set('trust proxy', 1);
+
+    const publicDirs = [
+      path.resolve(__dirname, './public'),
+      path.resolve(__dirname, './'),
+      '.'
+    ];
+    publicDirs.forEach((dir) => {
+      app.use(serveStatic(dir, staticServerConfig));
+      log.debug('Serving static directory', dir);
+    });
     app.use(clientErrorHandler);
   }
-
-  app.use(express.static('.'));
 
   return app;
 };

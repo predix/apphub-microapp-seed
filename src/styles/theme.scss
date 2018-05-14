@@ -1,6 +1,8 @@
 @import '_variables';
 @import '_mixins';
+
 @import 'predix-ui/dist/px-dark-theme.css';
+
 :root {
   background-color: var( --px-base-background-color, $global-background-color);
   color: var( --px-base-text-color, $global-font-color);

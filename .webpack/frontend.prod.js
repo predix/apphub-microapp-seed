@@ -3,6 +3,7 @@
  */
 const pkg = require('../package.json');
 const path = require('path');
+const glob = require('glob-all');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
@@ -15,39 +16,15 @@ const PATHS = {
   build: path.join(__dirname, '../build'),
   fixedPath: '/'
 };
-/*
-const c = () => ({
-  name: 'client',
-  extends: 'base',
-  target: 'web',
-  context: path.resolve(__dirname, '../src'),
-  entry: {
-    //polyfills: 'polyfills.js',
-    main: 'main.js'
-  },
-  devtool: 'source-map',
-  plugins: [
 
-    //https://webpack.js.org/plugins/commons-chunk-plugin/#options
-    new webpack.optimize.CommonsChunkPlugin({
-      async: false,
-      name: 'vendor',
-      filename: 'vendor.js',
-      //minChunks: Infinity
-      minChunks(module, count) {
-        var context = module.context;
-        return context && context.indexOf('node_modules') >= 0;
-      }
-    }),
-
-  ]
-});
-*/
 const productionConfig = merge([{
     name: 'client',
     extends: 'base',
     target: 'web',
     context: PATHS.app,
+    output: {
+      filename: `[name].[hash].bundle.js`
+    },
     entry: {
       main: 'main.js',
       vendor: [
@@ -76,27 +53,12 @@ const productionConfig = merge([{
       chunks: true,
       chunkModules: true,
       modules: true,
-      children: true,
+      children: true
     }
   },
   {
     optimization: {
-      minimize: false,
-      /*
-      splitChunks: {
-        name: 'vendor',
-        filename: 'vendor.js',
-        chunks: 'initial',
-        minChunks: 2,
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            chunks: "all"
-          }
-        }
-      }*/
-      //runtimeChunk: false,
+      //minimize: false,
       splitChunks: {
         filename: '[name].bundle.js',
         cacheGroups: {
@@ -116,18 +78,6 @@ const productionConfig = merge([{
     include: PATHS.app,
     exclude: /node_modules/
   }),
-  //parts.minifyJavaScript(),
-  parts.clean('dist'),
-  parts.minifyCSS({
-    options: {
-      discardComments: {
-        removeAll: true
-      },
-      // Run cssnano in safe mode to avoid
-      // potentially unsafe transformations.
-      safe: true
-    }
-  }),
   parts.loadProdCss(),
   parts.loadImages({
     options: {
@@ -136,12 +86,50 @@ const productionConfig = merge([{
     }
   }),
   parts.setCompression(),
-  //parts.criticalCSS(),
-  parts.offlinePlugin(),
+
+  //parts.offlinePlugin(),
+  parts.workboxPlugin({
+    clientsClaim: true,
+    skipWaiting: true,
+    importWorkboxFrom: 'local',
+    runtimeCaching: [{
+      urlPattern: /api/,
+      handler: 'networkFirst',
+      options: {
+        cacheName: 'apphub-microapp-seed-api-cache',
+        networkTimeoutSeconds: 10,
+        expiration: {
+          maxEntries: 20,
+          maxAgeSeconds: 60
+        },
+        // Configure which responses are considered cacheable.
+        cacheableResponse: {
+          statuses: [0, 200]
+        }
+      }
+    }]
+  }),
   parts.copyPlugin(),
   parts.bannerPlugin(),
   parts.setAnalyzer(),
-  parts.loadHtml()
+  parts.loadHtml(),
+  parts.minifyJavaScript(),
+  parts.minifyCSS({
+    options: {
+      discardComments: {
+        removeAll: true
+      },
+      safe: true
+    }
+  }),
+  parts.criticalCSS(),
+  parts.purifyCSS({
+    verbose: true,
+    moduleExtensions: ['.html', '.js'],
+    paths: glob.sync([
+      path.resolve(__dirname, '../dist/**')
+    ])
+  })
 ]);
 
 

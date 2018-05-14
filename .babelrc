@@ -6,10 +6,7 @@
       "env",
       {
         "targets": {
-          "browsers": [
-            "last 2 versions",
-            "safari >= 9"
-          ]
+          "browsers": ["last 2 versions"]
         }
       }
     ]
@@ -19,21 +16,10 @@
     "transform-async-to-generator",
     "transform-class-properties",
     "transform-es2015-arrow-functions",
+    "syntax-dynamic-import",
     "react-hot-loader/babel"
   ],
   "env": {
-    "ddevelopment": {
-      "presets": ["react-hmre"],
-      "plugins": [
-        ["react-transform", {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals": ["module"]
-          }]
-        }]
-      ]
-    },
     "development": {
       "plugins": ["react-hot-loader/babel"]
     },

@@ -183,7 +183,7 @@ exports.loadProdCss = ({
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[name].[hash].css',
       chunkFilename: '[id].css'
     })
   ]
@@ -224,9 +224,10 @@ exports.loadDevCss = ({
   }
 });
 
-// Frameworks like Bootstrap tend to come with a lot of CSS. Often you use only a small part of it. Typically, you bundle even the unused CSS. It's possible, however, to eliminate the portions you aren't using.
-//
-// PurifyCSS is a tool that can achieve this by analyzing files. It walks through your code and figures out which CSS classes are being used. Often there is enough information for it to strip unused CSS from your project. It also works with single page applications to an extent.
+
+// PurifyCSS is a tool that can achieve this by analyzing files. It walks through your code and figures out
+// which CSS classes are being used. Often there is enough information for it to strip unused CSS from your project.
+// It also works with single page applications to an extent.
 const PurifyCSSPlugin = require('purifycss-webpack');
 exports.purifyCSS = ({
   paths
@@ -345,11 +346,7 @@ exports.minifyJavaScript = () => ({
   optimization: {
     minimizer: [new UglifyWebpackPlugin({
       sourceMap: true,
-      extractComments: true,
-      compressor: {
-        warnings: false,
-        screw_ie8: true
-      }
+      extractComments: true
     })]
   }
 });
@@ -409,8 +406,22 @@ exports.offlinePlugin = (options) => {
         }
       }, options))
     ]
-  }
+  };
 };
+
+
+//https://developers.google.com/web/tools/workbox/guides/generate-service-worker/webpack
+const WorkboxPlugin = require('workbox-webpack-plugin');
+exports.workboxPlugin = (options) => {
+  return {
+    plugins: [
+      new WorkboxPlugin.GenerateSW(options)
+    ]
+  };
+};
+
+
+
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 exports.copyPlugin = (options) => {
@@ -448,7 +459,7 @@ const webpack = require('webpack');
 
 exports.setDefaults = () => {
   return {
-    optimization: {
+/*     optimization: {
       minimize: false,
       splitChunks: {
         //chunks: 'all',
@@ -460,15 +471,12 @@ exports.setDefaults = () => {
           }
         }
       }
-    },
+    }, */
     plugins: [
       new webpack.NamedModulesPlugin(),
       new webpack.ProvidePlugin({
         'Promise': 'es6-promise',
         'fetch': 'whatwg-fetch'
-      }),
-      new webpack.BannerPlugin({
-        banner: "hash:[hash], chunkhash:[chunkhash], name:[name], filebase:[filebase], query:[query], file:[file]"
       })
     ]
   }
