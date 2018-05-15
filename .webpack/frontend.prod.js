@@ -23,14 +23,18 @@ const productionConfig = merge([{
     target: 'web',
     context: PATHS.app,
     output: {
-      filename: `[name].[hash].bundle.js`
+      filename: 'js/[name].[hash].bundle.js',
+      //chunkFilename: 'js/[name].bundle.js'
     },
     entry: {
       main: 'main.js',
       vendor: [
         'react',
+        'react-popper',
+        'prop-types',
         'react-dom',
         'react-router-dom',
+        'react-loadable',
         'styled-components',
         'axios',
         'predix-ui'
@@ -41,7 +45,6 @@ const productionConfig = merge([{
         'whatwg-fetch'
       ]
     },
-    devtool: 'source-map',
     bail: false
   },
   {
@@ -56,13 +59,21 @@ const productionConfig = merge([{
       children: true
     }
   },
+
   {
+    optimization: {
+      splitChunks: {
+        automaticNameDelimiter: '-',
+        chunks: 'all'
+      }
+    }
+    /*
     optimization: {
       //minimize: false,
       splitChunks: {
         filename: '[name].bundle.js',
         cacheGroups: {
-          default: false,
+          //default: true,
           commons: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendor',
@@ -72,7 +83,9 @@ const productionConfig = merge([{
         }
       }
     }
+    */
   },
+  parts.generateSourceMaps(),
   parts.setNoErrors(),
   parts.loadJavaScript({
     include: PATHS.app,
@@ -86,8 +99,6 @@ const productionConfig = merge([{
     }
   }),
   parts.setCompression(),
-
-  //parts.offlinePlugin(),
   parts.workboxPlugin({
     clientsClaim: true,
     skipWaiting: true,
@@ -110,7 +121,7 @@ const productionConfig = merge([{
     }]
   }),
   parts.copyPlugin(),
-  parts.bannerPlugin(),
+  //parts.bannerPlugin(),
   parts.setAnalyzer(),
   parts.loadHtml(),
   parts.minifyJavaScript(),

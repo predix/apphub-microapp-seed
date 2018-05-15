@@ -183,8 +183,8 @@ exports.loadProdCss = ({
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[id].css'
+      filename: 'css/[name].[hash].css',
+      chunkFilename: 'css/[id].css'
     })
   ]
 });

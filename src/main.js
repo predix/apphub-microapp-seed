@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer, setConfig } from 'react-hot-loader';
+import App from './containers/App';
 
 import './polyfills';
 import './styles/index.scss';
-
-import App from './containers/App';
-
 
 const render = (Component) => {
   ReactDOM.render(

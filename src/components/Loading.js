@@ -10,12 +10,13 @@ const Loading = (props) => {
     }
     return null;
   } else if (props.error) {
-    return <div>Error! Component failed to load</div>;
+    return <div>Error! Component failed to load. <button onClick={props.retry}>Retry</button></div>;
   }
   return null;
 };
 
 Loading.defaultProps = {
+  retry: null,
   isLoading: null,
   timedOut: null,
   pastDelay: null,
@@ -23,6 +24,7 @@ Loading.defaultProps = {
 };
 
 Loading.propTypes = {
+  retry: PropTypes.func,
   isLoading: PropTypes.bool,
   timedOut: PropTypes.bool,
   pastDelay: PropTypes.bool,
