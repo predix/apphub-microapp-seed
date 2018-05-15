@@ -26,7 +26,7 @@ const getUserInfo = (accessToken, uaaURL, callback) => {
 module.exports = uaaURL => (req, res, next) => {
   log.debug('getUserInfo', req.session);
   if (req.user && !req.user.details) {
-    getUserInfo(req.session.passport.user.currentUser.access_token, uaaURL, function (userDetails) {
+    getUserInfo(req.session.passport.user.currentUser.access_token, uaaURL, (userDetails) => {
       log.debug('getUserInfo', userDetails);
       req.user.details = userDetails;
       next();

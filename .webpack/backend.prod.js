@@ -3,32 +3,23 @@
  */
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const defaultSetup = module.exports = () => ({
-  extends: 'base',
-  name: 'server',
-  target: 'node',
-  stats: true,
-  node: {
-    global: true,
-    process: true,
-    Buffer: false,
-    __filename: false,
-    __dirname: false,
-    setImmediate: false
+const merge = require('webpack-merge');
+const parts = require('./webpack.parts');
+
+const defaultSetup = module.exports = () => merge([{
+    extends: 'base',
+    name: 'server',
+    target: 'node',
+    stats: true,
+    entry: {
+      server: './server/index.js'
+    },
+    // in order to ignore all modules in node_modules folder
+    externals: [nodeExternals()],
+    plugins: []
   },
-  entry: {
-    server: './server/index.js'
-  },
-  // in order to ignore all modules in node_modules folder
-  externals: [ nodeExternals() ],
-  plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: 'server/middleware/swagger/Api.yaml'
-      }
-    ])]
-});
+  parts.setDefaults()
+]);
 
 module.exports.library = (params) => {
   const config = defaultSetup(params);

@@ -1,9 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-// const dotenv = require('dotenv');
 const log = require('./logger')('env');
-
 
 module.exports = () => {
   const envToSet = {};
@@ -20,6 +18,7 @@ module.exports = () => {
   } else {
     require('dotenv').config();
   }
+
   log.debug('loading', envPath);
 
   if (process.env.NODE_ENV !== 'test') {

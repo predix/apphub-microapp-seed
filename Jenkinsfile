@@ -8,7 +8,7 @@ pipeline {
   agent none
 	environment {
 		DEBUG = ''
-    CACHING_REPO_URL = 'http://nexus.marathon.l4lb.thisdcos.directory:8081/nexus/repository/npm-virtual/'
+    //CACHING_REPO_URL = 'http://nexus.marathon.l4lb.thisdcos.directory:8081/nexus/repository/npm-virtual/'
     ORG_NAME = 'Predix-Apphub'
     APP_NAME = 'apphub-microapp-seed'
 	}
@@ -30,7 +30,6 @@ pipeline {
           node -v
           npm -v
           npm config set strict-ssl false
-          npm config set registry $CACHING_REPO_URL
           npm config ls
         """
 

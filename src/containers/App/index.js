@@ -6,8 +6,8 @@ import { AppNav } from 'predix-ui';
 
 // Pages
 import About from '../../pages/about';
-import Home from '../../pages/home';
 import Dashboard from '../../pages/dashboard';
+import Home from '../../pages/home';
 import Topics from '../../pages/topics';
 import NoMatch from '../../pages/404';
 
@@ -15,19 +15,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      style: {
-        transition: 'all .5s'
-      },
       navItems: props.navItems
     };
-    this.changeRoute = this.changeRoute.bind(this);
   }
 
-  componentDidMount() {
-    // window.location.hash = '/';
-  }
-
-  changeRoute(e) {
+  changeRoute = (e) => {
     if (this.props.onChange) {
       this.props.onChange(e);
     }
@@ -36,21 +28,24 @@ class App extends React.Component {
   }
 
   render() {
-    const { style } = this.state;
+    const { navItems } = this.state;
     return (
-      <Router>
-        <div style={style} className="full-height">
-          <AppNav title="apphub-microapp-seed" items={this.state.navItems} onChange={this.changeRoute} />
-          <br />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/about" component={About} />
-            <Route path="/topics" component={Topics} />
-            <Route component={NoMatch} />
-          </Switch>
-        </div>
-      </Router>);
+      <div>
+        <Router>
+          <div className="full-height">
+            <AppNav title="apphub-microapp-seed" items={navItems} onChange={this.changeRoute} />
+            <br />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/about" component={About} />
+              <Route path="/topics" component={Topics} />
+              <Route component={NoMatch} />
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    );
   }
 }
 

@@ -1,15 +1,11 @@
 // File: ./webpack.config.js
-
-const path = require('path');
-const config = require('./config');
-const webpack = require('webpack');
 const webpackNodeUtils = require('webpack-node-utils');
 
 // The directory where the configuration files are.
 const directory = '.webpack';
 
 // Use a environment variable to detect the target
-const target = process.env.BUILD_TARGET || 'frontend';
+// const target = process.env.BUILD_TARGET || 'frontend';
 
 // Use the `NODE_ENV` environment variable to detect the build type.
 const type = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
@@ -22,20 +18,21 @@ const createHash = type === 'prod';
 
 // Define some parameters you would need access on your configurations
 const params = {
-  //HTMLTitle: 'Hello world!',
-  //outputDir: './dist/'
+  // HTMLTitle: 'Hello world!',
+  // outputDir: './dist/'
 };
 
 // Finally, get and export the configuration
-//module.exports = webpackNodeUtils.config(directory, target, type, createHash, params, variation);
+// module.exports = webpackNodeUtils.config(directory, target, type, createHash, params, variation);
 
 
 module.exports = () => {
   const frontendConfig = webpackNodeUtils.config(directory, 'frontend', type, createHash, params, variation);
   const backendConfig = webpackNodeUtils.config(directory, 'backend', type, createHash, params, variation);
+
+
   return [
     frontendConfig,
     backendConfig
   ];
-
 };
