@@ -1,0 +1,12 @@
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+node_js:
+  - '9'
+  - '8'
+script:
+- yarn lint
+- yarn test
+after_success:
+- bash <(curl -s https://codecov.io/bash)
