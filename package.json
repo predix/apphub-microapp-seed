@@ -26,7 +26,7 @@
     "docker:build": "docker build -t predix-apphub/$npm_package_name .",
     "docker:run": "docker run -p 49161:8080 -d predix-apphub/$npm_package_name",
     "docker:save": "docker save -o $npm_package_name.tar predix-apphub/$npm_package_name",
-    "start": "cross-env NODE_ENV=production node server",
+    "start": "cross-env NODE_ENV=production node src/server",
     "pretest": "rimraf coverage && npm run lint",
     "test": "npm run test:server && npm run test:client",
     "test:client": "cross-env NODE_ENV=test jest --coverage",
@@ -37,9 +37,7 @@
     "storybook": "start-storybook -p 9090 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o .out"
   },
-  "keywords": [
-    "predix-microapp"
-  ],
+  "keywords": ["predix-microapp"],
   "devDependencies": {
     "@storybook/addon-knobs": "^3.4.1",
     "@storybook/addon-viewport": "^3.4.1",
@@ -192,17 +190,9 @@
     "lines": 50,
     "statements": 50,
     "functions": 50,
-    "include": [
-      "src/server/**/*.js"
-    ],
-    "exclude": [
-      "test/server/**/*-spec.js",
-      "test/server/**/*.spec.js"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ],
+    "include": ["src/server/**/*.js"],
+    "exclude": ["test/server/**/*-spec.js", "test/server/**/*.spec.js"],
+    "reporter": ["lcov", "text-summary"],
     "cache": true,
     "all": true,
     "report-dir": "./coverage"
@@ -211,31 +201,19 @@
     "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup.js",
     "collectCoverage": true,
     "coverageDirectory": "<rootDir>/coverage/client",
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
     "testMatch": [
       "<rootDir>/__tests__/**/*.test.js?(x)",
       "<rootDir>/src/components/**/*.test.js?(x)",
       "<rootDir>/src/containers/**/*.test.js?(x)",
       "<rootDir>/src/pages/**/*.test.js?(x)"
     ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
-    ],
-    "modulePathIgnorePatterns": [
-      "__tests__",
-      "public",
-      "tools",
-      "stories",
-      "docs"
-    ],
-    "moduleDirectories": [
-      "node_modules"
-    ],
+    "moduleFileExtensions": ["js", "jsx"],
+    "modulePathIgnorePatterns": ["__tests__", "public", "tools", "stories", "docs"],
+    "moduleDirectories": ["node_modules"],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+        "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js"
     }
   }

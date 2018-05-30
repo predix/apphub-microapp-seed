@@ -6,7 +6,7 @@ applications:
     stack: cflinuxfs2
     instances: 1
     path: .
-    command: node server
+    command: node src/server
     services:
       - js-uaa
       - my_redis_instance
