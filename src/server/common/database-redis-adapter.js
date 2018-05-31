@@ -1,11 +1,6 @@
 const Base = require('lowdb/adapters/Base');
 const log = require('./logger')('RedisAdapter');
-
-const {
-  REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, NODE_ENV
-} = process.env;
-
-const Redis = NODE_ENV === 'test' ? require('ioredis-mock') : require('ioredis');
+const Redis = process.env.NODE_ENV === 'test' ? require('ioredis-mock') : require('ioredis');
 
 let redisClient = null;
 
@@ -19,6 +14,10 @@ class RedisAdapter extends Base {
 
     log.debug('RedisAdapter', source, defaultValue);
 
+    const {
+      REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB
+    } = process.env;
+
     try {
       redisClient = new Redis(
         REDIS_PORT || 6379,
@@ -31,7 +30,7 @@ class RedisAdapter extends Base {
       );
     } catch (err) {
       log.error('RedistAdapter.error', err);
-      throw err;
+      // throw err;
     }
   }
 

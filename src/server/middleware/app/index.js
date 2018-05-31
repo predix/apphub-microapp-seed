@@ -57,7 +57,6 @@ module.exports = function (app) {
     ];
     publicDirs.forEach((dir) => {
       app.use(serveStatic(dir, staticServerConfig));
-      log.debug('Serving static directory', dir);
     });
     app.use(clientErrorHandler);
   }

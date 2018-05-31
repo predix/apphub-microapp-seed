@@ -38,9 +38,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (require.main === module) {
-  server.listen(port, () => {
-    console.log('Server started...');
-  });
+  server.listen(port);
 } else {
   module.exports = server;
 }

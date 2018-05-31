@@ -57,7 +57,7 @@ module.exports = function (app) {
     });
   } else {
     /* istanbul ignore next */
-    log.info('Setting up mock Authentication routes');
+    log.debug('Setting up mock Authentication routes');
 
     app.get([
       '/login',
