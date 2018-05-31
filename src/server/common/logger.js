@@ -31,19 +31,34 @@ module.exports = function (n) {
       return `${ns}:${this.name}`;
     }
     info(...args) {
-      return debug(this.getSubject('info'))(...args);
+      if (!this._info) {
+        this._info = debug(this.getSubject('INFO'));
+      }
+      return this._info(...args);
     }
     warn(...args) {
-      return debug(this.getSubject('warn'))(...args);
+      if (!this._warn) {
+        this._warn = debug(this.getSubject('WARN'));
+      }
+      return this._warn(...args);
     }
     error(...args) {
-      return debug(this.getSubject('error'))(...args);
+      if (!this._error) {
+        this._error = debug(this.getSubject('ERROR'));
+      }
+      return this._error(...args);
     }
     debug(...args) {
-      return debug(this.getSubject('debug'))(...args);
+      if (!this._debug) {
+        this._debug = debug(this.getSubject('DEBUG'));
+      }
+      return this._debug(...args);
     }
     always(...args) {
-      return debug(this.getSubject('always'))(...args);
+      if (!this._always) {
+        this._always = debug(this.getSubject('ALWAYS'));
+      }
+      return this._always(...args);
     }
   }
   return new Logger(n);
