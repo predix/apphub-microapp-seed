@@ -33,7 +33,7 @@ class Server {
       });
     } else {
       http = require('http').createServer(this.app);
-      http.listen(port, process.env.HOST || 'localhost', () => {
+      http.listen(port, process.env.HOST || null, () => {
         console.log(`🌎 Running on port ${http.address().port}. Open up http://${http.address().address}:${http.address().port} in your browser.`);
       });
       http.on('listening', () => {
