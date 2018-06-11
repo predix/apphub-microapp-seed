@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Button, Input, Card, ProgressBar } from 'predix-ui';
 
+
 class AjaxCard extends React.Component {
   constructor(props) {
     super(props);

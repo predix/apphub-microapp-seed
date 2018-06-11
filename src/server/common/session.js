@@ -25,6 +25,8 @@ const setupSessionStore = () => {
     });
   }
   log.debug('setupSessionStore', 'using memory store');
+
+
   return null;
 };
 
