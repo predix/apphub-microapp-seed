@@ -10,7 +10,6 @@ exports.command = function (username, password) {
   if (!password) {
     p = this.globals.password;
   }
-  console.log('login', u, p);
   // this.url(this.globals.baseUrl + '/login')
   return this.waitForElementVisible('form', TIMEOUT)
     .waitForElementVisible('form [name="username"]', TIMEOUT)

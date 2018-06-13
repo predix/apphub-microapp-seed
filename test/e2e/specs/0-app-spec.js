@@ -4,7 +4,6 @@ module.exports = {
     'app', 'sanity'
   ],
   before(browser) {
-    console.log('Globals', browser.globals);
     browser
       .url(`${browser.globals.baseUrl}/login`)
       .waitForElementVisible('body', browser.globals.timeout)

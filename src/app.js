@@ -5,8 +5,8 @@
  */
 const express = require('express');
 const routesList = require('express-api-routes-list');
-
 const server = require('./server');
+const log = require('./server/common/logger')('app');
 
 const app = express();
 const port = process.env.PORT || 9000;
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(server.getExpressApp());
 app.listen(port, () => {
-  console.log(routesList(app).toString());
-  console.log(`Running on port ${port}`);
+  log.debug(routesList(app).toString());
+  log.debug(`Running on port ${port}`);
 });
 

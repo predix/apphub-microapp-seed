@@ -1,7 +1,6 @@
 
 const commands = {
   doThis() {
-    console.log('doThis');
     return this;
   }
 };
