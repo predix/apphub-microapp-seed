@@ -6,3 +6,5 @@ junit
 
 karma.conf.js
 readme.md
+stats.json
+bundle-report.html

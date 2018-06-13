@@ -2,8 +2,7 @@ const express = require('express');
 const os = require('os');
 const cluster = require('cluster');
 const log = require('./logger')('server');
-/* Issue finding dependencies for   "swagger-express-middleware": "^1.0.0-alpha.12" */
-// const swaggerify = require('./swagger');
+
 let http;
 
 /**
@@ -12,6 +11,7 @@ let http;
  */
 class Server {
   constructor(a, config) {
+    this.routes = [];
     this.log = log;
     this.config = config;
     if (a) {
@@ -51,8 +51,7 @@ class Server {
   }
 
   router(routes) {
-    this.routes = routes;
-    // swaggerify(this.app, routes);
+    this.routes = this.routes.concat(routes);
     return this;
   }
 

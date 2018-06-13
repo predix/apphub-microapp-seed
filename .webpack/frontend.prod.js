@@ -120,7 +120,14 @@ const productionConfig = merge([{
       }
     }]
   }),
-  parts.copyPlugin(),
+  parts.copyPlugin([{
+    from: './assets/**/*.*',
+    to: './'
+  }, {
+    from: './manifest.json'
+  }, {
+    from: './favicon.ico'
+  }]),
   //parts.bannerPlugin(),
   parts.setAnalyzer(),
   parts.loadHtml(),

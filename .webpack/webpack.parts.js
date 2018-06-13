@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const pkg = require('../package.json');
 // resolve.alias
 // Create aliases to import or require certain modules more easily. For example, to alias a bunch of commonly used src/ folders:
@@ -421,28 +422,16 @@ exports.workboxPlugin = (options) => {
 };
 
 
-
-
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 exports.copyPlugin = (options) => {
   return {
     plugins: [
-      new CopyWebpackPlugin([{
-          from: './assets/**/*.*',
-          to: './'
-        },
-        {
-          from: './manifest.json'
-        },
-        {
-          from: './favicon.ico'
-        }
-      ])
+      new CopyWebpackPlugin([].concat(options))
     ]
   }
 };
 
-
+// Add a custom banner to all scripts/styles
 exports.bannerPlugin = (options) => {
   return {
     plugins: [
@@ -455,8 +444,6 @@ exports.bannerPlugin = (options) => {
 
 // Setting process.env.NODE_ENV
 // As before, encapsulate this idea to a function. Due to the way webpack replaces the free variable, you should push it through JSON.stringify. You end up with a string like '"demo"' and then webpack inserts that into the slots it finds:
-const webpack = require('webpack');
-
 exports.setDefaults = () => {
   return {
 /*     optimization: {
@@ -482,8 +469,8 @@ exports.setDefaults = () => {
   }
 };
 
+// Setup hotmodule replacement
 exports.setHotModuleReplacement = () => {
-
   return {
     entry: [
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&name=client',
@@ -498,6 +485,7 @@ exports.setHotModuleReplacement = () => {
     ]
   };
 };
+
 exports.setFreeVariable = (key, value) => {
   const env = {};
   env[key] = JSON.stringify(value);
@@ -541,8 +529,8 @@ exports.setAnalyzer = (options) => {
     plugins: [new BundleAnalyzerPlugin(Object.assign({
       generateStatsFile: true,
       openAnalyzer: false,
-      reportFilename: './report.html',
-      statsFilename: './stats.json',
+      reportFilename: '../bundle-report.html',
+      statsFilename: '../stats.json',
       analyzerMode: 'static'
     }, options))]
   };

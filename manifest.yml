@@ -7,9 +7,9 @@ applications:
     instances: 1
     path: .
     command: npm start
-    services:
+    #services:
       #- js-dev-uaa
-      - jps-redis
+      #- jps-redis
     env:
       APP_ID: apphub-microapp-seed
       LOG_LEVEL: debug
