@@ -1,5 +1,4 @@
 FROM                      node:latest
-MAINTAINER                Jonnie Spratley <jonnie.spratley@ge.com>
 
 # System Env Vars
 ENV PROXY                 http://proxy-src.research.ge.com:8080
@@ -8,7 +7,7 @@ ENV https_proxy           $PROXY
 ENV no_proxy              *.ge.com
 
 # Application Env Vars
-ENV DEBUG                 apphub-microapp-seed:*
+#ENV DEBUG                 apphub-microapp-seed:*
 ENV PORT                  8080
 ENV NODE_ENV              production
 ENV REQUEST_LIMIT         2500kb

@@ -32,7 +32,6 @@ request.get({
   }
 }, (err, resp, body) => {
   body.data.forEach((doc) => {
-    console.log('Sending', doc.post_id);
     sendDoc(doc);
   });
 });

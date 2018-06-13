@@ -12,9 +12,9 @@ const tempFile = require('path').resolve(__dirname, '../.temp-db.json');
 let instance;
 
 describe('lowdb', function () {
-  this.timeout(30000);
+  // this.timeout(30000);
   describe('Memory Adapter', () => {
-    before(() => {
+    beforeAll(() => {
       instance = lowdb(new MemoryAdapter());
       instance
         .defaults({
@@ -67,7 +67,7 @@ describe('lowdb', function () {
     });
   });
   describe('CustomAdapter', () => {
-    before((done) => {
+    beforeAll((done) => {
       lowdb(new CustomAdapter('test')).then((db) => {
         instance = db;
         instance

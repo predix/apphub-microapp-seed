@@ -19,14 +19,14 @@ describe('Server', () => {
   let server;
   let app;
 
-  before(function (done) {
+  beforeAll(function (done) {
     server = new Server();
     app = server.getExpressApp();
     app.use(router);
     done();
   });
 
-  after(function (done) {
+  afterAll(function (done) {
     // server.shutdown(done);
     done();
   });

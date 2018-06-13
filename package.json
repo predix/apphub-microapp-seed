@@ -28,9 +28,7 @@
     "docker:save": "docker save -o $npm_package_name.tar predix-apphub/$npm_package_name",
     "start": "cross-env NODE_ENV=production node server",
     "pretest": "rimraf coverage && npm run lint",
-    "test": "npm run test:server && npm run test:client",
-    "test:client": "cross-env NODE_ENV=test jest --coverage",
-    "test:server": "cross-env NODE_ENV=test nyc mocha test/server/**/*-spec.js",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
     "lint": "eslint ./src ./test --cache",
     "zip": "cd dist && bestzip ../$npm_package_name-$BUILD_NUMBER.zip *",
@@ -98,7 +96,6 @@
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.4.0",
     "minimist": "^1.2.0",
-    "mocha": "^3.1.2",
     "moment": "^2.20.1",
     "ncp": "^2.0.0",
     "nightwatch": "^1.0.6",
@@ -210,7 +207,7 @@
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup.js",
     "collectCoverage": true,
-    "coverageDirectory": "<rootDir>/coverage/client",
+    "coverageDirectory": "<rootDir>/coverage",
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
@@ -218,11 +215,8 @@
       "<rootDir>/__tests__/**/*.test.js?(x)",
       "<rootDir>/src/components/**/*.test.js?(x)",
       "<rootDir>/src/containers/**/*.test.js?(x)",
-      "<rootDir>/src/pages/**/*.test.js?(x)"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
+      "<rootDir>/src/pages/**/*.test.js?(x)",
+      "<rootDir>/test/server/**/*-spec.js"
     ],
     "modulePathIgnorePatterns": [
       "__tests__",
