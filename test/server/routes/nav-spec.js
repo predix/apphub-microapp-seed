@@ -3,7 +3,7 @@ const request = require('supertest');
 const express = require('express');
 const controller = require('express-controller-routing');
 
-const ctrl = require('../../../src/server/routes/nav');
+const ctrl = require('../../../src/server/routes/nav/index');
 const Model = require('../../../src/server/routes/nav/model');
 
 const baseUrl = '/api/nav';
@@ -11,7 +11,7 @@ const baseUrl = '/api/nav';
 describe('Nav Routes', () => {
   let app;
 
-  before(function (done) {
+  beforeAll(function (done) {
     app = express();
     app.use(baseUrl, controller(ctrl));
     done();
@@ -27,7 +27,7 @@ describe('Nav Routes', () => {
 describe('Nav Model', () => {
   let myModel;
 
-  before(() => {
+  beforeAll(() => {
     myModel = new Model();
   });
 

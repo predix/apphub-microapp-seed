@@ -7,7 +7,7 @@ const Logger = requireHelper('server/common/logger');
 
 describe('Logger', () => {
   let log;
-  before(() => {
+  beforeAll(() => {
     log = new Logger('spec');
   });
 

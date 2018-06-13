@@ -1,4 +1,4 @@
-const nav = require('./nav');
+const nav = require('./nav.json');
 
 class NavModel {
   constructor(newNav) {

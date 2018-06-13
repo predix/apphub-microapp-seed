@@ -12,12 +12,12 @@ const routes = require('../../../src/server/routes');
 const baseUrl = '/api/db';
 
 describe('API Routes', function () {
-  this.timeout(20000);
+  // this.timeout(20000);
   let app;
   let mockId;
   let mockDoc;
 
-  before(function (done) {
+  beforeAll(function (done) {
     app = express();
     app.use(bodyParser.json());
     app.use((req, res, next) => {

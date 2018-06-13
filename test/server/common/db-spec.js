@@ -15,14 +15,14 @@ describe('DB', () => {
   let instance;
   let mockDoc;
 
-  before((done) => {
+  beforeAll((done) => {
     db = DB.getInstance(tempFile, {
       docs: []
     }, 'memory');
     done();
   });
 
-  after((done) => {
+  afterAll((done) => {
     // require('fs').unlink(tempFile, done);
     // db.adapter.close();
     done();
@@ -174,7 +174,7 @@ describe('DB', () => {
   }
 
   describe('CRUD operations (In Memory)', () => {
-    before(async () => {
+    beforeAll(async () => {
       db = await DB.getInstance('test', { posts: [] }, 'memory');
       instance = db;
       return db;
@@ -183,7 +183,7 @@ describe('DB', () => {
   });
 
   describe('CRUD operations (Filestore)', () => {
-    before(async () => {
+    beforeAll(async () => {
       db = await DB.getInstance('test', { posts: [] }, 'file');
       instance = db;
       return db;
@@ -194,7 +194,7 @@ describe('DB', () => {
 
   describe('lowdb', () => {
     describe('Memory Adapter', () => {
-      before(() => {
+      beforeAll(() => {
         instance = lowdb(new MemoryAdapter());
         instance
           .defaults({
@@ -217,7 +217,7 @@ describe('DB', () => {
     });
 
     describe('FileAsync Adapter', function () {
-      before(async () => {
+      beforeAll(async () => {
         instance = await lowdb(new FileAsyncAdapter(path.resolve(__dirname, '../../../temp-db.json')));
         return instance.defaults({
           posts: [],

@@ -5,10 +5,10 @@ const { expect } = require('chai');
 const RedisAdapter = helpers.require('server/common/database-redis-adapter');
 
 describe('RedisAdapter', function () {
-  this.timeout(10000);
+  // this.timeout(10000);
   let db;
 
-  before(async () => {
+  beforeAll(async () => {
     db = await low(new RedisAdapter('test-redisdb', {
       posts: []
     }));

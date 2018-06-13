@@ -210,7 +210,7 @@
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup.js",
     "collectCoverage": true,
-    "coverageDirectory": "<rootDir>/coverage/client",
+    "coverageDirectory": "<rootDir>/coverage",
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
@@ -218,11 +218,8 @@
       "<rootDir>/__tests__/**/*.test.js?(x)",
       "<rootDir>/src/components/**/*.test.js?(x)",
       "<rootDir>/src/containers/**/*.test.js?(x)",
-      "<rootDir>/src/pages/**/*.test.js?(x)"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx"
+      "<rootDir>/src/pages/**/*.test.js?(x)",
+      "<rootDir>/test/server/**/*-spec.js"
     ],
     "modulePathIgnorePatterns": [
       "__tests__",

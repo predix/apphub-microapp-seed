@@ -7,14 +7,6 @@ const assert = require('assert');
 const locales = require('../../../src/server/middleware/localize/locales');
 
 describe('App Middleware', () => {
-  before(function (done) {
-    done();
-  });
-
-  after(function () {
-    // app.shutdown();
-  });
-
   it('listen - should start server', (done) => {
     request(Server.getExpressApp())
       .get('/api')

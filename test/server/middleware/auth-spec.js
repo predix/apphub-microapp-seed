@@ -4,13 +4,9 @@ const request = require('supertest');
 describe('Auth Middleware', () => {
   let app;
 
-  before(function (done) {
+  beforeAll(function (done) {
     app = require('../../../src/server/index').getExpressApp();
     done();
-  });
-
-  after(function () {
-    // app.shutdown();
   });
 
   it('GET - /login responds successfully', (done) => {
