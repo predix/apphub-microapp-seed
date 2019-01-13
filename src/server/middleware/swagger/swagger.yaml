@@ -1,0 +1,123 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: apphub-microapp-seed
+  description: A microapp example seed project for AppHub.
+basePath: /api
+tags:
+  - name: nav
+    description: Navigation endpoints.
+  - name: db
+    description: Data store endpoints.
+  - name: example
+    description: Simple example endpoints.
+  - name: Specification
+    description: The swagger API specification.
+consumes:
+  - application/json
+produces:
+  - application/json
+definitions:
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The example name
+paths:
+  /nav:
+    get:
+      tags:
+        - nav
+      description: Get navigation array
+      responses:
+        '200':
+          description: Returns navigation array
+  /db:
+    get:
+      tags:
+        - db
+      summary: Current db info
+      description: Get db info
+      responses:
+        '200':
+          description: Returns db info
+    post:
+      tags:
+        - db
+      summary: Create new document
+      description: Allows you to insert a new document
+      responses:
+        '200':
+          description: OK
+  /db/_all_docs:
+    get:
+      tags:
+        - db
+      summary: Fetches all docs
+      description: Fetches all docs
+      responses:
+        '200':
+          description: Returns all docs
+  /db/{id}:
+    put:
+      tags:
+        - db
+      summary: Updates a document
+      description: Updates a document
+      parameters:
+        - name: id
+          type: string
+          in: path
+          description: The id of the document
+          required: true
+      responses:
+        '200':
+          description: OK
+  /example:
+    get:
+      tags:
+        - example
+      description: Fetch all Examples
+      responses:
+        '200':
+          description: Returns all examples
+    post:
+      tags:
+        - example
+      description: Create a new example
+      parameters:
+        - name: example
+          in: body
+          description: number of items to skip
+          required: true
+          schema:
+            $ref: '#/definitions/ExampleBody'
+      responses:
+        '200':
+          description: Returns all example
+  '/example/{id}':
+    get:
+      tags:
+        - example
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        '200':
+          description: Return the example with the specified id
+        '404':
+          description: example not
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        '200':
+          description: Return the API specification
