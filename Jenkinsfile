@@ -37,7 +37,7 @@ pipeline {
         sh 'npm install'
 
         echo 'Testing...'
-        sh 'npm test'
+        sh 'npm test -- --ci'
 
         echo 'Building...'
         sh 'npm run dist'
