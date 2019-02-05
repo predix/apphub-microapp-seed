@@ -20,7 +20,7 @@ const mockVcapServices = JSON.stringify({
   }],
   'predix-redis': [{
     credentials: {
-      host: 'localhost',
+      host: '127.0.0.1',
       password: 'test',
       port: 6379
     },
@@ -42,7 +42,6 @@ const mockVcapApplication = JSON.stringify({
 process.env.VCAP_APPLICATION = mockVcapApplication;
 process.env.VCAP_SERVICES = mockVcapServices;
 process.env.UAA_SERVICE_LABEL = 'predix-uaa';
-process.env.REDIS_SERVICE_LABEL = 'predix-redis';
 
 
 describe('Env', () => {
@@ -52,7 +51,7 @@ describe('Env', () => {
   if (!process.env.JENKINS_HOME) {
     describe('VCAP_SERVICES - REDIS', () => {
       it('should set REDIS_HOST / REDIS_PORT / REDIS_PASSWORD if in process.env.VCAP_SERVICES', () => {
-        expect(process.env.REDIS_HOST).to.equal('localhost');
+        expect(process.env.REDIS_HOST).to.equal('127.0.0.1');
         expect(process.env.REDIS_PORT).to.equal('6379');
         expect(process.env.REDIS_PASSWORD);
       });
@@ -62,7 +61,7 @@ describe('Env', () => {
       it('should parse VCAP_APPLICATION and set UAA callback information', () => {
         expect(process.env).to.not.be.null;
         // expect(process.env.UAA_CALLBACK_URL).to.equal('https://apphub-microapp-seed.local.test/callback');
-        expect(process.env.UAA_CALLBACK_URL).to.equal('http://localhost:9000/oauth/callback');
+        expect(process.env.UAA_CALLBACK_URL).to.contain('/oauth/callback');
       });
 
       it('should set UAA_URL', () => {

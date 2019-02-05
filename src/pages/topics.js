@@ -33,7 +33,7 @@ export default ({ match }) => (
         path={match.url}
         render={() => (
           <h3>Please select a topic.</h3>
-      )}
+        )}
       />
     </Card>
   </div>

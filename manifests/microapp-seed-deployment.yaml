@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.16.0 ()
+    org.label-schema.group: apphub-microapp
+  creationTimestamp: null
+  labels:
+    io.kompose.service: microapp-seed
+  name: microapp-seed
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: microapp-seed
+    spec:
+      containers:
+      - env:
+        - name: API_DATABASE_ADAPTER
+          value: redis
+        - name: DEBUG
+          value: apphub-microapp-seed:*
+        - name: ENABLE_REDIS_STORE
+          value: "true"
+        - name: NODE_ENV
+          value: production
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PASSWORD
+        - name: REDIS_PORT
+          value: "6379"
+        - name: RHOST
+          value: redis
+        image: predixapphub/apphub-microapp-seed:latest
+        name: microapp-seed
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+status: {}

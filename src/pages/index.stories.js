@@ -19,4 +19,3 @@ storiesOf('apphub-microapp-seed / Pages', module)
   .add('404 page', () => (
     <ErrorPage />
   ));
-

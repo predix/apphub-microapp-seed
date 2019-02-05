@@ -27,7 +27,12 @@ export default () => (
     <br />
     <Card headerText="Features">
       <p>This simple micro-app seed contains just enough to get you started.</p>
-      <p>Some <code>development</code> features include:</p>
+      <p>
+Some
+        <code>development</code>
+        {' '}
+features include:
+      </p>
       <ul>
         {features.map(feature => (
           <li key={feature.title}>

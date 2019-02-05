@@ -10,6 +10,7 @@ class CustomAdapter extends Base {
     this.defaultValue = defaultValue;
     log.debug('constructor', source, defaultValue);
   }
+
   read() {
     const data = store[this.source];
     log.debug('read', data);
@@ -18,6 +19,7 @@ class CustomAdapter extends Base {
     }
     return this.write(this.defaultValue);
   }
+
   write(data) {
     log.debug('write', data);
     store[this.source] = this.serialize(data);

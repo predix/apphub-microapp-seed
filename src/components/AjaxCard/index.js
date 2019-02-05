@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Button, Input, Card, ProgressBar } from 'predix-ui';
+import {
+  Button, Input, Card, ProgressBar
+} from 'predix-ui';
 
 
 class AjaxCard extends React.Component {
@@ -17,10 +19,11 @@ class AjaxCard extends React.Component {
   }
 
   debugRequest(e) {
+    const { ajaxEndpoint } = this.state;
     e.preventDefault();
     this.setState({ pendingRequest: true, ajaxData: null });
     setTimeout(() => {
-      axios.get(this.state.ajaxEndpoint).then((resp) => {
+      axios.get(ajaxEndpoint).then((resp) => {
         this.setState({
           ajaxData: resp,
           pendingRequest: false
@@ -56,13 +59,24 @@ class AjaxCard extends React.Component {
           </form>
           <br />
           { pendingRequest && <ProgressBar value={75} infinite /> }
-          { ajaxData &&
+          { ajaxData
+            && (
             <div>
-              <h4>Request - {ajaxData.config.url}</h4>
+              <h4>
+Request -
+                {ajaxData.config.url}
+              </h4>
               <pre id="ajaxRequest">{JSON.stringify(ajaxData.config, null, 2)}</pre>
-              <h4>Response - {ajaxData.status} - {ajaxData.statusText}</h4>
+              <h4>
+Response -
+                {ajaxData.status}
+                {' '}
+-
+                {ajaxData.statusText}
+              </h4>
               <pre id="ajaxResponse">{JSON.stringify(ajaxData.data, null, 2)}</pre>
             </div>
+            )
           }
         </Card>
       </div>

@@ -1,14 +1,14 @@
 const path = require('path');
 const assert = require('assert');
 const lowdb = require('lowdb');
-const helpers = require('../../helpers');
 const { expect } = require('chai');
-
-const DB = helpers.require('server/common/database');
-const tempFile = require('path').resolve(__dirname, '../../.temp-db');
-
 const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
 const MemoryAdapter = require('lowdb/adapters/Memory');
+
+const helpers = require('../../helpers');
+
+const DB = helpers.require('server/common/database');
+const tempFile = path.resolve(__dirname, '../../.temp-db');
 
 describe('DB', () => {
   let db;
@@ -52,7 +52,7 @@ describe('DB', () => {
           type: 'comment'
         }).then((resp) => {
           expect(resp).to.not.be.null;
-          expect(resp._id).to.be.defined;
+          expect(resp._id).to.not.be.null;
           done();
         }).catch(done);
       });
@@ -63,7 +63,7 @@ describe('DB', () => {
         }).then((resp) => {
           mockDoc = resp.doc;
           expect(mockDoc).to.not.be.null;
-          expect(mockDoc._id).to.be.defined;
+          expect(mockDoc._id).to.not.be.null;
           done();
         }).catch(done);
       });
@@ -84,7 +84,7 @@ describe('DB', () => {
         db.put(mockDoc).then((resp) => {
           mockDoc = resp.doc;
           expect(mockDoc).to.not.be.null;
-          expect(mockDoc.updated).to.be.defined;
+          expect(mockDoc.updated).to.not.be.null;
           done();
         }).catch(done);
       });
@@ -125,7 +125,7 @@ describe('DB', () => {
           mockDoc = r.doc;
           db.get(mockDoc._id).then((doc) => {
             expect(doc).to.not.be.null;
-            expect(doc._id).to.be.defined;
+            expect(doc._id).to.not.be.null;
             expect(doc.title).to.equal('Test Post');
             done();
           }).catch(done);

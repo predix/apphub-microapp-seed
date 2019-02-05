@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text } from '@storybook/addon-knobs/react';
-import AjaxCard from './';
+import AjaxCard from '.';
 
 storiesOf('apphub-microapp-seed / Components / AjaxCard', module)
   .addDecorator(withKnobs)

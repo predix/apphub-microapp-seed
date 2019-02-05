@@ -11,6 +11,7 @@ module.exports = function (app) {
   const compiler = webpack(config);
 
   const devMiddlewareOptions = {
+    stats: 'minimal',
     hot: true,
     logTime: true,
     host: process.env.HOST || 'localhost',
