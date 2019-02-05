@@ -31,10 +31,13 @@ pipeline {
           npm -v
           npm config set strict-ssl false
           npm config ls
+
+          npm i -g yarn
+          yarn config set strict-ssl false
         """
 
         echo 'Installing...'
-        sh 'npm install'
+        sh 'yarn install'
 
         echo 'Testing...'
         sh 'npm test -- --ci'
