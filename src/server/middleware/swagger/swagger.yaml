@@ -4,14 +4,22 @@ info:
   title: apphub-microapp-seed
   description: A microapp example seed project for AppHub.
 basePath: /api
+host: localhost:9000
+schemes: 
+  - http
+  - https
 tags:
-  - name: nav
-    description: Navigation endpoints.
+  - name: auth
+    description: Authentication endpoints.
   - name: db
     description: Data store endpoints.
   - name: example
     description: Simple example endpoints.
-  - name: Specification
+  - name: nav
+    description: Navigation endpoints.
+  - name: user
+    description: User endpoints.
+  - name: spec
     description: The swagger API specification.
 consumes:
   - application/json
@@ -28,6 +36,42 @@ definitions:
         type: string
         description: The example name
 paths:
+  /login:
+    get:
+      tags:
+        - auth
+      summary: Loads OAuth login screen
+      description: Loads OAuth login screen
+      responses:
+        200:
+          description: OK
+  /logout:
+    get:
+      tags:
+        - auth
+      summary: Loads OAuth logout screen
+      description: Loads OAuth logout screen
+      responses:
+        200:
+          description: OK
+  /user/info:
+    get:
+      tags:
+        - user
+      summary: Fetches user info
+      description: Fetches user info
+      responses:
+        200:
+          description: OK
+  /user/verify:
+    get:
+      tags:
+        - user
+      summary: Verify user info
+      description: Verify user info
+      responses: 
+        200:
+          description: OK
   /nav:
     get:
       tags:
@@ -117,7 +161,7 @@ paths:
   /spec:
     get:
       tags:
-        - Specification
+        - spec
       responses:
         '200':
           description: Return the API specification
