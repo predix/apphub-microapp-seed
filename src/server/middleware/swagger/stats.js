@@ -13,7 +13,7 @@ module.exports = function (app) {
   const swaggerStatsOptions = {
     swaggerSpec: null,
     elasticsearch: ELASTIC_SEARCH_URL || null,
-    authentication: (SWAGGER_STATS_USERNAME ? true : false),
+    authentication: (SWAGGER_STATS_USERNAME || false),
     onAuthenticate: (req, username, password) => {
       if (SWAGGER_STATS_USERNAME === username && SWAGGER_STATS_PASSWORD === password) {
         return true;
@@ -26,9 +26,8 @@ module.exports = function (app) {
     if (err) {
       console.error(err);
     } else {
-      console.log("API name: %s, Version: %s", api.info.title, api.info.version);
+      console.log(`API name: ${api.info.title}, Version: ${api.info.version}`);
       swaggerStatsOptions.swaggerSpec = api;
-
       app.use(swStats.getMiddleware(swaggerStatsOptions));
     }
   });

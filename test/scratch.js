@@ -1,12 +1,11 @@
 const fs = require('fs-extra');
 const path = require('path');
-const carsJson = fs.readJSONSync(path.resolve(__dirname, './cars.json'));
 const request = require('request');
 
-console.log(carsJson);
+const carsJson = fs.readJSONSync(path.resolve(__dirname, './cars.json'));
 
 const newJson = carsJson.map((car) => {
-  let c = car;
+  const c = car;
   c._id = `car-${car.id}`;
   delete c.id;
   c.docType = 'car';
@@ -21,11 +20,10 @@ function saveDoc(d) {
     json: true
   }, function (error, response, body) {
     if (error) throw new Error(error);
-
     console.log(body);
   });
 }
 
-newJson.map(saveDoc)
+newJson.map(saveDoc);
 
 fs.writeJSONSync(path.resolve(__dirname, './new-cars.json'), newJson);

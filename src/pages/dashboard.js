@@ -5,9 +5,15 @@ import AjaxCard from '../components/AjaxCard';
 const dashboardData = {
   keyVals: [
     { id: 1, label: 'New Alerts', value: 21 },
-    { id: 2, label: 'Utilization', value: '70', uom: '%' },
-    { id: 3, label: 'Faults', value: 3 },
-    { id: 4, label: 'Output', value: 53, uom: 'mw' }
+    {
+      id: 2, label: 'Utilization', value: '70', uom: '%'
+    },
+    {
+      id: 3, label: 'Faults', value: 3
+    },
+    {
+      id: 4, label: 'Output', value: 53, uom: 'mw'
+    }
   ]
 };
 
