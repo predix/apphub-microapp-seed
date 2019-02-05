@@ -206,6 +206,7 @@
     "report-dir": "./coverage"
   },
   "jest": {
+    "testURL": "http://localhost/",
     "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup.js",
     "collectCoverage": true,
     "coverageDirectory": "<rootDir>/coverage",
