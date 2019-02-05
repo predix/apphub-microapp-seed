@@ -18,7 +18,11 @@ const defaultSetup = module.exports = () => merge([{
     externals: [nodeExternals()],
     plugins: []
   },
-  parts.setDefaults()
+  parts.setDefaults(),
+  parts.copyPlugin([
+    { from: './server/middleware/swagger/*.yaml', to: './', flatten: true},
+    { from: './server/middleware/swagger/*.json', to: './', flatten: true}
+  ])
 ]);
 
 module.exports.library = (params) => {

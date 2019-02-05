@@ -4,10 +4,10 @@ import AjaxCard from '../components/AjaxCard';
 
 const dashboardData = {
   keyVals: [
-    { label: 'New Alerts', value: 21 },
-    { label: 'Utilization', value: '70', uom: '%' },
-    { label: 'Faults', value: 3 },
-    { label: 'Output', value: 53, uom: 'mw' }
+    { id: 1, label: 'New Alerts', value: 21 },
+    { id: 2, label: 'Utilization', value: '70', uom: '%' },
+    { id: 3, label: 'Faults', value: 3 },
+    { id: 4, label: 'Output', value: 53, uom: 'mw' }
   ]
 };
 
@@ -17,11 +17,11 @@ export default () => (
       <Flex middle spaced>
         {dashboardData.keyVals.map(item => (
           <KeyValuePair
-            key={item.label}
+            key={item.id}
             className="u-p"
             label={item.label}
-            uom={item.uom}
-            value={item.value}
+            uom={item.uom || null}
+            value={item.value.toString()}
             size="beta"
           />
           ))}

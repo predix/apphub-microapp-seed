@@ -1,7 +1,6 @@
 const middleware = require('swagger-express-middleware');
-const path = require('path');
+const specLocation = require('./swagger.json');
 
-const specLocation = path.join(__dirname, 'swagger.yaml');
 /* istanbul ignore file */
 module.exports = function (app, routes) {
   return middleware(specLocation, app, (err, mw) => {

@@ -21,6 +21,7 @@ exports.loadResolver = () => ({
     extensions: [
       '.jsx',
       '.js',
+      '.yaml',
       '.json',
       '.scss',
       '.css',
@@ -421,7 +422,7 @@ exports.workboxPlugin = (options) => {
   };
 };
 
-
+// https://github.com/webpack-contrib/copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 exports.copyPlugin = (options) => {
   return {
