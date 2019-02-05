@@ -11,4 +11,3 @@ storiesOf('apphub-microapp-seed', module)
       <p>Storybook enables you to create and test your components in isolation</p>
     </div>
   ));
-

@@ -20,8 +20,8 @@ const defaultSetup = module.exports = () => merge([{
   },
   parts.setDefaults(),
   parts.copyPlugin([
-    { from: './server/middleware/swagger/*.yaml', to: './', flatten: true},
-    { from: './server/middleware/swagger/*.json', to: './', flatten: true}
+    { from: './server/middleware/swagger/swagger.yaml', to: './', flatten: true},
+    { from: './server/middleware/swagger/swagger.json', to: './', flatten: true}
   ])
 ]);
 

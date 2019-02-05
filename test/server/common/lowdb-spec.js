@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const lowdb = require('lowdb');
+const path = require('path');
 const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
 const MemoryAdapter = require('lowdb/adapters/Memory');
 
@@ -7,7 +8,7 @@ const helpers = require('../../helpers');
 
 const requireHelper = helpers.require;
 const CustomAdapter = requireHelper('server/common/database-custom-adapter');
-const tempFile = require('path').resolve(__dirname, '../.temp-db.json');
+const tempFile = path.resolve(__dirname, '../.temp-db.json');
 
 let instance;
 

@@ -1,4 +1,3 @@
-const log = require('./logger')('database');
 const uuid = require('uuid');
 const path = require('path');
 const homeOrTmp = require('home-or-tmp');
@@ -6,6 +5,7 @@ const low = require('lowdb');
 const fs = require('fs-extra');
 
 const FileSync = require('lowdb/adapters/FileAsync');
+const log = require('./logger')('database');
 const RedisAdapter = require('./database-redis-adapter');
 const CustomAdapter = require('./database-custom-adapter');
 
@@ -115,6 +115,7 @@ class Database {
     }
     return doc;
   }
+
   /**
    * Add document to store
    * @param {Object} doc The document
@@ -190,25 +191,22 @@ class Database {
     }
   }
 
-  bulkDocs(docs) {
+  async bulkDocs(docs) {
     return new Promise((resolve, reject) => {
-      const out = [];
       try {
-        let index = 0;
-
-        for (; index < docs.length; index++) {
-          const doc = docs[index];
+        const promises = [];
+        docs.forEach((doc) => {
           if (doc._id) {
             if (doc._deleted) {
-              this.remove(doc._id).then(r => out.push(r));
-            } else {
-              this.put(doc).then(r => out.push(r));
+              promises.push(this.remove(doc._id));
             }
-          } else {
-            this.post(doc).then(r => out.push(r));
+            promises.push(this.put(doc));
           }
-        }
-        resolve(out);
+          if (!doc._id) {
+            promises.push(this.post(doc));
+          }
+        });
+        Promise.all(promises).then(resolve, reject);
       } catch (err) {
         reject(err);
       }

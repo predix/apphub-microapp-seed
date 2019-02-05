@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { AppNav } from 'predix-ui';
 
-
 // Pages
 import About from '../../pages/about';
 import Dashboard from '../../pages/dashboard';
@@ -20,11 +19,14 @@ class App extends React.Component {
   }
 
   changeRoute = (e) => {
-    if (this.props.onChange) {
-      this.props.onChange(e);
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(e);
     }
-    const selectedItem = e.selectedItem || this.state.navItems[e.selected];
-    window.location.hash = selectedItem.path;
+    const { navItems } = this.state;
+    const { selectedItem } = e || navItems[e.selected];
+    const { path } = selectedItem;
+    window.location.hash = path;
   }
 
   render() {

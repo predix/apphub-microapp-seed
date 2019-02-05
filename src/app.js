@@ -21,4 +21,3 @@ app.listen(port, () => {
   log.debug(routesList(app).toString());
   log.debug(`Running on port ${port}`);
 });
-

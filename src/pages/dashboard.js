@@ -30,7 +30,7 @@ export default () => (
             value={item.value.toString()}
             size="beta"
           />
-          ))}
+        ))}
       </Flex>
     </Card>
     <AjaxCard />
