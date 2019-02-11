@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Icon } from 'predix-ui';
+import Icon from 'predix-ui/dist/es/components/px/IconSet';
 import './styles.scss';
 
 class CustomCard extends React.Component {

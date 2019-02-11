@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'predix-ui';
+import Card from '../components/CustomCard';
 
 export default () => (
   <div className="about-page u-ph">

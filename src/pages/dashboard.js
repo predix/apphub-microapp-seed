@@ -1,13 +1,15 @@
 import React from 'react';
-import { Flex, KeyValuePair, Card } from 'predix-ui';
+import Card from 'predix-ui/dist/es/components/px/Card';
+import KeyValuePair from 'predix-ui/dist/es/components/px/KeyValuePair';
+import Flex from 'predix-ui/dist/es/styles/flex';
 import AjaxCard from '../components/AjaxCard';
 
 const dashboardData = {
   keyVals: [
-    { label: 'New Alerts', value: 21 },
+    { label: 'New Alerts', value: '21' },
     { label: 'Utilization', value: '70', uom: '%' },
-    { label: 'Faults', value: 3 },
-    { label: 'Output', value: 53, uom: 'mw' }
+    { label: 'Faults', value: '3' },
+    { label: 'Output', value: '50', uom: 'mw' }
   ]
 };
 
