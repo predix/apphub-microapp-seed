@@ -25,6 +25,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selected: 0,
       navItems: props.navItems
     };
   }
@@ -35,6 +36,13 @@ class App extends React.Component {
     }
     const selectedItem = e.selectedItem || this.state.navItems[e.selected];
     window.location.hash = selectedItem.path;
+  };
+
+  componentDidMount = () => {
+    const href = window.location.hash.replace('#', '');
+    const selectedItem = this.state.navItems.filter(item => (item.href === href));
+    const selected = this.state.navItems.indexOf(selectedItem && selectedItem[0]);
+    this.setState({ selected });
   }
 
   render() {
@@ -43,7 +51,12 @@ class App extends React.Component {
       <div>
         <Router>
           <Suspense fallback={<Loading />} className="full-height">
-            <AppNav title="apphub-microapp-seed" items={navItems} onChange={this.changeRoute} />
+            <AppNav
+              title="apphub-microapp-seed"
+              items={navItems}
+              selected={this.state.selected}
+              onChange={this.changeRoute}
+            />
             <br />
             <Switch>
               <Route exact path="/" component={WaitingComponent(Home)} />
