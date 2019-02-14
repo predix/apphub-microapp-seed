@@ -1,0 +1,6 @@
+nodejs:
+  version: '8.10.0'
+hooks:
+  pre_setup: npm install
+tests:
+  - npm test

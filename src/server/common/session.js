@@ -10,6 +10,7 @@ const {
   REDIS_DB,
   REDIS_PORT,
   REDIS_PASSWORD,
+  REDIS_URL,
   NODE_ENV
 } = process.env;
 
@@ -18,6 +19,7 @@ const setupSessionStore = () => {
     log.debug('setupSessionStore', 'using redis store');
     const RedisStore = require('connect-redis')(session);
     return new RedisStore({
+      url: REDIS_URL,
       host: REDIS_HOST,
       post: REDIS_PORT,
       pass: REDIS_PASSWORD,

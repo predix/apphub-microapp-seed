@@ -31,7 +31,7 @@ class AjaxCard extends React.Component {
           pendingRequest: false
         });
       });
-    }, 1000);
+    }, 500);
   }
 
   onChange(e) {

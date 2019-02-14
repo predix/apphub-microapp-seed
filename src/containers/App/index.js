@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { AppNav } from 'predix-ui';
+import AppNav from 'predix-ui/dist/es/components/px/AppNav';
 
+import Loading from '../../components/Loading';
+
+import NoMatch from '../../pages/404';
 
 // Pages
-import About from '../../pages/about';
-import Dashboard from '../../pages/dashboard';
-import Home from '../../pages/home';
-import Topics from '../../pages/topics';
-import NoMatch from '../../pages/404';
+const About = React.lazy(() => import('../../pages/about'));
+const Dashboard = React.lazy(() => import('../../pages/dashboard'));
+const Home = React.lazy(() => import('../../pages/home'));
+const Topics = React.lazy(() => import('../../pages/topics'));
+
+function WaitingComponent(Component) {
+  return props => (
+    <Suspense fallback={<Loading />}>
+      <Component {...props} />
+    </Suspense>
+  );
+}
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selected: 0,
       navItems: props.navItems
     };
   }
@@ -25,6 +36,13 @@ class App extends React.Component {
     }
     const selectedItem = e.selectedItem || this.state.navItems[e.selected];
     window.location.hash = selectedItem.path;
+  };
+
+  componentDidMount = () => {
+    const href = window.location.hash.replace('#', '');
+    const selectedItem = this.state.navItems.filter(item => (item.href === href));
+    const selected = this.state.navItems.indexOf(selectedItem && selectedItem[0]);
+    this.setState({ selected });
   }
 
   render() {
@@ -32,17 +50,22 @@ class App extends React.Component {
     return (
       <div>
         <Router>
-          <div className="full-height">
-            <AppNav title="apphub-microapp-seed" items={navItems} onChange={this.changeRoute} />
+          <Suspense fallback={<Loading />} className="full-height">
+            <AppNav
+              title="apphub-microapp-seed"
+              items={navItems}
+              selected={this.state.selected}
+              onChange={this.changeRoute}
+            />
             <br />
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/about" component={About} />
-              <Route path="/topics" component={Topics} />
+              <Route exact path="/" component={WaitingComponent(Home)} />
+              <Route path="/dashboard" component={WaitingComponent(Dashboard)} />
+              <Route path="/about" component={WaitingComponent(About)} />
+              <Route path="/topics" component={WaitingComponent(Topics)} />
               <Route component={NoMatch} />
             </Switch>
-          </div>
+          </Suspense>
         </Router>
       </div>
     );
