@@ -37,3 +37,4 @@ stats.json
 .tar
 temp-db.json
 .eslintcache
+.predix-ci*
