@@ -5,26 +5,26 @@ exports[`Ajax Card should match snapshot 1`] = `
   className="px-card ajax-card"
 >
   <div
-    className="px-card Card-RQot dtZMCC"
+    className="px-card sc-ifAKCX duhpuE"
   >
     <header
-      className="px-card-header Card__CardHeader-koEuzk bLmIuG"
+      className="px-card-header sc-EHOje cfAQId"
     >
       <span
-        className="Card__CardTitle-kMxcBS ccwVyt"
+        className="sc-bZQynM iwJCDw"
       >
         My Header
       </span>
     </header>
     <section
-      className="px-card-body Card__CardBody-cTgysh lglmDv"
+      className="px-card-body sc-gzVnrw czoSDo"
     >
       <form
         className="u-mb"
         onSubmit={[Function]}
       >
         <input
-          className="Input__BaseInput-LivYb hXrncw"
+          className="sc-htpNat ezktLi"
           id="urlInput"
           onChange={[Function]}
           placeholder="Enter URL..."
@@ -32,7 +32,7 @@ exports[`Ajax Card should match snapshot 1`] = `
           value="./api/example"
         />
         <button
-          className="px-button Button-kDSBcD dqCLFN"
+          className="px-button sc-bdVaJa ienWKz"
           icon={null}
           size={null}
           type="submit"

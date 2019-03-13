@@ -3,11 +3,10 @@
  */
 const pkg = require('../package.json');
 const path = require('path');
-const glob = require('glob-all');
+const glob = require('glob');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
-
 const publicPath = 'build';
 
 // This is an exact copy of the NodeJS ’path’ module published to the NPM registry.
@@ -134,19 +133,14 @@ const productionConfig = merge([{
   parts.minifyJavaScript(),
   parts.minifyCSS({
     options: {
-      discardComments: {
-        removeAll: true
-      },
-      safe: true
+
     }
   }),
   parts.criticalCSS(),
   parts.purifyCSS({
     verbose: true,
     moduleExtensions: ['.html', '.js'],
-    paths: glob.sync([
-      path.resolve(__dirname, '../dist/**')
-    ])
+    paths: glob.sync(path.resolve(__dirname, '../dist/**'))
   })
 ]);
 

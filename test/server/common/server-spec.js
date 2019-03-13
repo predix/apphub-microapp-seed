@@ -27,7 +27,7 @@ describe('Server', () => {
   });
 
   afterAll(function (done) {
-    // server.shutdown(done);
+    server.shutdown(done);
     done();
   });
   it('should use app if passed', (done) => {

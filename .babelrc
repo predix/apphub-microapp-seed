@@ -1,9 +1,9 @@
 {
   "sourceMaps": true,
   "presets": [
-    ["react"],
+    ["@babel/preset-react"],
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": ["last 2 versions"]
@@ -12,16 +12,16 @@
     ]
   ],
   "plugins": [
-    "transform-runtime",
-    "transform-async-to-generator",
-    "transform-class-properties",
-    "transform-es2015-arrow-functions",
-    "syntax-dynamic-import",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-arrow-functions",
+    "@babel/plugin-proposal-async-generator-functions",
     "react-hot-loader/babel"
   ],
   "env": {
     "test": {
-      "presets": ["env"]
+      "presets": ["@babel/preset-env"]
     }
   }
 }
