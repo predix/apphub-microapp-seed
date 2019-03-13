@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
-import Card from './';
+import Card from '.';
 
 describe('Ajax Card', () => {
   test('should render', () => {
