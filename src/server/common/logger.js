@@ -1,7 +1,7 @@
 const debug = require('debug');
 const ns = require('../../../package.json').name;
 
-module.exports = function (n) {
+module.exports = function(n) {
   /**
    * Logger class enables a nicely formatted console logger.
    * Output is enabled when setting the environment variable `DEBUG`

@@ -14,21 +14,16 @@ class RedisAdapter extends Base {
 
     log.debug('RedisAdapter', source, defaultValue);
 
-    const {
-      REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, REDIS_URL
-    } = process.env;
+    const { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD, REDIS_DB, REDIS_URL } = process.env;
 
     try {
-      redisClient = new Redis(
-        REDIS_PORT || 6379,
-        REDIS_HOST || 'localhost', {
-          url: REDIS_URL,
-          password: REDIS_PASSWORD,
-          db: REDIS_DB || 0,
-          lazyConnect: false,
-          reconnectOnError: false
-        }
-      );
+      redisClient = new Redis(REDIS_PORT || 6379, REDIS_HOST || 'localhost', {
+        url: REDIS_URL,
+        password: REDIS_PASSWORD,
+        db: REDIS_DB || 0,
+        lazyConnect: false,
+        reconnectOnError: false
+      });
     } catch (err) {
       log.error('RedistAdapter.error', err);
       // throw err;

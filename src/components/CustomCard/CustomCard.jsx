@@ -38,12 +38,12 @@ class CustomCard extends React.Component {
 
     return (
       <div className={classes}>
-        {headerText &&
+        {headerText && (
           <header onClick={this.handleClick} role="presentation">
             {icon && <Icon icon={icon} />}
             <span className="epsilon caps">{headerText}</span>
           </header>
-        }
+        )}
         {!isClosed && <section>{children}</section>}
       </div>
     );
@@ -60,13 +60,8 @@ CustomCard.defaultProps = {
 CustomCard.propTypes = {
   headerText: PropTypes.string,
   icon: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.node,
-    PropTypes.element
-  ]),
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.element]),
   closed: PropTypes.bool
 };
-
 
 export default CustomCard;

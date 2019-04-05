@@ -16,9 +16,13 @@ describe('DB', () => {
   let mockDoc;
 
   beforeAll((done) => {
-    db = DB.getInstance(tempFile, {
-      docs: []
-    }, 'memory');
+    db = DB.getInstance(
+      tempFile,
+      {
+        docs: []
+      },
+      'memory'
+    );
     done();
   });
 
@@ -50,104 +54,124 @@ describe('DB', () => {
         db.post({
           title: 'Test Comment',
           type: 'comment'
-        }).then((resp) => {
-          expect(resp).to.not.be.null;
-          expect(resp._id).to.be.defined;
-          done();
-        }).catch(done);
+        })
+          .then((resp) => {
+            expect(resp).to.not.be.null;
+            expect(resp._id).to.be.defined;
+            done();
+          })
+          .catch(done);
       });
       it('should create doc with generated _id and resolve on success', (done) => {
         db.post({
           title: 'Test Post',
           type: 'post'
-        }).then((resp) => {
-          mockDoc = resp.doc;
-          expect(mockDoc).to.not.be.null;
-          expect(mockDoc._id).to.be.defined;
-          done();
-        }).catch(done);
+        })
+          .then((resp) => {
+            mockDoc = resp.doc;
+            expect(mockDoc).to.not.be.null;
+            expect(mockDoc._id).to.be.defined;
+            done();
+          })
+          .catch(done);
       });
       it('should reject if no doc passed', (done) => {
-        db.post().then((resp) => {
-          expect(!resp);
-          done();
-        }).catch((err) => {
-          expect(err).to.not.be.null;
-          done();
-        });
+        db.post()
+          .then((resp) => {
+            expect(!resp);
+            done();
+          })
+          .catch((err) => {
+            expect(err).to.not.be.null;
+            done();
+          });
       });
     });
 
     describe('put', () => {
       it('should update doc and resolve on success', (done) => {
         mockDoc.updated = Date.now();
-        db.put(mockDoc).then((resp) => {
-          mockDoc = resp.doc;
-          expect(mockDoc).to.not.be.null;
-          expect(mockDoc.updated).to.be.defined;
-          done();
-        }).catch(done);
+        db.put(mockDoc)
+          .then((resp) => {
+            mockDoc = resp.doc;
+            expect(mockDoc).to.not.be.null;
+            expect(mockDoc.updated).to.be.defined;
+            done();
+          })
+          .catch(done);
       });
       it('should reject if _id not found', (done) => {
         db.put({
           _id: 'some-id'
-        }).then((resp) => {
-          expect(!resp);
-          done();
-        }).catch((err) => {
-          expect(err).to.not.be.null;
-          done();
-        });
+        })
+          .then((resp) => {
+            expect(!resp);
+            done();
+          })
+          .catch((err) => {
+            expect(err).to.not.be.null;
+            done();
+          });
       });
       it('should reject if no doc passed', (done) => {
-        db.put().then((resp) => {
-          expect(!resp);
-          done();
-        }).catch((err) => {
-          expect(err).to.not.be.null;
-          done();
-        });
+        db.put()
+          .then((resp) => {
+            expect(!resp);
+            done();
+          })
+          .catch((err) => {
+            expect(err).to.not.be.null;
+            done();
+          });
       });
     });
 
     describe('get', () => {
       it('should reject if no id passed', (done) => {
-        db.get().then((resp) => {
-          expect(!resp);
-          done();
-        }).catch((err) => {
-          expect(err).to.not.be.null;
-          done();
-        });
+        db.get()
+          .then((resp) => {
+            expect(!resp);
+            done();
+          })
+          .catch((err) => {
+            expect(err).to.not.be.null;
+            done();
+          });
       });
       it('should resolve on success', (done) => {
         db.post(mockDoc).then((r) => {
           mockDoc = r.doc;
-          db.get(mockDoc._id).then((doc) => {
-            expect(doc).to.not.be.null;
-            expect(doc._id).to.be.defined;
-            expect(doc.title).to.equal('Test Post');
-            done();
-          }).catch(done);
+          db.get(mockDoc._id)
+            .then((doc) => {
+              expect(doc).to.not.be.null;
+              expect(doc._id).to.be.defined;
+              expect(doc.title).to.equal('Test Post');
+              done();
+            })
+            .catch(done);
         });
       });
     });
 
     describe('allDocs', () => {
       it('should return all docs', (done) => {
-        db.allDocs().then((docs) => {
-          expect(docs).to.not.be.null;
-          done();
-        }).catch(done);
+        db.allDocs()
+          .then((docs) => {
+            expect(docs).to.not.be.null;
+            done();
+          })
+          .catch(done);
       });
       it('should filtered docs', (done) => {
         db.allDocs({
           type: 'comment'
-        }).then((docs) => {
-          expect(docs).to.not.be.null;
-          // expect(docs[0].title).to.equal('Test Comment');
-          done();
-        }).catch(done);
+        })
+          .then((docs) => {
+            expect(docs).to.not.be.null;
+            // expect(docs[0].title).to.equal('Test Comment');
+            done();
+          })
+          .catch(done);
       });
     });
 
@@ -155,15 +179,18 @@ describe('DB', () => {
       it('should resolve on success', (done) => {
         db.post({
           name: 'remove me'
-        }).then((resp) => {
-          assert(resp.ok);
-          assert(resp.doc, 'returns doc');
-          db.remove(resp.doc._id)
-            .then((r) => {
-              assert(r.ok);
-              done();
-            }).catch(done);
-        }).catch(done);
+        })
+          .then((resp) => {
+            assert(resp.ok);
+            assert(resp.doc, 'returns doc');
+            db.remove(resp.doc._id)
+              .then((r) => {
+                assert(r.ok);
+                done();
+              })
+              .catch(done);
+          })
+          .catch(done);
       });
       it('should throw if no id', () => {
         expect(() => {
@@ -191,7 +218,6 @@ describe('DB', () => {
     runCRUDTests(db);
   });
 
-
   describe('lowdb', () => {
     describe('Memory Adapter', () => {
       beforeAll(() => {
@@ -207,32 +233,36 @@ describe('DB', () => {
       it('should return instance', () => {
         expect(instance).to.not.be.null;
       });
-      it('should write item', function () {
+      it('should write item', function() {
         instance.set('user.name', 'test-user').write();
         expect(instance.get('user.name').value()).to.equal('test-user');
       });
-      it('should read item', function () {
+      it('should read item', function() {
         expect(instance.get('user.name').value()).to.equal('test-user');
       });
     });
 
-    describe('FileAsync Adapter', function () {
+    describe('FileAsync Adapter', function() {
       beforeAll(async () => {
-        instance = await lowdb(new FileAsyncAdapter(path.resolve(__dirname, '../../../temp-db.json')));
-        return instance.defaults({
-          posts: [],
-          user: {},
-          count: 0
-        }).write();
+        instance = await lowdb(
+          new FileAsyncAdapter(path.resolve(__dirname, '../../../temp-db.json'))
+        );
+        return instance
+          .defaults({
+            posts: [],
+            user: {},
+            count: 0
+          })
+          .write();
       });
       it('should return instance', () => {
         expect(instance).to.not.be.null;
       });
-      it('should write item', function () {
+      it('should write item', function() {
         instance.set('user.name', 'test-user').write();
         expect(instance.get('user.name').value()).to.equal('test-user');
       });
-      it('should read item', function () {
+      it('should read item', function() {
         expect(instance.get('user.name').value()).to.equal('test-user');
       });
     });

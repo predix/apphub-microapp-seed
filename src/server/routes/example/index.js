@@ -18,10 +18,9 @@ const mySecondMiddleware = function mySecondMiddleware(req, res, next) {
  *
  */
 module.exports = {
-
   '/timeout/:time': {
     get: (req, res) => {
-      setTimeout(function () {
+      setTimeout(function() {
         res.status(200).send({
           headers: req.headers,
           body: req.body,
@@ -30,7 +29,7 @@ module.exports = {
       }, req.params.time || 1000);
     },
     post: (req, res) => {
-      setTimeout(function () {
+      setTimeout(function() {
         res.status(200).send({
           headers: req.headers,
           body: req.body,
@@ -65,9 +64,10 @@ module.exports = {
   '/setCookie/:cName/:cValue': {
     get: (req, res) => {
       const customCookie = `${req.params.cName}=${req.params.cValue};Path=/`;
-      res.set({
-        'Set-Cookie': customCookie
-      })
+      res
+        .set({
+          'Set-Cookie': customCookie
+        })
         .status(200)
         .send({
           cookies: req.headers.cookie
@@ -81,18 +81,24 @@ module.exports = {
         query: req.query
       });
     },
-    put: [bodyParser.json(), (req, res) => {
-      res.status(200).send({
-        headers: req.headers,
-        body: req.body
-      });
-    }],
-    post: [bodyParser.json(), (req, res) => {
-      res.status(201).send({
-        headers: req.headers,
-        body: req.body
-      });
-    }]
+    put: [
+      bodyParser.json(),
+      (req, res) => {
+        res.status(200).send({
+          headers: req.headers,
+          body: req.body
+        });
+      }
+    ],
+    post: [
+      bodyParser.json(),
+      (req, res) => {
+        res.status(201).send({
+          headers: req.headers,
+          body: req.body
+        });
+      }
+    ]
   },
   '/my/path/to/:something': {
     get: function getSomething(req, res) {
@@ -102,8 +108,12 @@ module.exports = {
     },
 
     // you can also use an array if you need to use middlewares
-    post: [myFirstMiddleware, mySecondMiddleware, function createSomethingElse(req, res) {
-      res.status(200).send({ data: req.body });
-    }]
+    post: [
+      myFirstMiddleware,
+      mySecondMiddleware,
+      function createSomethingElse(req, res) {
+        res.status(200).send({ data: req.body });
+      }
+    ]
   }
 };

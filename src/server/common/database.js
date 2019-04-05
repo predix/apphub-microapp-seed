@@ -16,10 +16,14 @@ let instance = null;
  * https://github.com/typicode/lowdb#usage
  */
 class Database {
-  constructor(name, defaults = {
-    user: {},
-    docs: []
-  }, adapter) {
+  constructor(
+    name,
+    defaults = {
+      user: {},
+      docs: []
+    },
+    adapter
+  ) {
     this.options = {
       adapter,
       db_name: name,
@@ -33,15 +37,17 @@ class Database {
 
   connect() {
     return new Promise((resolve, reject) => {
-      if (typeof (this.adapter) === 'string') {
+      if (typeof this.adapter === 'string') {
         try {
           log.debug('Database - ', 'loading adapter', this.adapter);
           if (this.adapter === 'redis') {
             this.adapter = new RedisAdapter(this.name, this.defaults);
-            low(this.adapter).then((redisdb) => {
-              this.db = redisdb;
-              resolve(this);
-            }).catch(reject);
+            low(this.adapter)
+              .then((redisdb) => {
+                this.db = redisdb;
+                resolve(this);
+              })
+              .catch(reject);
           }
         } catch (e) {
           log.error('Error with adapter', e);
@@ -83,7 +89,10 @@ class Database {
   }
 
   info() {
-    this.options.doc_count = this.db.get('docs').size().value();
+    this.options.doc_count = this.db
+      .get('docs')
+      .size()
+      .value();
     return Promise.resolve(this.options);
   }
 
@@ -92,7 +101,10 @@ class Database {
     try {
       let docs;
       if (params) {
-        docs = db.get('docs').filter(params).value();
+        docs = db
+          .get('docs')
+          .filter(params)
+          .value();
       } else {
         docs = db.get('docs').value();
       }
@@ -107,9 +119,12 @@ class Database {
     if (!id) {
       throw new Error('get - must provide _id');
     }
-    const doc = db.get('docs').find({
-      _id: id
-    }).value();
+    const doc = db
+      .get('docs')
+      .find({
+        _id: id
+      })
+      .value();
     if (!doc) {
       throw new Error(`get - doc with id ${id} not found`);
     }
@@ -132,7 +147,9 @@ class Database {
         if (!doc.created_at) {
           _doc.created_at = new Date().toString();
         }
-        db.get('docs').push(_doc).write();
+        db.get('docs')
+          .push(_doc)
+          .write();
         resolve({
           ok: true,
           doc: _doc
@@ -179,9 +196,11 @@ class Database {
     try {
       const doc = await this.get(id);
       this.log.debug('remove', id, doc);
-      db.get('docs').remove({
-        _id: id
-      }).write();
+      db.get('docs')
+        .remove({
+          _id: id
+        })
+        .write();
       return {
         ok: true
       };
@@ -200,12 +219,12 @@ class Database {
           const doc = docs[index];
           if (doc._id) {
             if (doc._deleted) {
-              this.remove(doc._id).then(r => out.push(r));
+              this.remove(doc._id).then((r) => out.push(r));
             } else {
-              this.put(doc).then(r => out.push(r));
+              this.put(doc).then((r) => out.push(r));
             }
           } else {
-            this.post(doc).then(r => out.push(r));
+            this.post(doc).then((r) => out.push(r));
           }
         }
         resolve(out);

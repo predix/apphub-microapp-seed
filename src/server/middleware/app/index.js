@@ -6,11 +6,10 @@ const session = require('express-session');
 const log = require('../../common/logger')('middleware-app');
 const sessionOptions = require('../../common/session');
 
-
 /**
  * Application level middleware
  */
-module.exports = function (app) {
+module.exports = function(app) {
   const setStaticAssetsCacheControl = (res) => {
     if (res && res.req && res.req.get('cache-control')) {
       res.set('cache-control', res.req.get('cache-control'));
@@ -50,11 +49,7 @@ module.exports = function (app) {
     log.debug('Setting production only settings.');
     app.set('trust proxy', 1);
 
-    const publicDirs = [
-      path.resolve(__dirname, './public'),
-      path.resolve(__dirname, './'),
-      '.'
-    ];
+    const publicDirs = [path.resolve(__dirname, './public'), path.resolve(__dirname, './'), '.'];
     publicDirs.forEach((dir) => {
       app.use(serveStatic(dir, staticServerConfig));
     });

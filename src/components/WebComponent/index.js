@@ -42,9 +42,12 @@ function syncEvent(n, eventName, newEventHandler) {
   }
   // Bind new listener.
   if (newEventHandler) {
-    node.addEventListener(eventNameLc, eventStore[eventNameLc] = function handler(e) {
-      newEventHandler.call(this, e);
-    });
+    node.addEventListener(
+      eventNameLc,
+      (eventStore[eventNameLc] = function handler(e) {
+        newEventHandler.call(this, e);
+      })
+    );
   }
 }
 
@@ -98,11 +101,13 @@ function isElementDefined(elementName) {
  * @return {type}               description
  */
 function ReactWebComponent(CustomElement, opts = assign({}, defaults, { React, ReactDOM }), url) {
-  const tagName = typeof CustomElement === 'function' ? (new CustomElement()) : CustomElement;
+  const tagName = typeof CustomElement === 'function' ? new CustomElement() : CustomElement;
   const displayName = pascalCase(tagName);
 
   if (!opts.React || !opts.ReactDOM) {
-    throw new Error('React and ReactDOM must be dependencies, globally on your `window` object or passed via opts.');
+    throw new Error(
+      'React and ReactDOM must be dependencies, globally on your `window` object or passed via opts.'
+    );
   }
 
   class ReactComponent extends React.Component {
@@ -124,9 +129,14 @@ function ReactWebComponent(CustomElement, opts = assign({}, defaults, { React, R
           throw new Error('This component requires global Polymer library API availability.');
         }
         // Load the component async
-        window.Polymer.Base.importHref(url, this.componentDidImport.bind(this), (er) => {
-          throw new Error(`Failed to import module: ${url} ${er}`);
-        }, true);
+        window.Polymer.Base.importHref(
+          url,
+          this.componentDidImport.bind(this),
+          (er) => {
+            throw new Error(`Failed to import module: ${url} ${er}`);
+          },
+          true
+        );
       } else {
         this.componentDidImport();
       }
@@ -185,7 +195,9 @@ function ReactWebComponent(CustomElement, opts = assign({}, defaults, { React, R
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-      if (!this.state.mounted && nextState.mounted) { return false; }
+      if (!this.state.mounted && nextState.mounted) {
+        return false;
+      }
       return true;
     }
 
@@ -194,11 +206,13 @@ function ReactWebComponent(CustomElement, opts = assign({}, defaults, { React, R
       if (this.props.children && node) {
         const shadowRoot = window.Polymer.dom(node.root);
         const lightRoot = window.Polymer.dom(node);
-        Array.from(node.childNodes).filter(function (child) {
-          return !shadowRoot.deepContains(child);
-        }).forEach(function (newChild) {
-          lightRoot.appendChild(newChild);
-        });
+        Array.from(node.childNodes)
+          .filter(function(child) {
+            return !shadowRoot.deepContains(child);
+          })
+          .forEach(function(newChild) {
+            lightRoot.appendChild(newChild);
+          });
       }
     }
 
@@ -206,9 +220,13 @@ function ReactWebComponent(CustomElement, opts = assign({}, defaults, { React, R
       if (!this.state.imported) {
         return null;
       }
-      return React.createElement(tagName, {
-        style: this.props.style
-      }, this.props.children);
+      return React.createElement(
+        tagName,
+        {
+          style: this.props.style
+        },
+        this.props.children
+      );
     }
   }
 
@@ -219,16 +237,16 @@ function ReactWebComponent(CustomElement, opts = assign({}, defaults, { React, R
 
   ReactComponent.propTypes = {
     style: PropTypes.objectOf(PropTypes.string),
-    children: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.node,
-      PropTypes.element
-    ])
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.element])
   };
   return ReactComponent;
 }
 
-export default function ReactPolymerComponent(element, elementPath = `${BASE_PATH}/${element}`, opts) {
+export default function ReactPolymerComponent(
+  element,
+  elementPath = `${BASE_PATH}/${element}`,
+  opts
+) {
   const url = `${elementPath}/${element}.html`;
   return ReactWebComponent(element, opts, url);
 }

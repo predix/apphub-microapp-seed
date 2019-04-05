@@ -1,4 +1,3 @@
-
 process.env.SESSION_SECRET = 'mySecret';
 
 const sinon = require('sinon');
@@ -19,14 +18,14 @@ describe('Server', () => {
   let server;
   let app;
 
-  beforeAll(function (done) {
+  beforeAll(function(done) {
     server = new Server();
     app = server.getExpressApp();
     app.use(router);
     done();
   });
 
-  afterAll(function (done) {
+  afterAll(function(done) {
     server.shutdown(done);
     done();
   });

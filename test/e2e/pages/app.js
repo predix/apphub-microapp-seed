@@ -1,4 +1,3 @@
-
 const commands = {
   doThis() {
     return this;

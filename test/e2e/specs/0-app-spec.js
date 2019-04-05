@@ -1,8 +1,5 @@
-
 module.exports = {
-  '@tags': [
-    'app', 'sanity'
-  ],
+  '@tags': ['app', 'sanity'],
   before(browser) {
     browser
       .url(`${browser.globals.baseUrl}/login`)
@@ -12,11 +9,12 @@ module.exports = {
   after(browser) {
     browser.end();
   },
-  'should load app and have title': function (browser) {
+  'should load app and have title': function(browser) {
     const app = browser.page.app();
     app
       .navigate()
       .waitForElementVisible('body', browser.globals.timeout)
-      .expect.element('@header').text.to.equal('Micro-App Seed');
+      .expect.element('@header')
+      .text.to.equal('Micro-App Seed');
   }
 };

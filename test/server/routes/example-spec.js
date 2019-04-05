@@ -10,7 +10,7 @@ const baseUrl = '/api/example';
 describe('Example Routes', () => {
   let app;
 
-  beforeAll(function (done) {
+  beforeAll(function(done) {
     app = express();
     app.use(baseUrl, controller(exampleController));
     done();

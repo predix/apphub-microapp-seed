@@ -30,13 +30,12 @@
 		"test": "cross-env NODE_ENV=test jest --coverage --logHeapUsage --detectOpenHandles",
 		"test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
 		"lint": "eslint ./src ./test --cache",
+		"pretty": "prettier --write 'test/**/*.js' 'src/**/*.js' 'src/**/*.jsx'",
 		"zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
 		"storybook": "start-storybook -c .storybook",
 		"storybook:build": "build-storybook -c .storybook -o .out"
 	},
-	"keywords": [
-		"predix-microapp"
-	],
+	"keywords": ["predix-microapp"],
 	"devDependencies": {
 		"@babel/cli": "^7.2.3",
 		"@babel/core": "^7.2.2",
@@ -87,9 +86,11 @@
 		"esdoc-standard-plugin": "^1.0.0",
 		"eslint": "^4.16.0",
 		"eslint-config-airbnb": "^16.1.0",
+		"eslint-config-prettier": "^4.1.0",
 		"eslint-loader": "^1.7.1",
 		"eslint-plugin-import": "^2.1.0",
 		"eslint-plugin-jsx-a11y": "^6.0.3",
+		"eslint-plugin-prettier": "^3.0.1",
 		"eslint-plugin-react": "^7.7.0",
 		"exports-loader": "^0.7.0",
 		"file-loader": "^1.1.11",
@@ -114,7 +115,7 @@
 		"postcss-import": "^11.0.0",
 		"postcss-loader": "^2.0.10",
 		"postcss-reporter": "^5.0.0",
-		"prettier": "1.16.4",
+		"prettier": "^1.16.4",
 		"promise-polyfill": "^8.1.0",
 		"prop-types": "^15.6.1",
 		"purify-css": "^1.2.5",
@@ -194,14 +195,10 @@
 	},
 	"jest": {
 		"testURL": "http://127.0.0.1:80",
-		"setupFilesAfterEnv": [
-			"<rootDir>/__tests__/setup.js"
-		],
+		"setupFilesAfterEnv": ["<rootDir>/__tests__/setup.js"],
 		"collectCoverage": true,
 		"coverageDirectory": "<rootDir>/coverage",
-		"snapshotSerializers": [
-			"enzyme-to-json/serializer"
-		],
+		"snapshotSerializers": ["enzyme-to-json/serializer"],
 		"testMatch": [
 			"<rootDir>/__tests__/**/*.test.js?(x)",
 			"<rootDir>/src/**/*.test.js?(x)",
@@ -221,9 +218,7 @@
 			"stories",
 			"docs"
 		],
-		"moduleDirectories": [
-			"node_modules"
-		],
+		"moduleDirectories": ["node_modules"],
 		"moduleNameMapper": {
 			"\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
 			"\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js"

@@ -26,13 +26,7 @@ export default ({ match }) => (
           </li>
         </ul>
         <Route path={`${match.url}/:topicId`} component={Topic} />
-        <Route
-          exact
-          path={match.url}
-          render={() => (
-            <h3>Please select a topic.</h3>
-        )}
-        />
+        <Route exact path={match.url} render={() => <h3>Please select a topic.</h3>} />
       </Flex>
     </Card>
   </div>

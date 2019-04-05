@@ -19,7 +19,7 @@ export default () => (
     </Card>
     <Card headerText="Right Now" className="u-mb">
       <Flex middle spaced>
-        {dashboardData.keyVals.map(item => (
+        {dashboardData.keyVals.map((item) => (
           <KeyValuePair
             key={item.label}
             className="u-p"
@@ -28,7 +28,7 @@ export default () => (
             value={item.value}
             size="beta"
           />
-          ))}
+        ))}
       </Flex>
     </Card>
   </div>

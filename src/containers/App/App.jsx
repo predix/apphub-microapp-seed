@@ -14,7 +14,7 @@ const Home = React.lazy(() => import('../../pages/home'));
 const Topics = React.lazy(() => import('../../pages/topics'));
 
 function WaitingComponent(Component) {
-  return props => (
+  return (props) => (
     <Suspense fallback={<Loading />}>
       <Component {...props} />
     </Suspense>
@@ -40,10 +40,10 @@ class App extends React.Component {
 
   componentDidMount = () => {
     const href = window.location.hash.replace('#', '');
-    const selectedItem = this.state.navItems.filter(item => (item.href === href));
+    const selectedItem = this.state.navItems.filter((item) => item.href === href);
     const selected = this.state.navItems.indexOf(selectedItem && selectedItem[0]);
     this.setState({ selected });
-  }
+  };
 
   render() {
     const { navItems } = this.state;
@@ -74,28 +74,44 @@ class App extends React.Component {
 
 App.defaultProps = {
   onChange: null,
-  navItems: [{
-    id: 'home', path: '/', label: 'Home', icon: 'px-fea:home'
-  },
-  {
-    id: 'about', path: '/about', label: 'About', icon: 'px-fea:catalog'
-  },
-  {
-    id: 'dashboard', path: '/dashboard', label: 'Dashboard', icon: 'px-fea:dashboard'
-  },
-  {
-    id: 'topics', path: '/topics', label: 'Topics', icon: 'px-fea:log'
-  }]
+  navItems: [
+    {
+      id: 'home',
+      path: '/',
+      label: 'Home',
+      icon: 'px-fea:home'
+    },
+    {
+      id: 'about',
+      path: '/about',
+      label: 'About',
+      icon: 'px-fea:catalog'
+    },
+    {
+      id: 'dashboard',
+      path: '/dashboard',
+      label: 'Dashboard',
+      icon: 'px-fea:dashboard'
+    },
+    {
+      id: 'topics',
+      path: '/topics',
+      label: 'Topics',
+      icon: 'px-fea:log'
+    }
+  ]
 };
 
 App.propTypes = {
   onChange: PropTypes.func,
-  navItems: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    path: PropTypes.string,
-    label: PropTypes.string,
-    icon: PropTypes.string
-  }))
+  navItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      path: PropTypes.string,
+      label: PropTypes.string,
+      icon: PropTypes.string
+    })
+  )
 };
 
 export default App;

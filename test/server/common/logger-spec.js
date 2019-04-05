@@ -19,25 +19,25 @@ describe('Logger', () => {
     expect(log).to.not.be.null;
   });
 
-  it('should return subject', function () {
+  it('should return subject', function() {
     const expected = `${pkg.name}:INFO:spec`;
     const actual = log.getSubject('info');
     expect(actual).to.equal(expected);
   });
 
-  it('should log info', function () {
+  it('should log info', function() {
     log.info('test info');
   });
-  it('should log debug', function () {
+  it('should log debug', function() {
     log.debug('test');
   });
-  it('should log error', function () {
+  it('should log error', function() {
     log.error('test');
   });
-  it('should log warn', function () {
+  it('should log warn', function() {
     log.warn('test');
   });
-  it('should log always', function () {
+  it('should log always', function() {
     log.always('test');
   });
 });

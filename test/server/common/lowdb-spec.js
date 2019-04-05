@@ -11,7 +11,7 @@ const tempFile = require('path').resolve(__dirname, '../.temp-db.json');
 
 let instance;
 
-describe('lowdb', function () {
+describe('lowdb', function() {
   // this.timeout(30000);
   describe('Memory Adapter', () => {
     beforeAll(() => {
@@ -27,11 +27,11 @@ describe('lowdb', function () {
     it('should return instance', () => {
       expect(instance).to.not.be.null;
     });
-    it('should write item', function () {
+    it('should write item', function() {
       instance.set('user.name', 'test-user').write();
       expect(instance.get('user.name').value()).to.equal('test-user');
     });
-    it('should read item', function () {
+    it('should read item', function() {
       expect(instance.get('user.name').value()).to.equal('test-user');
     });
   });
@@ -45,23 +45,25 @@ describe('lowdb', function () {
             user: {},
             count: 0
           })
-          .write().then(r => done(null, r));
+          .write()
+          .then((r) => done(null, r));
       });
     });
     it('should return instance', () => {
       expect(instance).to.not.be.null;
     });
-    it('should write item (as promise)', function (done) {
+    it('should write item (as promise)', function(done) {
       instance
         .get('posts')
         .push({ id: 1, title: 'lowdb is awesome' })
-        .set('user.name', 'test-user').write()
+        .set('user.name', 'test-user')
+        .write()
         .then(() => {
           expect(instance.get('user.name').value()).to.equal('test-user');
           done();
         });
     });
-    it('should read item', function (done) {
+    it('should read item', function(done) {
       expect(instance.get('user.name').value()).to.equal('test-user');
       done();
     });
@@ -76,13 +78,14 @@ describe('lowdb', function () {
             user: {},
             count: 0
           })
-          .write().then(r => done(null, r));
+          .write()
+          .then((r) => done(null, r));
       });
     });
     it('should return instance', () => {
       expect(instance).to.not.be.null;
     });
-    it('should write item (as promise)', function (done) {
+    it('should write item (as promise)', function(done) {
       instance
         // .get('posts')
         .set('user.name', 'test-user')
@@ -92,18 +95,18 @@ describe('lowdb', function () {
           done();
         });
     });
-    it('should read item (promise)', function (done) {
+    it('should read item (promise)', function(done) {
       const name = instance.get('user.name').value();
       Promise.resolve(name).then((val) => {
         expect(val === 'test-user');
         done();
       });
     });
-    it('should read item', function (done) {
+    it('should read item', function(done) {
       expect(instance.get('user.name').value()).to.equal('test-user');
       done();
     });
-    it('should check item', function (done) {
+    it('should check item', function(done) {
       expect(instance.has('posts').value());
       done();
     });

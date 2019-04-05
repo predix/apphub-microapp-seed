@@ -27,7 +27,6 @@ describe('Ajax Card', () => {
     // Mock axios get
     axios.get.mockResolvedValue({ data: resp });
 
-
     const wrapper = shallow(<Card headerText="My Header" />);
     expect(wrapper.find('.ajax-card')).toHaveLength(1);
 

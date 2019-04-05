@@ -10,7 +10,11 @@ const Loading = (props) => {
     }
     return null;
   } else if (props.error) {
-    return <div>Error! Component failed to load. <button onClick={props.retry}>Retry</button></div>;
+    return (
+      <div>
+        Error! Component failed to load. <button onClick={props.retry}>Retry</button>
+      </div>
+    );
   }
   return null;
 };

@@ -4,8 +4,9 @@ const model = new NavModel();
 
 module.exports = {
   get(req, res, next) {
-    model.read()
-      .then(n => res.status(200).send(n))
+    model
+      .read()
+      .then((n) => res.status(200).send(n))
       .catch(next);
   }
   /*
