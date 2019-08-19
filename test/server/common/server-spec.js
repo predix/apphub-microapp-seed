@@ -1,12 +1,11 @@
-
-process.env.SESSION_SECRET = 'mySecret';
-
 const sinon = require('sinon');
 const { expect } = require('chai');
 const request = require('supertest');
 const express = require('express');
 
 const Server = require('../../../src/server/common/server');
+
+process.env.SESSION_SECRET = 'mySecret';
 
 const router = new express.Router();
 const tempApp = express();

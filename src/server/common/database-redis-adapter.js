@@ -1,6 +1,6 @@
 const Base = require('lowdb/adapters/Base');
-const log = require('./logger')('RedisAdapter');
 const Redis = process.env.NODE_ENV === 'test' ? require('ioredis-mock') : require('ioredis');
+const log = require('./logger')('RedisAdapter');
 
 let redisClient = null;
 

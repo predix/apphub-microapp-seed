@@ -31,16 +31,19 @@ pipeline {
           npm -v
           npm config set strict-ssl false
           npm config ls
+
+          npm i -g yarn
+          yarn config set strict-ssl false
         """
 
         echo 'Installing...'
-        sh 'npm install'
+        sh 'yarn install'
 
         echo 'Testing...'
-        sh 'npm test'
+        sh 'npm test -- --ci'
 
         echo 'Building...'
-        sh 'npm run dist'
+        sh 'npm run dist; mv apphub-microapp-seed-1.0.0.zip apphub-microapp-seed-${BUILD_ID}.zip'
       }
       post {
         success {

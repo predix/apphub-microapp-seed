@@ -20,7 +20,7 @@ const mockVcapServices = JSON.stringify({
   }],
   'predix-redis': [{
     credentials: {
-      host: 'localhost',
+      host: '127.0.0.1',
       password: 'test',
       port: 6379
     },
@@ -42,7 +42,6 @@ const mockVcapApplication = JSON.stringify({
 process.env.VCAP_APPLICATION = mockVcapApplication;
 process.env.VCAP_SERVICES = mockVcapServices;
 process.env.UAA_SERVICE_LABEL = 'predix-uaa';
-process.env.REDIS_SERVICE_LABEL = 'predix-redis';
 
 
 describe('Env', () => {

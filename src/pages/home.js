@@ -25,26 +25,26 @@ export default () => (
   <div className="home-page u-ph">
     <Notification type="info" statusIcon="px-utl:flag" opened>Welcome back!</Notification>
     <br />
-    <Flex wrap="true">
-      <Flex item>
-        <Card headerText="Features">
-          <p>This simple micro-app seed contains just enough to get you started.</p>
-          <p>Some <code>development</code> features include:</p>
-          <ul>
-            {features.map(feature => (
-              <li key={feature.title}>
-                <a href={feature.href} title={feature.title} target="noopener noreferrer">
-                  {feature.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </Flex>
-      <Flex item>
-        <LoadableExample />
-      </Flex>
-    </Flex>
+    <Card headerText="Features">
+      <p>This simple micro-app seed contains just enough to get you started.</p>
+      <p>
+Some
+        <code>development</code>
+        {' '}
+features include:
+      </p>
+      <ul>
+        {features.map(feature => (
+          <li key={feature.title}>
+            <a href={feature.href} title={feature.title} target="noopener noreferrer">
+              {feature.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Card>
+
+    <LoadableExample />
 
   </div>
 );

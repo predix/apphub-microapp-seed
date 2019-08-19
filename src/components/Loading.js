@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Loading = (props) => {
-  if (props.isLoading) {
-    if (props.timedOut) {
+const Loading = ({
+  isLoading, timedOut, pastDelay, error, retry
+}) => {
+  if (isLoading) {
+    if (timedOut) {
       return <div>Loader timed out!</div>;
-    } else if (props.pastDelay) {
+    } if (pastDelay) {
       return <div>Loading...</div>;
     }
     return null;
-  } else if (props.error) {
-    return <div>Error! Component failed to load. <button onClick={props.retry}>Retry</button></div>;
+  }
+  if (error) {
+    return (
+      <div>
+        Error! Component failed to load.
+        <button onClick={retry} type="button">Retry</button>
+      </div>
+    );
   }
   return null;
 };

@@ -1,8 +1,8 @@
 const path = require('path');
-const globals = require('./globals');
-
 const SELENIUM_DRIVER_PATH = require('selenium-server-standalone-jar').path;
 const CHROME_DRIVER_PATH = require('chromedriver').path;
+
+const globals = require('./globals');
 
 module.exports = {
   src_folders: [path.resolve(__dirname, './specs')],
