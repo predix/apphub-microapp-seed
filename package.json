@@ -29,7 +29,7 @@
     "pretest": "rimraf coverage && npm run lint",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
-    "lint": "prettier --check ./src/**/*.js",
+    "lint": "prettier --write ./src/**/*.js",
     "zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
     "storybook": "start-storybook -p 9090 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o .out"
