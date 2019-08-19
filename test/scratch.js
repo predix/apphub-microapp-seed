@@ -13,15 +13,18 @@ const newJson = carsJson.map((car) => {
 });
 
 function saveDoc(d) {
-  request({
-    method: 'POST',
-    url: 'http://localhost:9000/api/db',
-    body: d,
-    json: true
-  }, function (error, response, body) {
-    if (error) throw new Error(error);
-    console.log(body);
-  });
+  request(
+    {
+      method: 'POST',
+      url: 'http://localhost:9000/api/db',
+      body: d,
+      json: true
+    },
+    function(error, response, body) {
+      if (error) throw new Error(error);
+      console.log(body);
+    }
+  );
 }
 
 newJson.map(saveDoc);

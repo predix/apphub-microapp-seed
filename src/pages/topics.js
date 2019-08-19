@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Flex } from 'predix-ui';
+import { Card } from 'predix-ui';
 import { Route, Link } from 'react-router-dom';
 import Topic from './topic';
 
@@ -28,13 +28,7 @@ export default ({ match }) => (
 
     <Card headerText="Selected Topic">
       <Route path={`${match.url}/:topicId`} component={Topic} />
-      <Route
-        exact
-        path={match.url}
-        render={() => (
-          <h3>Please select a topic.</h3>
-        )}
-      />
+      <Route exact path={match.url} render={() => <h3>Please select a topic.</h3>} />
     </Card>
   </div>
 );

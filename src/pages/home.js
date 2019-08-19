@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Notification, Flex } from 'predix-ui';
+import { Card, Notification } from 'predix-ui';
 import Loadable from 'react-loadable';
 import Loading from '../components/Loading';
 
@@ -29,13 +29,12 @@ export default () => (
     <Card headerText="Features">
       <p>This simple micro-app seed contains just enough to get you started.</p>
       <p>
-Some
+        Some
         <code>development</code>
-        {' '}
-features include:
+        features include:
       </p>
       <ul>
-        {features.map(feature => (
+        {features.map((feature) => (
           <li key={feature.title}>
             <a href={feature.href} title={feature.title} target="noopener noreferrer">
               {feature.title}
@@ -46,6 +45,5 @@ features include:
     </Card>
 
     <LoadableExample />
-
   </div>
 );

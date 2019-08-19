@@ -2,18 +2,14 @@ const swStats = require('swagger-stats');
 const SwaggerParser = require('swagger-parser');
 const specLocation = require('./swagger.json');
 
-const {
-  ELASTIC_SEARCH_URL,
-  SWAGGER_STATS_USERNAME,
-  SWAGGER_STATS_PASSWORD
-} = process.env;
+const { ELASTIC_SEARCH_URL, SWAGGER_STATS_USERNAME, SWAGGER_STATS_PASSWORD } = process.env;
 
-module.exports = function (app) {
+module.exports = function(app) {
   // http://swaggerstats.io/docs.html#configuration
   const swaggerStatsOptions = {
     swaggerSpec: null,
     elasticsearch: ELASTIC_SEARCH_URL || null,
-    authentication: (SWAGGER_STATS_USERNAME || false),
+    authentication: SWAGGER_STATS_USERNAME || false,
     onAuthenticate: (req, username, password) => {
       if (SWAGGER_STATS_USERNAME === username && SWAGGER_STATS_PASSWORD === password) {
         return true;
@@ -22,7 +18,7 @@ module.exports = function (app) {
     }
   };
 
-  SwaggerParser.validate(specLocation, function (err, api) {
+  SwaggerParser.validate(specLocation, function(err, api) {
     if (err) {
       console.error(err);
     } else {

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import AppNav from 'predix-ui/dist/es/components/px/AppNav';
 
+import Loading from '../../components/Loading';
+
 // Pages
 import About from '../../pages/about';
 import Dashboard from '../../pages/dashboard';
@@ -10,10 +12,8 @@ import Home from '../../pages/home';
 import Topics from '../../pages/topics';
 import NoMatch from '../../pages/404';
 
-
-
 function WaitingComponent(Component) {
-  return props => (
+  return (props) => (
     <Suspense fallback={<Loading />}>
       <Component {...props} />
     </Suspense>
@@ -38,7 +38,7 @@ class App extends React.Component {
     const { selectedItem } = e || navItems[e.selected];
     const { path } = selectedItem;
     window.location.hash = path;
-  }
+  };
 
   render() {
     const { navItems } = this.state;
@@ -69,28 +69,44 @@ class App extends React.Component {
 
 App.defaultProps = {
   onChange: null,
-  navItems: [{
-    id: 'home', path: '/', label: 'Home', icon: 'px-fea:home'
-  },
-  {
-    id: 'about', path: '/about', label: 'About', icon: 'px-fea:catalog'
-  },
-  {
-    id: 'dashboard', path: '/dashboard', label: 'Dashboard', icon: 'px-fea:dashboard'
-  },
-  {
-    id: 'topics', path: '/topics', label: 'Topics', icon: 'px-fea:log'
-  }]
+  navItems: [
+    {
+      id: 'home',
+      path: '/',
+      label: 'Home',
+      icon: 'px-fea:home'
+    },
+    {
+      id: 'about',
+      path: '/about',
+      label: 'About',
+      icon: 'px-fea:catalog'
+    },
+    {
+      id: 'dashboard',
+      path: '/dashboard',
+      label: 'Dashboard',
+      icon: 'px-fea:dashboard'
+    },
+    {
+      id: 'topics',
+      path: '/topics',
+      label: 'Topics',
+      icon: 'px-fea:log'
+    }
+  ]
 };
 
 App.propTypes = {
   onChange: PropTypes.func,
-  navItems: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    path: PropTypes.string,
-    label: PropTypes.string,
-    icon: PropTypes.string
-  }))
+  navItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      path: PropTypes.string,
+      label: PropTypes.string,
+      icon: PropTypes.string
+    })
+  )
 };
 
 export default App;

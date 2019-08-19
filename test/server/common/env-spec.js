@@ -3,29 +3,35 @@ const { expect } = require('chai');
 const dotenv = require('../../../src/server/common/env');
 
 const mockVcapServices = JSON.stringify({
-  'predix-uaa': [{
-    credentials: {
-      dashboardUrl: 'https://uaa-dashboard.run.aws-usw02-dev.ice.predix.io/#/login/45ae8f04-0a2a-4890-aeed-aab8d7f2ec71',
-      issuerId: 'https://apphub-test-uaa-instance.predix-uaa.run.aws-usw02-dev.ice.predix.io/oauth/token',
-      subdomain: 'apphub-test-uaa-instance',
-      uri: 'https://apphub-test-uaa-instance.predix-uaa.run.aws-usw02-dev.ice.predix.io',
-      zone: {
-        'http-header-name': 'X-Identity-Zone-Id',
-        'http-header-value': '45ae8f04-0a2a-4890-aeed-aab8d7f2ec71'
-      }
-    },
-    label: 'predix-uaa',
-    name: 'apphub-test-uaa-instance'
-  }],
-  'predix-redis': [{
-    credentials: {
-      host: '127.0.0.1',
-      password: 'test',
-      port: 6379
-    },
-    label: 'predix-redis',
-    name: 'jps-dev-redis'
-  }]
+  'predix-uaa': [
+    {
+      credentials: {
+        dashboardUrl:
+          'https://uaa-dashboard.run.aws-usw02-dev.ice.predix.io/#/login/45ae8f04-0a2a-4890-aeed-aab8d7f2ec71',
+        issuerId:
+          'https://apphub-test-uaa-instance.predix-uaa.run.aws-usw02-dev.ice.predix.io/oauth/token',
+        subdomain: 'apphub-test-uaa-instance',
+        uri: 'https://apphub-test-uaa-instance.predix-uaa.run.aws-usw02-dev.ice.predix.io',
+        zone: {
+          'http-header-name': 'X-Identity-Zone-Id',
+          'http-header-value': '45ae8f04-0a2a-4890-aeed-aab8d7f2ec71'
+        }
+      },
+      label: 'predix-uaa',
+      name: 'apphub-test-uaa-instance'
+    }
+  ],
+  'predix-redis': [
+    {
+      credentials: {
+        host: '127.0.0.1',
+        password: 'test',
+        port: 6379
+      },
+      label: 'predix-redis',
+      name: 'jps-dev-redis'
+    }
+  ]
 });
 
 const mockVcapApplication = JSON.stringify({
