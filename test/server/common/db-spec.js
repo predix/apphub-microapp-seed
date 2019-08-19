@@ -1,14 +1,14 @@
 const path = require('path');
 const assert = require('assert');
 const lowdb = require('lowdb');
-const helpers = require('../../helpers');
 const { expect } = require('chai');
-
-const DB = helpers.require('server/common/database');
-const tempFile = require('path').resolve(__dirname, '../../.temp-db');
-
 const FileAsyncAdapter = require('lowdb/adapters/FileAsync');
 const MemoryAdapter = require('lowdb/adapters/Memory');
+
+const helpers = require('../../helpers');
+
+const DB = helpers.require('server/common/database');
+const tempFile = path.resolve(__dirname, '../../.temp-db');
 
 describe('DB', () => {
   let db;
@@ -54,6 +54,7 @@ describe('DB', () => {
         db.post({
           title: 'Test Comment',
           type: 'comment'
+<<<<<<< HEAD
         })
           .then((resp) => {
             expect(resp).to.not.be.null;
@@ -61,11 +62,19 @@ describe('DB', () => {
             done();
           })
           .catch(done);
+=======
+        }).then((resp) => {
+          expect(resp).to.not.be.null;
+          expect(resp._id).to.not.be.null;
+          done();
+        }).catch(done);
+>>>>>>> master
       });
       it('should create doc with generated _id and resolve on success', (done) => {
         db.post({
           title: 'Test Post',
           type: 'post'
+<<<<<<< HEAD
         })
           .then((resp) => {
             mockDoc = resp.doc;
@@ -74,6 +83,14 @@ describe('DB', () => {
             done();
           })
           .catch(done);
+=======
+        }).then((resp) => {
+          mockDoc = resp.doc;
+          expect(mockDoc).to.not.be.null;
+          expect(mockDoc._id).to.not.be.null;
+          done();
+        }).catch(done);
+>>>>>>> master
       });
       it('should reject if no doc passed', (done) => {
         db.post()
@@ -91,6 +108,7 @@ describe('DB', () => {
     describe('put', () => {
       it('should update doc and resolve on success', (done) => {
         mockDoc.updated = Date.now();
+<<<<<<< HEAD
         db.put(mockDoc)
           .then((resp) => {
             mockDoc = resp.doc;
@@ -99,6 +117,14 @@ describe('DB', () => {
             done();
           })
           .catch(done);
+=======
+        db.put(mockDoc).then((resp) => {
+          mockDoc = resp.doc;
+          expect(mockDoc).to.not.be.null;
+          expect(mockDoc.updated).to.not.be.null;
+          done();
+        }).catch(done);
+>>>>>>> master
       });
       it('should reject if _id not found', (done) => {
         db.put({
@@ -141,6 +167,7 @@ describe('DB', () => {
       it('should resolve on success', (done) => {
         db.post(mockDoc).then((r) => {
           mockDoc = r.doc;
+<<<<<<< HEAD
           db.get(mockDoc._id)
             .then((doc) => {
               expect(doc).to.not.be.null;
@@ -149,6 +176,14 @@ describe('DB', () => {
               done();
             })
             .catch(done);
+=======
+          db.get(mockDoc._id).then((doc) => {
+            expect(doc).to.not.be.null;
+            expect(doc._id).to.not.be.null;
+            expect(doc.title).to.equal('Test Post');
+            done();
+          }).catch(done);
+>>>>>>> master
         });
       });
     });

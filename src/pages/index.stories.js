@@ -7,7 +7,22 @@ import About from './about';
 import Dashboard from './dashboard';
 
 storiesOf('apphub-microapp-seed / Pages', module)
+<<<<<<< HEAD
   .add('Home page', () => <Home />)
   .add('About page', () => <About />)
   .add('Dashboard page', () => <Dashboard />)
   .add('404 page', () => <ErrorPage />);
+=======
+  .add('Home page', () => (
+    <Home />
+  ))
+  .add('About page', () => (
+    <About />
+  ))
+  .add('Dashboard page', () => (
+    <Dashboard />
+  ))
+  .add('404 page', () => (
+    <ErrorPage />
+  ));
+>>>>>>> master

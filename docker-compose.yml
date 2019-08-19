@@ -1,8 +1,8 @@
 version: "3.2"
 services:
-  app:
+  microapp-seed:
     #build: .
-    image: predix-apphub/apphub-microapp-seed:latest
+    image: predixapphub/apphub-microapp-seed:latest
     ports:
       - 12345:8080
     environment:
@@ -15,21 +15,25 @@ services:
       - "NODE_ENV=production"
       - "RHOST=redis"
     networks:
-      - redis-net
+      - frontend-net
     depends_on:
       - redis
+    labels:
+      org.label-schema.group: "apphub-microapp"
   
   redis:
     image: redis
     command: ["redis-server", "--appendonly", "yes"]
     hostname: redis
     networks:
-      - redis-net
+      - frontend-net
     volumes:
       - redis-data:/data
+    labels:
+      org.label-schema.group: "apphub-microapp"
 
 networks:
-  redis-net:
+  frontend-net:
 
 volumes:
   redis-data:

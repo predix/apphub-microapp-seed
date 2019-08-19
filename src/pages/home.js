@@ -26,6 +26,7 @@ export default () => (
       Welcome back!
     </Notification>
     <br />
+<<<<<<< HEAD
     <Flex wrap="true">
       <Flex item>
         <Card headerText="Features">
@@ -48,5 +49,28 @@ export default () => (
         <LoadableExample />
       </Flex>
     </Flex>
+=======
+    <Card headerText="Features">
+      <p>This simple micro-app seed contains just enough to get you started.</p>
+      <p>
+Some
+        <code>development</code>
+        {' '}
+features include:
+      </p>
+      <ul>
+        {features.map(feature => (
+          <li key={feature.title}>
+            <a href={feature.href} title={feature.title} target="noopener noreferrer">
+              {feature.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Card>
+
+    <LoadableExample />
+
+>>>>>>> master
   </div>
 );

@@ -1,8 +1,9 @@
 require('dotenv').config();
 const { expect } = require('chai');
 const request = require('supertest');
-const Server = require('../../../src/server/index');
 const assert = require('assert');
+
+const Server = require('../../../src/server/index');
 const locales = require('../../../src/server/middleware/localize/locales');
 
 describe('App Middleware', () => {

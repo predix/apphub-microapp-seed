@@ -23,6 +23,9 @@ middleware(app);
 // TODO: 2. Load routes
 routes(app);
 
+require('./middleware/swagger')(app, routes);
+require('./middleware/swagger/stats')(app);
+
 /* istanbul ignore next */
 if (process.env.NODE_ENV === 'development') {
   app.use('/assets', express.static(path.resolve(__dirname, '../assets')));

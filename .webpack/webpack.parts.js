@@ -21,6 +21,7 @@ exports.loadResolver = () => ({
     extensions: [
       '.jsx',
       '.js',
+      '.yaml',
       '.json',
       '.scss',
       '.css',
@@ -154,22 +155,25 @@ exports.loadProdCss = ({
 } = {}) => ({
   module: {
     rules: [{
-      test: /\.(css|scss)$/,
+      test: /\.s(a|c)ss$/,
       include,
       exclude,
       use: [
         'style-loader',
         MiniCssExtractPlugin.loader,
+        'css-loader',
+        /*
         {
           loader: 'css-loader',
           options: {
             minimize: true
           }
         },
+        */
         {
           loader: 'sass-loader',
           options: {
-            //sourceMap: true,
+            sourceMap: true,
             importer: require('node-sass-import-once'),
             importOnce: {
               index: true,
@@ -421,7 +425,7 @@ exports.workboxPlugin = (options) => {
   };
 };
 
-
+// https://github.com/webpack-contrib/copy-webpack-plugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 exports.copyPlugin = (options) => {
   return {
