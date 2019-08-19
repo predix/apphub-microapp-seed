@@ -14,10 +14,7 @@ const developmentConfig = merge([{
     extends: 'base',
     target: 'web',
     entry: [
-
-
       'main'
-
     ],
     node: {
       global: true,
@@ -44,8 +41,6 @@ const developmentConfig = merge([{
   parts.loadDevCss({
     exclude: /typography/,
     options: {
-      sourceMap: true,
-      minimize: true
     }
   }),
   parts.loadImages(),

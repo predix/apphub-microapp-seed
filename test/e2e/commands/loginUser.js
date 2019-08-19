@@ -1,5 +1,4 @@
-
-exports.command = function (username, password) {
+exports.command = function(username, password) {
   const TIMEOUT = 20000;
   let u = username;
   let p = password;

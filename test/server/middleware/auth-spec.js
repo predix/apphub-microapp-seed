@@ -1,10 +1,9 @@
-
 const request = require('supertest');
 
 describe('Auth Middleware', () => {
   let app;
 
-  beforeAll(function (done) {
+  beforeAll(function(done) {
     app = require('../../../src/server/index').getExpressApp();
     done();
   });

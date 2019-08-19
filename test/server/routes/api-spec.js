@@ -11,13 +11,13 @@ const routes = require('../../../src/server/routes');
 
 const baseUrl = '/api/db';
 
-describe('API Routes', function () {
+describe('API Routes', function() {
   // this.timeout(20000);
   let app;
   let mockId;
   let mockDoc;
 
-  beforeAll(function (done) {
+  beforeAll(function(done) {
     app = express();
     app.use(bodyParser.json());
     app.use((req, res, next) => {
@@ -118,7 +118,6 @@ describe('API Routes', function () {
         .send(mockDoc)
         .expect(200, done);
     });
-
 
     it(`GET - ${baseUrl}/:id - 404 - responds not found`, (done) => {
       request(app)

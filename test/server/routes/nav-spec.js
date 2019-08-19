@@ -11,7 +11,7 @@ const baseUrl = '/api/nav';
 describe('Nav Routes', () => {
   let app;
 
-  beforeAll(function (done) {
+  beforeAll(function(done) {
     app = express();
     app.use(baseUrl, controller(ctrl));
     done();
@@ -49,7 +49,7 @@ describe('Nav Model', () => {
       label: 'New Item'
     });
     assert(updatedItem.length, 'returns array');
-    assert(updatedItem.filter(obj => obj.path === '/new-path'));
+    assert(updatedItem.filter((obj) => obj.path === '/new-path'));
     return updatedItem;
   });
 });

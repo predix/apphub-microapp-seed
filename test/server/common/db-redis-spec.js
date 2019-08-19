@@ -5,14 +5,16 @@ const helpers = require('../../helpers');
 
 const RedisAdapter = helpers.require('server/common/database-redis-adapter');
 
-describe('RedisAdapter', function () {
+describe('RedisAdapter', function() {
   // this.timeout(10000);
   let db;
 
   beforeAll(async () => {
-    db = await low(new RedisAdapter('test-redisdb', {
-      posts: []
-    }));
+    db = await low(
+      new RedisAdapter('test-redisdb', {
+        posts: []
+      })
+    );
     return db;
   });
 
@@ -43,14 +45,24 @@ describe('RedisAdapter', function () {
   });
 
   it('should update doc', (done) => {
-    db.get('posts').find({ id: 2 }).assign({ tag: 'test', updated: new Date().toString() }).write();
+    db.get('posts')
+      .find({ id: 2 })
+      .assign({ tag: 'test', updated: new Date().toString() })
+      .write();
     expect(db.get('posts[0].tag').value()).to.not.be.null;
     done();
   });
 
   it('should remove doc', (done) => {
-    db.get('posts').remove({ id: 1 }).write();
-    expect(!db.get('posts').find({ id: 1 }).value());
+    db.get('posts')
+      .remove({ id: 1 })
+      .write();
+    expect(
+      !db
+        .get('posts')
+        .find({ id: 1 })
+        .value()
+    );
     done();
   });
 });

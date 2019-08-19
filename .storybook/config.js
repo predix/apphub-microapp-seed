@@ -4,7 +4,7 @@ import { configure, setAddon} from '@storybook/react';
 //setAddon(JSXAddon);
 
 const path = require('path');
-const req = require.context('../src', true, /\.stories\.js$/)
+const req = require.context('../src', true, /\.stories\.js?(x)$/)
 
 function loadStories() {
   req.keys().forEach((filename) => req(filename))

@@ -5,7 +5,10 @@ const log = require('./logger')('env');
 
 module.exports = () => {
   const envToSet = {};
-  let envPath = process.env.NODE_ENV === 'production' ? path.resolve(__dirname, './.env') : path.resolve(__dirname, '../../../.env');
+  let envPath =
+    process.env.NODE_ENV === 'production'
+      ? path.resolve(__dirname, './.env')
+      : path.resolve(__dirname, '../../../.env');
   log.debug('envPath', envPath);
 
   if (!fs.existsSync) {
@@ -26,12 +29,7 @@ module.exports = () => {
     // log.debug('Parsed env', envConfig);
   }
 
-  const {
-    VCAP_APPLICATION,
-    VCAP_SERVICES,
-    UAA_SERVICE_LABEL,
-    REDIS_SERVICE_LABEL
-  } = process.env;
+  const { VCAP_APPLICATION, VCAP_SERVICES, UAA_SERVICE_LABEL, REDIS_SERVICE_LABEL } = process.env;
 
   if (VCAP_SERVICES) {
     const vcapServices = JSON.parse(VCAP_SERVICES);

@@ -19,7 +19,7 @@ describe('App Middleware', () => {
     request(Server.getExpressApp())
       .get('/api/something-not-found')
       .set('X-Requested-With', 'XMLHttpRequest')
-    //  .expect('Content-Type', /json/)
+      //  .expect('Content-Type', /json/)
       .expect(404, done);
   });
 
@@ -27,7 +27,7 @@ describe('App Middleware', () => {
     request(Server.getExpressApp())
       .get('/api')
       .set('Cache-Control', '1d')
-    //  .expect('Content-Type', /json/)
+      //  .expect('Content-Type', /json/)
       .expect(200, done);
   });
 
@@ -40,7 +40,7 @@ describe('App Middleware', () => {
   });
 
   it('boot - should start server', (done) => {
-    Server.boot(function (err, resp) {
+    Server.boot(function(err, resp) {
       assert(resp);
       done();
     });
@@ -57,7 +57,7 @@ describe('App Middleware', () => {
           .get('/api')
           .set('Accept-Language', locale)
           .expect(200)
-          .expect(function (res) {
+          .expect(function(res) {
             expect(res.body.name).to.equal(locales[locale].translation.APPLICATION_NAME);
           })
           .end(done);

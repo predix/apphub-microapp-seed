@@ -3,7 +3,6 @@ import { Card, Notification } from 'predix-ui';
 import Loadable from 'react-loadable';
 import Loading from '../components/Loading';
 
-
 const LoadableExample = Loadable({
   loader: () => import('../components/Example'),
   loading: Loading
@@ -23,18 +22,19 @@ const features = [
 
 export default () => (
   <div className="home-page u-ph">
-    <Notification type="info" statusIcon="px-utl:flag" opened>Welcome back!</Notification>
+    <Notification type="info" statusIcon="px-utl:flag" opened>
+      Welcome back!
+    </Notification>
     <br />
     <Card headerText="Features">
       <p>This simple micro-app seed contains just enough to get you started.</p>
       <p>
-Some
+        Some
         <code>development</code>
-        {' '}
-features include:
+        features include:
       </p>
       <ul>
-        {features.map(feature => (
+        {features.map((feature) => (
           <li key={feature.title}>
             <a href={feature.href} title={feature.title} target="noopener noreferrer">
               {feature.title}
@@ -45,6 +45,5 @@ features include:
     </Card>
 
     <LoadableExample />
-
   </div>
 );

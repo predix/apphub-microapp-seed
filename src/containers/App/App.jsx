@@ -5,12 +5,13 @@ import AppNav from 'predix-ui/dist/es/components/px/AppNav';
 
 import Loading from '../../components/Loading';
 
-// Pages
-import About from '../../pages/about';
-import Dashboard from '../../pages/dashboard';
-import Home from '../../pages/home';
-import Topics from '../../pages/topics';
 import NoMatch from '../../pages/404';
+
+// Pages
+const About = React.lazy(() => import('../../pages/about'));
+const Dashboard = React.lazy(() => import('../../pages/dashboard'));
+const Home = React.lazy(() => import('../../pages/home'));
+const Topics = React.lazy(() => import('../../pages/topics'));
 
 function WaitingComponent(Component) {
   return (props) => (
@@ -30,14 +31,18 @@ class App extends React.Component {
   }
 
   changeRoute = (e) => {
-    const { onChange } = this.props;
-    if (onChange) {
-      onChange(e);
+    if (this.props.onChange) {
+      this.props.onChange(e);
     }
-    const { navItems } = this.state;
-    const { selectedItem } = e || navItems[e.selected];
-    const { path } = selectedItem;
-    window.location.hash = path;
+    const selectedItem = e.selectedItem || this.state.navItems[e.selected];
+    window.location.hash = selectedItem.path;
+  };
+
+  componentDidMount = () => {
+    const href = window.location.hash.replace('#', '');
+    const selectedItem = this.state.navItems.filter((item) => item.href === href);
+    const selected = this.state.navItems.indexOf(selectedItem && selectedItem[0]);
+    this.setState({ selected });
   };
 
   render() {

@@ -34,10 +34,15 @@ class Server {
     } else {
       http = require('http').createServer(this.app);
       http.listen(port, process.env.HOST || null, () => {
-        console.log(`🌎 Running on port ${http.address().port}. Open up http://${http.address().address}:${http.address().port} in your browser.`);
+        console.log(
+          `🌎 Running on ${http.address().port}, Open up http://${http.address().address ||
+            'localhost'}:${http.address().port} in your browser.`
+        );
       });
       http.on('listening', () => {
-        this.log.debug(`💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`);
+        this.log.debug(
+          `💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`
+        );
         if (callback) {
           callback(null, this.app);
         }
