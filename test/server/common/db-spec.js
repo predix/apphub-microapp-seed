@@ -54,43 +54,22 @@ describe('DB', () => {
         db.post({
           title: 'Test Comment',
           type: 'comment'
-<<<<<<< HEAD
-        })
-          .then((resp) => {
-            expect(resp).to.not.be.null;
-            expect(resp._id).to.be.defined;
-            done();
-          })
-          .catch(done);
-=======
         }).then((resp) => {
           expect(resp).to.not.be.null;
           expect(resp._id).to.not.be.null;
           done();
         }).catch(done);
->>>>>>> master
       });
       it('should create doc with generated _id and resolve on success', (done) => {
         db.post({
           title: 'Test Post',
           type: 'post'
-<<<<<<< HEAD
-        })
-          .then((resp) => {
-            mockDoc = resp.doc;
-            expect(mockDoc).to.not.be.null;
-            expect(mockDoc._id).to.be.defined;
-            done();
-          })
-          .catch(done);
-=======
         }).then((resp) => {
           mockDoc = resp.doc;
           expect(mockDoc).to.not.be.null;
           expect(mockDoc._id).to.not.be.null;
           done();
         }).catch(done);
->>>>>>> master
       });
       it('should reject if no doc passed', (done) => {
         db.post()
@@ -108,23 +87,12 @@ describe('DB', () => {
     describe('put', () => {
       it('should update doc and resolve on success', (done) => {
         mockDoc.updated = Date.now();
-<<<<<<< HEAD
-        db.put(mockDoc)
-          .then((resp) => {
-            mockDoc = resp.doc;
-            expect(mockDoc).to.not.be.null;
-            expect(mockDoc.updated).to.be.defined;
-            done();
-          })
-          .catch(done);
-=======
         db.put(mockDoc).then((resp) => {
           mockDoc = resp.doc;
           expect(mockDoc).to.not.be.null;
           expect(mockDoc.updated).to.not.be.null;
           done();
         }).catch(done);
->>>>>>> master
       });
       it('should reject if _id not found', (done) => {
         db.put({
@@ -167,23 +135,12 @@ describe('DB', () => {
       it('should resolve on success', (done) => {
         db.post(mockDoc).then((r) => {
           mockDoc = r.doc;
-<<<<<<< HEAD
-          db.get(mockDoc._id)
-            .then((doc) => {
-              expect(doc).to.not.be.null;
-              expect(doc._id).to.be.defined;
-              expect(doc.title).to.equal('Test Post');
-              done();
-            })
-            .catch(done);
-=======
           db.get(mockDoc._id).then((doc) => {
             expect(doc).to.not.be.null;
             expect(doc._id).to.not.be.null;
             expect(doc.title).to.equal('Test Post');
             done();
           }).catch(done);
->>>>>>> master
         });
       });
     });

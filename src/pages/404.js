@@ -5,16 +5,10 @@ import { Flex } from 'predix-ui';
 export default ({ location }) => (
   <Flex middle center>
     {location && (
-<<<<<<< HEAD
-      <h3>
-        No match for <code>{location.pathname}</code>
-      </h3>
-=======
     <h3>
 No match for
       <code>{location.pathname}</code>
     </h3>
->>>>>>> master
     )}
     {!location && <h2 className="beta">Ooops, 404</h2>}
   </Flex>

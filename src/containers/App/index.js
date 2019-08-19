@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-export { default } from './App';
-=======
 import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
@@ -97,4 +94,3 @@ App.propTypes = {
 };
 
 export default App;
->>>>>>> master

@@ -217,18 +217,9 @@ class Database {
         docs.forEach((doc) => {
           if (doc._id) {
             if (doc._deleted) {
-<<<<<<< HEAD
-              this.remove(doc._id).then((r) => out.push(r));
-            } else {
-              this.put(doc).then((r) => out.push(r));
-            }
-          } else {
-            this.post(doc).then((r) => out.push(r));
-=======
               promises.push(this.remove(doc._id));
             }
             promises.push(this.put(doc));
->>>>>>> master
           }
           if (!doc._id) {
             promises.push(this.post(doc));

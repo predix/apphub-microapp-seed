@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-export { default } from './CustomCard';
-=======
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -83,4 +80,3 @@ CustomCard.propTypes = {
 
 
 export default CustomCard;
->>>>>>> master

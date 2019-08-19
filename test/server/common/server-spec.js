@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-process.env.SESSION_SECRET = 'mySecret';
-
-=======
->>>>>>> master
 const sinon = require('sinon');
 const { expect } = require('chai');
 const request = require('supertest');

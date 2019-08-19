@@ -11,19 +11,12 @@ const Loading = ({
       return <div>Loading...</div>;
     }
     return null;
-<<<<<<< HEAD:src/components/Loading/Loading.jsx
-  } else if (props.error) {
-    return (
-      <div>
-        Error! Component failed to load. <button onClick={props.retry}>Retry</button>
-=======
   }
   if (error) {
     return (
       <div>
         Error! Component failed to load.
         <button onClick={retry} type="button">Retry</button>
->>>>>>> master:src/components/Loading.js
       </div>
     );
   }

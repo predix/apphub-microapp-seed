@@ -40,12 +40,8 @@ request.get(
       sendDoc(doc);
     });
   }
-<<<<<<< HEAD
-);
-=======
 }, (err, resp, body) => {
   body.data.forEach((doc) => {
     sendDoc(doc);
   });
 });
->>>>>>> master

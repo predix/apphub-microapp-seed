@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-export { default } from './AjaxCard';
-=======
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -98,4 +95,3 @@ AjaxCard.propTypes = {
 };
 
 export default AjaxCard;
->>>>>>> master
