@@ -1,10 +1,10 @@
-import React from 'react';
-import Loadable from 'react-loadable';
-import Card from 'predix-ui/dist/es/components/px/Card';
-import Loading from './Loading';
+import React from "react";
+import Loadable from "react-loadable";
+import Card from "predix-ui/dist/es/components/px/Card";
+import Loading from "./Loading";
 
 const LoadableNested = Loadable({
-  loader: () => import('./ExampleNested'),
+  loader: () => import("./ExampleNested"),
   loading: Loading
 });
 

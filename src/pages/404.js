@@ -1,5 +1,5 @@
-import React from 'react';
-import { Flex } from 'predix-ui';
+import React from "react";
+import { Flex } from "predix-ui";
 
 /* eslint-disable-next-line */
 export default ({ location }) => (
