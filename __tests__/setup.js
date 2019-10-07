@@ -3,8 +3,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import chai from 'chai';
 import chaiJestSnapshot from 'chai-jest-snapshot';
 
-import 'core-js/es6/map';
-import 'core-js/es6/set';
+// import 'core-js/es6/map';
+// import 'core-js/es6/set';
 import 'raf/polyfill';
 /*
 import 'jest-styled-components';
@@ -17,8 +17,7 @@ initStoryshots({
 configure({
   adapter: new Adapter()
 });
-
-global.requestAnimationFrame = function (callback) {
+global.requestAnimationFrame = function handler(callback) {
   setTimeout(callback, 0);
 };
 

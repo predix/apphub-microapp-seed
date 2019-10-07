@@ -52,6 +52,7 @@ describe('Env', () => {
   it('be defined', () => {
     expect(dotenv).to.not.be.null;
   });
+
   if (!process.env.JENKINS_HOME) {
     describe('VCAP_SERVICES - REDIS', () => {
       it('should set REDIS_HOST / REDIS_PORT / REDIS_PASSWORD if in process.env.VCAP_SERVICES', () => {

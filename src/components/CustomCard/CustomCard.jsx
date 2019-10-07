@@ -13,24 +13,34 @@ class CustomCard extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.state.isClosed !== nextProps.closed) {
+
+  // eslint-disable-next-line
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { isClosed } = this.state;
+    if (isClosed !== nextProps.closed) {
       this.setState({ isClosed: nextProps.closed });
     }
   }
+
   open() {
     this.setState({ isClosed: false });
   }
+
   close() {
     this.setState({ isClosed: true });
   }
+
   toggle() {
-    this.setState({ isClosed: !this.state.isClosed });
+    let { isClosed } = this.state;
+    isClosed = !isClosed;
+    this.setState(() => ({ isClosed }));
   }
+
   handleClick(e) {
     e.preventDefault();
     this.toggle();
   }
+
   render() {
     const { isClosed } = this.state;
     const { children, headerText, icon } = this.props;
