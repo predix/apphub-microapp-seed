@@ -1,5 +1,8 @@
 import React from 'react';
-import { Card, Flex, KeyValuePair } from 'predix-ui';
+import Card from 'predix-ui/dist/es/components/px/Card';
+import KeyValuePair from 'predix-ui/dist/es/components/px/KeyValuePair';
+import Flex from 'predix-ui/dist/es/styles/flex';
+
 import AjaxCard from '../components/AjaxCard';
 
 const dashboardData = {

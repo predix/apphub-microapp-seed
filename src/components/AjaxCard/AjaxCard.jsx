@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Button from 'predix-ui/dist/es/components/px/Button';
-import { Flex } from 'predix-ui';
+import Flex from 'predix-ui/dist/es/styles/flex';
 import Input from 'predix-ui/dist/es/components/px/Input';
 import Card from 'predix-ui/dist/es/components/px/Card';
 import ProgressBar from 'predix-ui/dist/es/components/px/ProgressBar';

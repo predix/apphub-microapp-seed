@@ -5,25 +5,25 @@ exports[`Ajax Card should match snapshot 1`] = `
   className="px-card ajax-card"
 >
   <div
-    className="px-card sc-ifAKCX duhpuE"
+    className="px-card sc-EHOje fJIaeZ"
   >
     <header
-      className="px-card-header sc-EHOje cfAQId"
+      className="px-card-header sc-bZQynM IGYNF"
     >
       <span
-        className="sc-bZQynM iwJCDw"
+        className="sc-gzVnrw hNuuCV"
       >
         My Header
       </span>
     </header>
     <section
-      className="px-card-body sc-gzVnrw czoSDo"
+      className="px-card-body sc-htoDjs hSRIGh"
     >
       <h4>
         Example Routes
       </h4>
       <div
-        className="flex__Flex-iVBlvA gsvSMH"
+        className="sc-bwzfXH jJPvbV"
         wrap={true}
       >
         <div>
@@ -124,7 +124,7 @@ exports[`Ajax Card should match snapshot 1`] = `
         onSubmit={[Function]}
       >
         <input
-          className="sc-htpNat ezktLi"
+          className="sc-bxivhb hulgxF"
           id="urlInput"
           onChange={[Function]}
           placeholder="Enter URL..."
