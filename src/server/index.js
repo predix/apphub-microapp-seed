@@ -1,5 +1,7 @@
 require('./common/env')();
 
+const uuidv4 = require('uuid/v4');
+
 const port = process.env.PORT || 9000;
 const express = require('express');
 const serveStatic = require('serve-static');
@@ -14,6 +16,13 @@ const app = server.getExpressApp();
 
 let currentApp = app;
 
+app.use((req, res, next) => {
+  req._id = uuidv4();
+  res.set('x-b3-traceid', req.get('x-b3-traceid') || req._id);
+  console.log(`Started request handling, request id: ${req._id}`);
+  next();
+});
+
 // TODO: I hate having to bring in web components and Polymer
 app.use('/bower_components', serveStatic(path.join(__dirname, '../../bower_components')));
 
@@ -23,12 +32,18 @@ middleware(app);
 // TODO: 2. Load routes
 routes(app);
 
+const serveStaticOptions = {
+  _setHeaders: (res, path) => {
+    console.log('set headers', path, res.headers);
+  }
+};
+
 require('./middleware/swagger')(app, routes);
 require('./middleware/swagger/stats')(app);
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === 'development') {
-  app.use('/assets', express.static(path.resolve(__dirname, '../assets')));
+  app.use('/assets', express.static(path.resolve(__dirname, '../assets'), serveStaticOptions));
   require('./common/dev')(app);
   if (module.hot) {
     console.log('Hot module on server...');
