@@ -10,23 +10,23 @@ import EventStreamCard from '../components/EventStreamCard';
 
 const dashboardData = {
   keyVals: [
-    { id: 1, label: 'New Alerts', value: 21 },
+    { id: 1, label: "New Alerts", value: 21 },
     {
       id: 2,
-      label: 'Utilization',
-      value: '70',
-      uom: '%'
+      label: "Utilization",
+      value: "70",
+      uom: "%"
     },
     {
       id: 3,
-      label: 'Faults',
+      label: "Faults",
       value: 3
     },
     {
       id: 4,
-      label: 'Output',
+      label: "Output",
       value: 53,
-      uom: 'mw'
+      uom: "mw"
     }
   ]
 };
@@ -35,7 +35,7 @@ export default () => (
   <div className="u-ph">
     <Card headerText="Right Now" className="u-mb">
       <Flex middle spaced>
-        {dashboardData.keyVals.map((item) => (
+        {dashboardData.keyVals.map(item => (
           <KeyValuePair
             key={item.id}
             className="u-p"
