@@ -1,23 +1,24 @@
 ---
 applications:
   - name: apphub-microapp-seed
-    buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+    #@buildpack: https://github.com/cloudfoundry/heroku-buildpack-nodejs.git
+    buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.6.56
     memory: 512MB
     stack: cflinuxfs2
-    instances: 1
+    instances: 2
     path: .
-    command: npm start
+    command: node --optimize_for_size --max_old_space_size=460 --gc_interval=100 server.js
     #services:
       #- js-dev-uaa
-      #- jps-redis
+      #- js-redis
     env:
       APP_ID: apphub-microapp-seed
       LOG_LEVEL: debug
       #ENABLE_AUTHENTICATION: false
       ENABLE_CLUSTER_MODE: true
       #ENABLE_REDIS_STORE: false
-      #REDIS_SERVICE_LABEL: predix-redis
-      API_DATABASE_ADAPTER: memory
+     # REDIS_SERVICE_LABEL: predix-cache
+      #API_DATABASE_ADAPTER: redis
       NODE_ENV: 'production'
       DEBUG: 'apphub-microapp-seed:*'
       REQUEST_LIMIT: 500kb

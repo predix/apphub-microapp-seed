@@ -24,7 +24,7 @@ exports[`Ajax Card should match snapshot 1`] = `
       </h4>
       <div
         className="sc-bwzfXH jJPvbV"
-        wrap={true}
+        wrap="true"
       >
         <div>
           <button

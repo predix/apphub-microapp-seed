@@ -27,10 +27,10 @@ app.use((req, res, next) => {
 app.use('/bower_components', serveStatic(path.join(__dirname, '../../bower_components')));
 
 // TODO: 1. Load middleware
-middleware(app);
+middleware(app, server.getHTTPServer());
 
 // TODO: 2. Load routes
-routes(app);
+routes(app, server.getHTTPServer());
 
 const serveStaticOptions = {
   _setHeaders: (res, path) => {

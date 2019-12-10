@@ -2,20 +2,23 @@
 
 exports[`Ajax Card should match snapshot 1`] = `
 <div
-  className="px-card custom-card"
+  className="px-card sc-bwzfXH ckAMJd"
 >
   <header
-    onClick={[Function]}
-    role="presentation"
+    className="px-card-header sc-htpNat jvHCQd"
   >
     <span
-      className="epsilon caps"
+      className="sc-bxivhb cnunnK"
     >
       My Header
     </span>
   </header>
-  <section>
-    Content
+  <section
+    className="px-card-body sc-ifAKCX gEeJZq"
+  >
+    <section>
+      Content
+    </section>
   </section>
 </div>
 `;

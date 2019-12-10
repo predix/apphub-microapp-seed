@@ -4,6 +4,9 @@ import KeyValuePair from 'predix-ui/dist/es/components/px/KeyValuePair';
 import Flex from 'predix-ui/dist/es/styles/flex';
 
 import AjaxCard from '../components/AjaxCard';
+import NotificationsCard from '../components/NotificationCard';
+import WebSocketCard from '../components/WebSocketCard';
+import EventStreamCard from '../components/EventStreamCard';
 
 const dashboardData = {
   keyVals: [
@@ -44,6 +47,11 @@ export default () => (
         ))}
       </Flex>
     </Card>
+
     <AjaxCard />
+
+    <NotificationsCard />
+    <WebSocketCard />
+    <EventStreamCard />
   </div>
 );

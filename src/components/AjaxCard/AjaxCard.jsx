@@ -52,8 +52,8 @@ class AjaxCard extends React.Component {
       <div className="px-card ajax-card">
         <Card headerText={headerText} icon={icon}>
           <h4>Example Routes</h4>
-          <Flex wrap spaced>
-            {exampleRoutes.map(r => (
+          <Flex wrap="true" spaced>
+            {exampleRoutes.map((r) => (
               <div key={r}>
                 <Button
                   type="button"

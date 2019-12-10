@@ -29,7 +29,8 @@
     "pretest": "rimraf coverage && npm run lint",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
-    "lint": "prettier --write ./src/**/*.js",
+    "lint": "prettier -c ./src/**/*.js ./src/**/*.jsx",
+    "lint:fix": "prettier --write ./src/**/*.js",
     "zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
     "storybook": "start-storybook -p 9090 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o .out"
@@ -166,6 +167,7 @@
     "express-controller-routing": "^1.0.0",
     "express-request-proxy": "^2.0.0",
     "express-session": "^1.15.6",
+    "express-ws": "^4.0.0",
     "fs-extra": "^7.0.1",
     "home-or-tmp": "^3.0.0",
     "i18next": "^14.0.1",
