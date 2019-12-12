@@ -27,7 +27,7 @@ reports
 temp
 
 .*.json
-package-lock.json
+
 
 *.tgz
 report.html
