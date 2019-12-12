@@ -28,11 +28,11 @@
     "docker:run": "docker run -p 49161:8080 -d predixapphub/$npm_package_name",
     "docker:save": "docker save -o $npm_package_name.tar predixapphub/$npm_package_name",
     "start": "cross-env NODE_ENV=production node server",
-    "pretest": "rimraf coverage && npm run lint",
+    "pretest": "rimraf coverage && npm run lint:fix",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:e2e": "cross-env NODE_ENV=test nightwatch --config ./test/e2e/nightwatch.conf.js",
     "lint": "prettier -c ./src/**/*.js ./src/**/*.jsx",
-    "lint:fix": "prettier --write ./src/**/*.js",
+    "lint:fix": "prettier --write ./src/**/*.js ./src/**/*.jsx",
     "zip": "cd dist && bestzip ../$npm_package_name-$npm_package_version.zip *",
     "storybook": "start-storybook -p 9090 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o .out"

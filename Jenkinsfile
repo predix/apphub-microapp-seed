@@ -37,13 +37,13 @@ pipeline {
         """
 
         echo 'Installing...'
-        sh 'yarn install'
+        sh 'npm ci'
 
         echo 'Testing...'
         sh 'npm test -- --ci'
 
         echo 'Building...'
-        sh 'npm run dist; mv apphub-microapp-seed-1.0.0.zip apphub-microapp-seed-${BUILD_ID}.zip'
+        sh 'npm run dist; cp apphub-microapp-seed-1.0.0.zip apphub-microapp-seed-${BUILD_ID}.zip'
       }
       post {
         success {
