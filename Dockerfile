@@ -1,4 +1,4 @@
-FROM                      node:latest
+FROM                       node:lts-alpine
 
 # System Env Vars
 ENV PROXY                 http://proxy-src.research.ge.com:8080

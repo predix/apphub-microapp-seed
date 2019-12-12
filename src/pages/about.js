@@ -1,35 +1,32 @@
-import React from "react";
-import Card from "predix-ui/dist/es/components/px/Card";
-import KeyValuePair from "predix-ui/dist/es/components/px/KeyValuePair";
-import Flex from "predix-ui/dist/es/styles/flex";
+import React from 'react';
+import Card from 'predix-ui/dist/es/components/px/Card';
 
-const dashboardData = {
-  keyVals: [
-    { label: "New Alerts", value: "21" },
-    { label: "Utilization", value: "70", uom: "%" },
-    { label: "Faults", value: "3" },
-    { label: "Output", value: "50", uom: "mw" }
-  ]
-};
+const features = [
+  { title: 'Predix UI (react)', href: 'https://jonniespratley.github.io/predix-ui/#/' },
+  { title: 'Webpack 4.x', href: 'https://webpack.js.org/' },
+  { title: 'Babel', href: 'https://babeljs.io/' },
+  { title: 'React', href: 'https://reactjs.org/' },
+  { title: 'React Router', href: 'https://reacttraining.com/react-router/web/guides/philosophy' },
+  { title: 'Storybook.js', href: 'https://storybook.js.org/' },
+  { title: 'Express', href: 'https://expressjs.com/' },
+  { title: 'Nightwatch.js', href: 'http://nightwatchjs.org/' },
+  { title: 'Jest', href: 'https://facebook.github.io/jest/' }
+];
 
 export default () => (
   <div className="about-page u-ph">
     <Card headerText="About">
-      <p>This is the about page.</p>
-    </Card>
-    <Card headerText="Right Now" className="u-mb">
-      <Flex middle spaced>
-        {dashboardData.keyVals.map(item => (
-          <KeyValuePair
-            key={item.label}
-            className="u-p"
-            label={item.label}
-            uom={item.uom}
-            value={item.value}
-            size="beta"
-          />
+      <p>This simple micro-app seed contains just enough to get you started.</p>
+      <p>Some features include:</p>
+      <ul>
+        {features.map((feature) => (
+          <li key={feature.title}>
+            <a href={feature.href} title={feature.title} target="noopener noreferrer">
+              {feature.title}
+            </a>
+          </li>
         ))}
-      </Flex>
+      </ul>
     </Card>
   </div>
 );

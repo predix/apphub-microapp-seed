@@ -76,8 +76,12 @@ module.exports = {
   },
   '/:id?': {
     get: (req, res) => {
+      res.set('x-b3-traceid', req.get('x-b3-traceid') || req._id);
+
       res.status(200).send({
+        traceId: req.get('x-b3-traceid'),
         headers: req.headers,
+        params: req.params,
         query: req.query
       });
     },

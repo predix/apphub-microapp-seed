@@ -5,34 +5,134 @@ exports[`Ajax Card should match snapshot 1`] = `
   className="px-card ajax-card"
 >
   <div
-    className="px-card Card-kDrUqF hLbjWt"
+    className="px-card sc-EHOje fJIaeZ"
   >
     <header
-      className="px-card-header Card__CardHeader-Babxj frRFri"
+      className="px-card-header sc-bZQynM IGYNF"
     >
       <span
-        className="Card__CardTitle-cklsrQ yYkWD"
+        className="sc-gzVnrw hNuuCV"
       >
         My Header
       </span>
     </header>
     <section
-      className="px-card-body Card__CardBody-hcmfrf keWRp"
+      className="px-card-body sc-htoDjs hSRIGh"
     >
+      <h4>
+        Example Routes
+      </h4>
+      <div
+        className="sc-bwzfXH jJPvbV"
+        wrap="true"
+      >
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/db
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/db/_all_docs
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/example
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/example/getCookies
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/example/setCookie/foo/bar
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/example/timeout/1000
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/example/500
+          </button>
+        </div>
+        <div>
+          <button
+            className="px-button sc-bdVaJa ienWKz"
+            icon={null}
+            onClick={[Function]}
+            size={null}
+            type="button"
+          >
+            ./api/example/my/path/to/something
+          </button>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Tester
+      </h4>
       <form
         className="u-mb"
         onSubmit={[Function]}
       >
         <input
-          className="Input__BaseInput-gMBmrz eEXNsw"
+          className="sc-bxivhb hulgxF"
           id="urlInput"
           onChange={[Function]}
           placeholder="Enter URL..."
           type="text"
-          value="./api/example"
+          value="./api/example?name=value"
         />
         <button
-          className="px-button Button-hYXUXp hdtnUs"
+          className="px-button sc-bdVaJa ienWKz"
           icon={null}
           size={null}
           type="submit"
@@ -40,7 +140,6 @@ exports[`Ajax Card should match snapshot 1`] = `
           Send Request
         </button>
       </form>
-      <br />
     </section>
   </div>
 </div>

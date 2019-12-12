@@ -1,8 +1,15 @@
-import React from "react";
+import React from 'react';
 
 /* eslint-disable-next-line */
-export default ({ match }) => (
+export default ({ match = {} }) => (
   <div className="u-p">
-    <h3>{match.params.topicId}</h3>
+    <h3>
+      {'topicId = '}
+      {match.params.topicId}
+    </h3>
+    <pre>
+      {'match:'}
+      {JSON.stringify(match, null, 2)}
+    </pre>
   </div>
 );

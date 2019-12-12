@@ -16,13 +16,14 @@ const PATHS = {
   fixedPath: '/'
 };
 
-const productionConfig = merge([{
+const productionConfig = merge([
+  {
     name: 'client',
     extends: 'base',
     target: 'web',
     context: PATHS.app,
     output: {
-      filename: 'js/[name].[hash].bundle.js',
+      filename: 'js/[name].[hash].bundle.js'
       //chunkFilename: 'js/[name].bundle.js'
     },
     entry: {
@@ -38,11 +39,7 @@ const productionConfig = merge([{
         'axios',
         'predix-ui'
       ],
-      polyfills: [
-        'es6-shim',
-        'promise-polyfill',
-        'whatwg-fetch'
-      ]
+      polyfills: ['es6-shim', 'promise-polyfill', 'whatwg-fetch']
     },
     bail: false
   },
@@ -102,39 +99,44 @@ const productionConfig = merge([{
     clientsClaim: true,
     skipWaiting: true,
     importWorkboxFrom: 'local',
-    runtimeCaching: [{
-      urlPattern: /api/,
-      handler: 'networkFirst',
-      options: {
-        cacheName: 'apphub-microapp-seed-api-cache',
-        networkTimeoutSeconds: 10,
-        expiration: {
-          maxEntries: 20,
-          maxAgeSeconds: 60
-        },
-        // Configure which responses are considered cacheable.
-        cacheableResponse: {
-          statuses: [0, 200]
+    runtimeCaching: [
+      // Cache all /api requests
+      {
+        urlPattern: /api/,
+        handler: 'networkFirst',
+        options: {
+          cacheName: 'apphub-microapp-seed-api-cache',
+          networkTimeoutSeconds: 10,
+          expiration: {
+            maxEntries: 20,
+            maxAgeSeconds: 60
+          },
+          // Configure which responses are considered cacheable.
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
         }
       }
-    }]
+    ]
   }),
-  parts.copyPlugin([{
-    from: './assets/**/*.*',
-    to: './'
-  }, {
-    from: './manifest.json'
-  }, {
-    from: './favicon.ico'
-  }]),
+  parts.copyPlugin([
+    {
+      from: './assets/**/*.*',
+      to: './'
+    },
+    {
+      from: './manifest.json'
+    },
+    {
+      from: './favicon.ico'
+    }
+  ]),
   //parts.bannerPlugin(),
   parts.setAnalyzer(),
   parts.loadHtml(),
   parts.minifyJavaScript(),
   parts.minifyCSS({
-    options: {
-
-    }
+    options: {}
   }),
   parts.criticalCSS(),
   parts.purifyCSS({

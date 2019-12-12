@@ -1,9 +1,8 @@
 const express = require('express');
 const os = require('os');
 const cluster = require('cluster');
+const http = require('http');
 const log = require('./logger')('server');
-
-let http;
 
 /**
  * @class Server
@@ -19,6 +18,7 @@ class Server {
     } else {
       this.app = express();
     }
+    this.http = http.createServer(this.app);
   }
 
   listen(port, callback) {
@@ -32,14 +32,14 @@ class Server {
         cluster.fork();
       });
     } else {
-      http = require('http').createServer(this.app);
-      http.listen(port, process.env.HOST || null, () => {
+      this.http = http.createServer(this.app);
+      this.http.listen(port, process.env.HOST || null, () => {
         console.log(
-          `🌎 Running on ${http.address().port}, Open up http://${http.address().address ||
-            'localhost'}:${http.address().port} in your browser.`
+          `🌎 Running on ${this.http.address().port}, Open up http://${this.http.address()
+            .address || 'localhost'}:${this.http.address().port} in your browser.`
         );
       });
-      http.on('listening', () => {
+      this.http.on('listening', () => {
         this.log.debug(
           `💯 Worker ${process.pid} started in ${process.env.NODE_ENV || 'development'}`
         );
@@ -68,7 +68,7 @@ class Server {
   shutdown(callback) {
     this.log.debug('shutdown');
     try {
-      http.close();
+      this.http.close();
       callback(null);
     } catch (e) {
       log.error('shutdown', e);
@@ -79,7 +79,7 @@ class Server {
 
   getHTTPServer() {
     this.log.debug('getHTTPServer');
-    return http;
+    return this.http;
   }
 }
 module.exports = Server;
