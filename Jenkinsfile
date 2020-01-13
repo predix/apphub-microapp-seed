@@ -32,8 +32,6 @@ pipeline {
           npm config set strict-ssl false
           npm config ls
 
-          npm i -g yarn
-          yarn config set strict-ssl false
         """
 
         echo 'Installing...'
