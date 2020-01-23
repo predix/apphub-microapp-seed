@@ -1,6 +1,6 @@
 #!groovy
 def artUploadServer = Artifactory.server('devcloud')
-def Snapshot = 'PREDIX'
+def Snapshot = 'APM-AWS-SNAPSHOT'
 /**
  *
  */
