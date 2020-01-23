@@ -298,8 +298,8 @@ def downloadArtifact(){
    // Define DevCloud Artifactory for publishing non-docker image artifacts
    def devcloudArtServer = Artifactory.server('devcloud')
 
-   // Snapshot = DevCloud Artifactory repo name
-   def Snapshot = 'PREDIX'
+   // Snapshot = Artifactory repo name
+   def Snapshot = 'APM-AWS-SNAPSHOT'
 
    def downloadSpec = """{
       "files": [
