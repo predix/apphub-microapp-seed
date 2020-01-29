@@ -1,6 +1,6 @@
 #!groovy
 def artUploadServer = Artifactory.server('devcloud')
-def Snapshot = 'APM-AWS-SNAPSHOT'
+def Snapshot = 'APM-AWS'
 /**
  *
  */
@@ -8,7 +8,6 @@ pipeline {
   agent none
 	environment {
 		DEBUG = ''
-    //CACHING_REPO_URL = 'http://nexus.marathon.l4lb.thisdcos.directory:8081/nexus/repository/npm-virtual/'
     ORG_NAME = 'Predix-Apphub'
     APP_NAME = 'apphub-microapp-seed'
 	}
@@ -17,7 +16,7 @@ pipeline {
       agent {
         docker {
           //image 'registry.gear.ge.com/dig-propel/predixci-node6.9-base'
-          image 'node:8'
+          image 'node:10'
           label 'dind'
         }
       }
@@ -53,10 +52,6 @@ pipeline {
         }
       }
     }
-    /**
-     * Publish Artifacts will take the .zip from the build task
-     * and upload to artifactory.
-     */
     stage('Publish Artifacts') {
       agent {
         docker {
@@ -87,9 +82,6 @@ pipeline {
        }
      }
    }
-   /**
-    * Deploy stage will take the artifact from the build step and push to Cloud Foundry
-    */
     stage('Deploy to CF3 Dev'){
       when {
         branch 'master'
@@ -125,10 +117,8 @@ pipeline {
         SERVICES='predix-logging';
         BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
         WILD_CARD=''
-
         TO_ENV='DEV';
       }
-
       steps {
         dir('build-scripts') {
           git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
@@ -145,64 +135,7 @@ pipeline {
         }
       }
     }
-
-    stage('Deploy to SysInt'){
-      when {
-        branch 'master'
-      }
-
-              agent {
-                  docker {
-                      image 'registry.gear.ge.com/spartans/spartans-cicd'
-                      label 'dind'
-                  }
-              }
-
-              environment {
-                  SYSINTLOGIN = credentials('CF3SysInt_Credentials')
-                  GIT_TOKEN = credentials('GITTOKEN');
-
-                  CF_ENV='dev';
-                  CF_REGION='aws-usw02';
-                  CF_SPACE='predix-apphub-sysint';
-                  CF_DOMAIN="https://api.system.aws-usw02-${CF_ENV}.ice.predix.io";
-                  CF_RUN_DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
-                  CF_ORG='predix-apphub-sysint';
-
-                  //APP_NAME='ui-app-hub';
-                  APP_VERSION='1.0.0';
-                  APP_PATH="${APP_NAME}-${BUILD_NUMBER}.zip";
-                  PUBLISHED_HOST="${APP_NAME}-sysint";
-
-                  DOMAIN="run.${CF_REGION}-${CF_ENV}.ice.predix.io";
-                  INSTANCES='2';
-                  DISK_QUOTA='512M';
-                  MEMORY='1G';
-                  SERVICES='';
-                  BUILD_PACK='https://github.com/heroku/heroku-buildpack-nodejs';
-                  WILD_CARD=''
-
-                  TO_ENV='SYSINT';
-              }
-
-              steps {
-                  dir('build-scripts') {
-                      git url: "https://$GIT_TOKEN_PSW:x-oauth-basic@github.build.ge.com/predix-apphub/build-scripts.git"
-                  }
-                  cfDeploy("${CF_DOMAIN}","$SYSINTLOGIN_USR","$SYSINTLOGIN_PSW","${CF_ORG}","${CF_SPACE}")
-              }
-
-              post {
-                  success {
-                       echo "Deploy stage completed"
-                  }
-                  failure {
-                      echo "Deploy stage failed"
-                  }
-              }
-          }
-
-          stage('Deploy to Stage'){
+      stage('Deploy to Stage'){
             when {
               branch 'master'
             }
