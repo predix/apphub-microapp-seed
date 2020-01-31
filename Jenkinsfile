@@ -1,6 +1,8 @@
 #!groovy
 def artUploadServer = Artifactory.server('devcloud')
 def Snapshot = 'APM-AWS'
+def imageName = 'apphub-microapp-seed'
+def orgName = 'predix-apphub'
 /**
  *
  */
@@ -82,6 +84,48 @@ pipeline {
        }
      }
    }
+
+   stage ('Publish docker to registry') {
+      agent {
+          label "dind"
+      }
+      when {
+          anyOf {
+              branch 'develop'
+              branch 'master'
+          }
+      }
+
+      environment {
+          DTR_CREDS = credentials('JS_DTR_CREDENTIALS')
+      }
+
+      steps {
+          script{
+              checkout scm
+              if(env.BRANCH_NAME == 'develop'){
+                  sh 'docker login https://registry.gear.ge.com -u $DTR_CREDS_USR -p $DTR_CREDS_PSW'
+                  sh "docker build -t registry.gear.ge.com/${orgName}/${imageName}:dev --build-arg NODE_TLS_REJECT_UNAUTHORIZED=0 ."
+                  sh "docker push registry.gear.ge.com/${orgName}/${imageName}:dev"
+              }
+              if(env.BRANCH_NAME == 'master'){
+                  sh 'docker login https://registry.gear.ge.com -u $DTR_CREDS_USR -p $DTR_CREDS_PSW'
+                  sh "docker build -t registry.gear.ge.com/${orgName}/${imageName}:latest --build-arg NODE_TLS_REJECT_UNAUTHORIZED=0 ."
+                  sh "docker push registry.gear.ge.com/${orgName}/${imageName}:latest"
+              }
+          }
+      }
+
+      post {
+          success {
+              echo "Build Docker Image stage completed"
+          }
+          failure {
+              echo "Build Docker Image stage failed"
+          }
+          }
+      }
+
     stage('Deploy to CF3 Dev'){
       when {
         branch 'master'
