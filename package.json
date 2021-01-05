@@ -153,7 +153,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.3",
     "camel-2-dash": "^0.1.0",
     "classnames": "^2.2.5",
