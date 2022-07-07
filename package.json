@@ -103,7 +103,7 @@
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.5.0",
     "minimist": "^1.2.0",
-    "moment": "^2.20.1",
+    "moment": "^2.29.4",
     "ncp": "^2.0.0",
     "nightwatch": "^1.0.6",
     "node-dir": "^0.1.16",
