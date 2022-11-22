@@ -190,7 +190,7 @@
     "react-router-dom": "^4.2.2",
     "request": "^2.79.0",
     "serve-static": "^1.10.2",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "swagger-express-middleware": "^2.0.2",
     "swagger-parser": "^6.0.3",
     "swagger-stats": "^0.95.6",
